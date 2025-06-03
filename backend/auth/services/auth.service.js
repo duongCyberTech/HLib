@@ -31,14 +31,14 @@ class AuthService {
         const userId = uuidv4() + '-' + randomString(4);
         const query = `INSERT INTO users (uid, fname, mname, lname, username, password, email, avata, role, salary) 
                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
-        await pool.query(query, [userId, fname, mname, lname, username, hashedPassword, email, avata || null, role || 'user', salary || 0, 1]);
+        await pool.query(query, [userId, fname, mname, lname, username, hashedPassword, email, avata || null, role || 'user', salary || 0]);
         return { id: userId, username };
     }
 
     async loginUser(userData) {
         const { username, password, email } = userData;
-
-        const query = 'SELECT uid, username FROM users WHERE username = ? OR email = ?';
+        console.log('Logging in user with data:', { username, email, password });
+        const query = 'SELECT uid, username, password, status FROM users WHERE username = ? OR email = ?';
         const [rows] = await pool.query(query, [username || "-", email || "-"]);
 
         if (rows.length === 0) {
@@ -46,12 +46,16 @@ class AuthService {
         }
 
         const user = rows[0];
+        if (user.status[0] === 0) {
+            throw new Error('User is not active. Please verify your account or contact the administrator.');
+        }
+        console.log('Found user:', user);
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
             throw new Error('Invalid password');
         }
-
+        console.log('User logged in:', user.username);
         const token = jwt.sign({ uid: user.uid, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
         return { token };
     }

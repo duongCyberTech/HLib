@@ -17,4 +17,10 @@ create table users(
 );
 
 
+alter table users 
+drop column password,
+add column password nvarchar(255);
+select*from users
+
+
 
