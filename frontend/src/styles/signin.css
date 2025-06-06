@@ -1,0 +1,49 @@
+.logo-1{
+    position: absolute; 
+    top: 59px; 
+    left: 126px; 
+    width: 54px; 
+    height: 54px; 
+    border-radius: 0px; 
+}
+
+.headline{
+    position: absolute; 
+    top: 73px; 
+    left: 188px; 
+    font-family: Archivo; /* Heading */
+    font-size: 16px; 
+    line-height: 26px; 
+    font-weight: 600; 
+    color: #636AE8FF; /* primary-500 */
+}
+
+.sign-container{
+    position: absolute; 
+    top: 140px; 
+    left: 126px; 
+    width: 622px; 
+    height: 657px; 
+    background: #FFFFFFFF; /* white */
+    border-radius: 24px; 
+    box-shadow: 0px 4px 9px #171a1f1C, 0px 0px 2px #171a1f1F; /* shadow-m */
+}
+
+.sign-title{
+    position: absolute; 
+    top: 36px; 
+    left: 70px; 
+    font-family: Archivo; /* Heading */
+    font-size: 24px; 
+    line-height: 36px; 
+    font-weight: 600; 
+    color: #171A1FFF; /* neutral-900 */
+}
+
+.group{
+    position: absolute; 
+    top: 102px; 
+    left: 70px; 
+    width: 482px; 
+    height: 81px; 
+}

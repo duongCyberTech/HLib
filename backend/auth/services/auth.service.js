@@ -32,7 +32,7 @@ class AuthService {
         const query = `INSERT INTO users (uid, fname, mname, lname, username, password, email, avata, role, salary) 
                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
         await pool.query(query, [userId, fname, mname, lname, username, hashedPassword, email, avata || null, role || 'user', salary || 0]);
-        return { id: userId, username };
+        return { uid: userId, username };
     }
 
     async loginUser(userData) {
@@ -58,6 +58,43 @@ class AuthService {
         console.log('User logged in:', user.username);
         const token = jwt.sign({ uid: user.uid, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
         return { token };
+    }
+    
+    async changePassword(userData) {
+        const { uid, oldPassword, newPassword } = userData;
+        if (!uid || !oldPassword || !newPassword) {
+            throw new Error('Missing required fields');
+        }
+        const query = 'SELECT password FROM users WHERE uid = ?';
+        const [rows] = await pool.query(query, [uid]);
+        if (rows.length === 0) {
+            throw new Error('User not found');
+        }
+
+        const user = rows[0];
+        const isOldPasswordValid = await bcrypt.compare(oldPassword, user.password);
+        if (!isOldPasswordValid) {
+            throw new Error('Old password is incorrect');
+        }
+        const hashedNewPassword = await bcrypt.hash(newPassword, 12);
+        const updateQuery = 'UPDATE users SET password = ? WHERE uid = ?';
+
+        const [result] = await pool.query(updateQuery, [hashedNewPassword, uid]);
+        if (result.affectedRows === 0) {
+            throw new Error('Failed to update password');
+        }
+        return { message: 'Password changed successfully' };
+    }
+
+    async sendPasswordResetEmail(email) {
+        const subpassword = randomString(10);
+        const hashedPassword = await bcrypt.hash(subpassword, 12);
+        const query = 'UPDATE users SET password = ? WHERE email = ?';
+        const [result] = await pool.query(query, [hashedPassword, email]);
+        if (result.affectedRows === 0) {
+            throw new Error('Email not found');
+        }
+        return subpassword;
     }
 }
 

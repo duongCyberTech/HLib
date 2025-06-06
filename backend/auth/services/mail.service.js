@@ -25,4 +25,20 @@ async function sendOTPEmail(to, otp) {
   console.log('✅ Email sent to', to);
 }
 
-module.exports = { sendOTPEmail };
+async function sendPasswordEmail(to, subpassword) {
+  const html = `
+    <h3>Mật khẩu mới của bạn là: <span style="color:blue;">${subpassword}</span></h3>
+    <p>Vui lòng đổi mật khẩu sau khi đăng nhập.</p>
+  `;
+
+  await transporter.sendMail({
+    from: `"HCMUTLib" <themrz1404@gmail.com>`,
+    to: "themrz1404@gmail.com",
+    subject: 'Mã OTP xác thực',
+    html
+  });
+
+  console.log('✅ Email sent to', to);
+}
+
+module.exports = { sendOTPEmail, sendPasswordEmail };

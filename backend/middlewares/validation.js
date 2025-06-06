@@ -32,6 +32,7 @@ const registerSchema = Joi.object({
 
 const validate = () => {
   return (req, res, next) => {
+    console.log('Validating registration data:', req.body);
     const schemaCheck = {
         fname: req.body.fname,
         mname: req.body.mname,
