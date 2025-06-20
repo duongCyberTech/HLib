@@ -12,11 +12,11 @@ import axios from 'axios';
 import CountdownTimer from './CountDown';
 import { useLocation } from 'react-router-dom';
 
-export default function Verify() {
+export default function ForgotPassword() {
     const [otp, setOTP] = useState('');
-    const [seconds, setSeconds] = useState(120);
-    const location = useLocation()
-    const uid = location.state.uid
+    const [seconds, setSeconds] = useState(0);
+    const [email, setEmail] = useState('');
+    const [isON, setIsON] = useState(false);
   const handleVerify = async (event) => {
     event.preventDefault();
     if (!otp) {
@@ -25,8 +25,8 @@ export default function Verify() {
     }
     alert(localStorage.getItem("uid"))
     try {
-        const res = await axios.post(`http://localhost:3001/api/auth/otp/verify`,{
-            uid,
+        const res = await axios.post(`http://localhost:3001/api/auth/otp/verify/`,{
+            email,
             otp
         })
         console.log(res.data)
@@ -39,13 +39,9 @@ export default function Verify() {
 
   const handleResend = async (event) => {
     event.preventDefault();
-    if (!otp) {
-        alert("Please enter the OTP code");
-        return;
-    }
     try {
-        const res = await axios.post(`http://localhost:3001/api/auth/otp/request`,{
-            uid,
+        const res = await axios.post(`http://localhost:3001/api/auth/otp/request/`,{
+            email
         });
         console.log(res.data);
         alert("OTP code has been resent to your email");
@@ -88,21 +84,37 @@ export default function Verify() {
                 <Box display={'flex'} flexDirection="column" alignItems="center" mb={3}>
                     <SensorOccupiedTwoTone sx={{ fontSize: 50, color: '#40C4FF', mb: 1 }} />
                     <Typography variant="h5" fontWeight="bold" gutterBottom>
-                        VERIFY YOUR ACCOUNT
+                        RESET PASSWORD
                     </Typography>
                 </Box>
                 
-
+                
                 <Grid container spacing={2} sx={{justifyItems: 'center', alignSelf: 'center'}}>
-                    <Grid item xs={6}>
-                        <TextField 
-                            fullWidth 
-                            label="OTP Code" 
-                            required
-                            value={otp} 
-                            onChange={(e) => setOTP(e.target.value)}
-                        />
-                    </Grid>
+                    {!isON ? 
+                        (
+                            <Grid item xs={12}>
+                                <TextField 
+                                    fullWidth 
+                                    label="Email" 
+                                    type="email" 
+                                    required
+                                    value={email} 
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </Grid>
+                        ) : (
+                            <Grid item xs={6}>
+                                <TextField 
+                                    fullWidth 
+                                    label="OTP Code" 
+                                    required
+                                    value={otp} 
+                                    onChange={(e) => setOTP(e.target.value)}
+                                />
+                            </Grid>
+                        )
+                    }
+                    
                 </Grid>
                 <CountdownTimer seconds={seconds} setSeconds={setSeconds}/>
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', gap: 3 }}>
@@ -114,7 +126,7 @@ export default function Verify() {
                         {...(seconds > 0
                         ) ? { disabled: true } : {}}
                     >
-                        Resend Code
+                        Send Code
                     </Button>
                     <Button
                         fullWidth

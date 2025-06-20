@@ -82,7 +82,7 @@ export default function SignupForm() {
         console.log(res.data)
         localStorage.setItem("uid", res.data.data.uid)
         alert("Register successfully, please login to continue")
-        await axios.post(`http://localhost:3001/api/auth/otp/request/${res.data.data.uid}`);
+        await axios.post(`http://localhost:3001/api/auth/otp/request`,{uid: res.data.data.uid});
         alert("OTP code has been sent to your email, please check your inbox")
         navigate("/verify",{state: {uid: res.data.data.uid}});
     } catch (error) {

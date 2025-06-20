@@ -56,8 +56,8 @@ export default function Login() {
         console.error(error.message)
         alert("Something went wrong, please try again later")
     }
-
   }
+
   return (
     <>
     <video
@@ -118,19 +118,12 @@ export default function Login() {
                         />
                     </Grid>
                 </Grid>
-
-                <FormControlLabel
-                    control={<Checkbox size="small" />}
-                    label={
-                        <Typography variant="body2">
-                        By signing up, I agree with the{' '}
-                        <Link href="#" underline="hover">
-                            Terms of Use & Privacy Policy
-                        </Link>
-                        </Typography>
-                    }
-                    sx={{ mt: 1 }}
-                />
+                <Typography variant="body2" sx={{mt: 2}}>
+                    Forgot your password ?{' '}
+                    <Link href="/forgot-password" underline="hover">
+                            Click here
+                    </Link>
+                </Typography>
 
                 <Button
                     fullWidth

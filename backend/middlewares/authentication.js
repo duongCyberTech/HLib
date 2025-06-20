@@ -3,6 +3,9 @@ require('dotenv').config();
 const express = require('express');
 
 const authenticate = (req, res, next) => {
+  if (req.body?.otp){
+    return next();
+  }
   const token = req?.headers.authorization?.split(' ')[1]; // Bearer <token>
   if (!token) return res.status(401).json({ message: 'No token provided' });
 

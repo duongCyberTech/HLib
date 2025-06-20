@@ -16,8 +16,9 @@ const { validate } = require('../../middlewares/validation');
 
 router.post('/register', validate(), AuthController.register);
 router.post('/login', AuthController.login);
-router.post('/otp/request/:uid', otpLimiter, AuthController.requestOTP);
-router.post('/otp/verify/:uid', AuthController.verifyOTPCode);
-
+router.post('/otp/request', otpLimiter, AuthController.requestOTP);
+router.post('/otp/verify', AuthController.verifyOTPCode);
+router.post('/forgot-password', AuthController.forgotPassword);
+router.post('/reset-password', authenticate, AuthController.changePassword);
 
 module.exports = router;

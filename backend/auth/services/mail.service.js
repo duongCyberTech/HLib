@@ -17,8 +17,8 @@ async function sendOTPEmail(to, otp) {
 
   await transporter.sendMail({
     from: `"HCMUTLib" <themrz1404@gmail.com>`,
-    to: "themrz1404@gmail.com",
-    subject: 'Mã OTP xác thực',
+    to: "hcmutlib@gmail.com",
+    subject: 'Mật khẩu mới của bạn',
     html
   });
 
