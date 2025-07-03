@@ -176,7 +176,7 @@ FOR EACH ROW
 BEGIN
     -- Cập nhật ngân sách của người dùng sau khi đặt tài liệu
     UPDATE users
-    SET budget = budget - (
+    SET budget = budget + (
         SELECT fee FROM documents WHERE did = NEW.did
     )
     WHERE uid = NEW.uid;
