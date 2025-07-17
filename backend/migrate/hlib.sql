@@ -141,6 +141,19 @@ create table tags(
     foreign key (tag_id) references users(uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+create table courses(
+	course_id varchar(255) primary key,
+    title varchar(255) not null,
+    discription text,
+    price decimal(10,2) default 0.00,
+    sale_number int default 0,
+    is_active boolean default false,
+    created_date datetime default current_timestamp,
+    updated_date datetime default current_timestamp,
+    uid varchar(255) not null,
+    foreign key (uid) references users(uid)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- Stored Procedures
 DELIMITER $$
 
