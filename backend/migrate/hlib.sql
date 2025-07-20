@@ -181,6 +181,17 @@ create table section (
     foreign key (course_id) references courses(course_id)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+create table image (
+    image_id varchar(255) primary key,
+    title varchar(255) not null,
+    description text,
+    file_path text not null,
+    file_size int,
+    file_type varchar(10),
+    course_id varchar(255) not null,
+    foreign key (course_id) references courses(course_id)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- Stored Procedures
 DELIMITER $$
 
