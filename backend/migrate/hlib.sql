@@ -154,6 +154,16 @@ create table courses(
     foreign key (uid) references users(uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+create table access_course(
+    uid varchar(255) not null,
+    course_id varchar(255) not null,
+    access_time datetime default current_timestamp,
+    nb_of_access int default 0,
+    foreign key (uid) references users(uid),
+    foreign key (course_id) references courses(course_id),
+    primary key (uid, course_id)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- Stored Procedures
 DELIMITER $$
 
