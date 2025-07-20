@@ -215,6 +215,26 @@ BEGIN
     COMMIT;
 END$$
 
+CREATE PROCEDURE delete_course(
+    IN course_id VARCHAR(255)
+)
+BEGIN
+    DECLARE exit handler FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
+
+    START TRANSACTION;
+
+    -- Xóa tất cả các section trong course
+    DELETE FROM section WHERE course_id = course_id;
+
+    -- Xóa course chính nó
+    DELETE FROM courses WHERE course_id = course_id;
+
+    COMMIT;
+END$$
+
 DELIMITER ;
 
 
@@ -243,3 +263,4 @@ create index idx_topics_tid on topics(tid);
 create index idx_subjects_sid on subjects(sid);
 create index idx_specializations_spec_id on specializations(spec_id);
 create index idx_faculties_faculty_id on faculties(faculty_id);
+create index idx_courses_course_id on courses(course_id);
