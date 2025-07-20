@@ -173,6 +173,13 @@ create table order_course(
     primary key (uid, course_id)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+create table section (
+    section_id varchar(255) primary key,
+    title varchar(255) not null,
+    description text,
+    course_id varchar(255) not null,
+    foreign key (course_id) references courses(course_id)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Stored Procedures
 DELIMITER $$
