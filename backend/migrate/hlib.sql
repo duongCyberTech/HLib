@@ -164,6 +164,16 @@ create table access_course(
     primary key (uid, course_id)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+create table order_course(
+    uid varchar(255) not null,
+    course_id varchar(255) not null,
+    order_date datetime default current_timestamp,
+    foreign key (uid) references users(uid),
+    foreign key (course_id) references courses(course_id),
+    primary key (uid, course_id)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+
 -- Stored Procedures
 DELIMITER $$
 
