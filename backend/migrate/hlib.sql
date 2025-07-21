@@ -141,6 +141,60 @@ create table tags(
     foreign key (tag_id) references users(uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+create table courses(
+	course_id varchar(255) primary key,
+    title varchar(255) not null,
+    discription text,
+    price decimal(10,2) default 0.00,
+    sale_number int default 0,
+    is_active boolean default false,
+    created_date datetime default current_timestamp,
+    updated_date datetime default current_timestamp,
+    uid varchar(255) not null,
+    foreign key (uid) references users(uid)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+create table access_course(
+    uid varchar(255) not null,
+    course_id varchar(255) not null,
+    access_time datetime default current_timestamp,
+    nb_of_access int default 0,
+    foreign key (uid) references users(uid),
+    foreign key (course_id) references courses(course_id),
+    primary key (uid, course_id)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+create table order_course(
+    uid varchar(255) not null,
+    course_id varchar(255) not null,
+    order_date datetime default current_timestamp,
+    foreign key (uid) references users(uid),
+    foreign key (course_id) references courses(course_id),
+    primary key (uid, course_id)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+create table section (
+    section_id varchar(255) not null,
+    course_id varchar(255) not null,
+    title varchar(255) not null,
+    description text,
+    primary key (section_id, course_id),
+    foreign key (course_id) references courses(course_id)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+create table image (
+    image_id varchar(255) not null,
+    section_id varchar(255) not null,
+    course_id varchar(255) not null,
+    title varchar(255) not null,
+    description text,
+    file_path text not null,
+    file_size int,
+    file_type varchar(10),
+    primary key (image_id, section_id, course_id),
+    foreign key (section_id, course_id) references section(section_id, course_id)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- Stored Procedures
 DELIMITER $$
 
@@ -160,6 +214,26 @@ BEGIN
 
     -- Xóa collection chính nó
     DELETE FROM collections WHERE cid = collection_id;
+
+    COMMIT;
+END$$
+
+CREATE PROCEDURE delete_course(
+    IN course_id VARCHAR(255)
+)
+BEGIN
+    DECLARE exit handler FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+    END;
+
+    START TRANSACTION;
+
+    -- Xóa tất cả các section trong course
+    DELETE FROM section WHERE course_id = course_id;
+
+    -- Xóa course chính nó
+    DELETE FROM courses WHERE course_id = course_id;
 
     COMMIT;
 END$$
@@ -192,3 +266,4 @@ create index idx_topics_tid on topics(tid);
 create index idx_subjects_sid on subjects(sid);
 create index idx_specializations_spec_id on specializations(spec_id);
 create index idx_faculties_faculty_id on faculties(faculty_id);
+create index idx_courses_course_id on courses(course_id);
