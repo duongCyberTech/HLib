@@ -174,22 +174,25 @@ create table order_course(
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 create table section (
-    section_id varchar(255) primary key,
+    section_id varchar(255) not null,
+    course_id varchar(255) not null,
     title varchar(255) not null,
     description text,
-    course_id varchar(255) not null,
+    primary key (section_id, course_id),
     foreign key (course_id) references courses(course_id)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 create table image (
-    image_id varchar(255) primary key,
+    image_id varchar(255) not null,
+    section_id varchar(255) not null,
+    course_id varchar(255) not null,
     title varchar(255) not null,
     description text,
     file_path text not null,
     file_size int,
     file_type varchar(10),
-    course_id varchar(255) not null,
-    foreign key (course_id) references courses(course_id)
+    primary key (image_id, section_id, course_id),
+    foreign key (section_id, course_id) references section(section_id, course_id)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Stored Procedures
