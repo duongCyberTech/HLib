@@ -37,7 +37,7 @@ class AuthService {
 
     async loginUser(userData) {
         const { username, password, email } = userData;
-        console.log('Logging in user with data:', { username, email, password });
+        //console.log('Logging in user with data:', { username, email, password });
         const query = 'SELECT uid, username, password, status FROM users WHERE username = ? OR email = ?';
         const [rows] = await pool.query(query, [username || "-", email || "-"]);
 
@@ -49,13 +49,13 @@ class AuthService {
         if (user.status === 'inactive') {
             throw new Error('User is not active. Please verify your account or contact the administrator.');
         }
-        console.log('Found user:', user);
+        //console.log('Found user:', user);
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
             throw new Error('Invalid password');
         }
-        console.log('User logged in:', user.username);
+        //console.log('User logged in:', user.username);
         const token = jwt.sign({ uid: user.uid, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
         return { token };
     }
