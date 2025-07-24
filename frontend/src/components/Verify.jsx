@@ -10,13 +10,14 @@ import {
 import {SensorOccupiedTwoTone} from '@mui/icons-material';
 import axios from 'axios';
 import CountdownTimer from './CountDown';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Verify() {
     const [otp, setOTP] = useState('');
     const [seconds, setSeconds] = useState(120);
     const location = useLocation()
     const uid = location.state.uid
+    const navigate = useNavigate()
   const handleVerify = async (event) => {
     event.preventDefault();
     if (!otp) {
