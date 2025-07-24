@@ -31,7 +31,7 @@ create table collections(
     create_date datetime default current_timestamp,
     update_date datetime default current_timestamp,
     uid varchar(255) not null,
-    child_section_id varchar(255) not null,
+    child_section_id varchar(255),
     foreign key (child_section_id) references collections(cid),
     foreign key (uid) references users(uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
