@@ -31,6 +31,8 @@ create table collections(
     create_date datetime default current_timestamp,
     update_date datetime default current_timestamp,
     uid varchar(255) not null,
+    child_section_id varchar(255) not null,
+    foreign key (child_section_id) references collections(cid),
     foreign key (uid) references users(uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -195,6 +197,64 @@ create table image (
     foreign key (section_id, course_id) references section(section_id, course_id)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+create table videos (
+    video_id varchar(255) not null,
+    section_id varchar(255) not null,
+    course_id varchar(255) not null,
+    title varchar(255) not null,
+    description text,
+    file_path text not null,
+    file_size int,
+    file_type varchar(10),
+    video_length varchar(10) default '00:00',
+    primary key (video_id, section_id, course_id),
+    foreign key (section_id, course_id) references section(section_id, course_id)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Init Data
+
+-- USERS
+INSERT INTO users (
+    uid, fname, mname, lname, username, password, email, avata, status, role, salary, budget
+) VALUES (
+    'bf6f3a33-c0d4-4965-a9fb-f87ccfab5040-p7H2',
+    N'Mai',
+    N'Văn',
+    N'Anh',
+    'AnhMVU6ji',
+    '$2b$12$0CxYbSjlAIFtmYH0GsCMpehKBeWYBri1iSThnXapcm4ZDDWQVSIAm',
+    'maianh1@example.com',
+    'https://res.cloudinary.com/dsivbzwgs/image/upload/v1753321249/huieystafdsycpcjzakn.jpg',
+    'active',
+    'user',
+    0.00,
+    0.00
+);
+
+
+-- FACULTIES
+INSERT INTO faculties (faculty_id, name, description) VALUES
+('f001', 'Computer Science and Engineering', 'Faculty of IT'),
+('f002', 'Electric Engineering', 'Faculty of EE');
+
+-- SPECIALIZATIONS
+INSERT INTO specializations (spec_id, name, description, faculty_id) VALUES
+('s001', 'Software Engineering', 'Study of software dev and engineering', 'f001'),
+('s002', 'Computer Networks', 'Networking and communication systems', 'f001'),
+('s003', 'Marketing', 'Study of market and promotion', 'f002');
+
+-- SUBJECTS
+INSERT INTO subjects (sid, name, description, spec_id) VALUES
+('sub001', 'Database Systems', 'Relational databases, SQL, design', 's001'),
+('sub002', 'Operating Systems', 'Process management, file systems', 's001'),
+('sub003', 'Digital Marketing', 'Online marketing tools and strategies', 's003');
+
+-- TOPICS
+INSERT INTO topics (tid, name, sid, description) VALUES
+('t001', 'Normalization', 'sub001', 'Database normalization forms'),
+('t002', 'Transactions', 'sub001', 'ACID properties and concurrency control'),
+('t003', 'SEO Basics', 'sub003', 'Search Engine Optimization fundamentals');
+
 -- Stored Procedures
 DELIMITER $$
 
@@ -267,3 +327,5 @@ create index idx_subjects_sid on subjects(sid);
 create index idx_specializations_spec_id on specializations(spec_id);
 create index idx_faculties_faculty_id on faculties(faculty_id);
 create index idx_courses_course_id on courses(course_id);
+
+select* from users;

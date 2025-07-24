@@ -31,6 +31,7 @@ export default function Verify() {
         })
         console.log(res.data)
         alert("Register successfully, please login to continue")
+        navigate('/login')
     } catch (error) {
         console.error(error.message)
         alert("Something went wrong, please try again later")

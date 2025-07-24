@@ -46,7 +46,7 @@ class AuthService {
         }
 
         const user = rows[0];
-        if (user.status[0] === 0) {
+        if (user.status === 'inactive') {
             throw new Error('User is not active. Please verify your account or contact the administrator.');
         }
         console.log('Found user:', user);

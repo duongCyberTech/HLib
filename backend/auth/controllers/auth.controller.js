@@ -51,7 +51,7 @@ class AuthController {
         }
 
         console.log("Check Request 2 ---")
-        console.log("Pair email:", email, "emailres:", emailres[0]?.email);
+        console.log("Pair email:", email, "emailres:", emailres);
         const email_ =  (email && email !== undefined && typeof email !== 'undefined')  ? email : emailres;
         console.log("Logging in requestOTP with email:", email_);
         if (!email_) {
@@ -93,7 +93,7 @@ class AuthController {
         const isValid = verifyOTP(email_, otp);
 
         if (!isValid) return res.status(400).json({ message: 'OTP không hợp lệ hoặc đã hết hạn.' });
-        const updateres = await pool.query('UPDATE users SET status = ? WHERE uid = ?', [1, uid]);
+        const updateres = await pool.query('UPDATE users SET status = ? WHERE uid = ?', ['active', uid]);
         console.log(updateres)
         res.status(200).json({ message: 'OTP hợp lệ.' });
     }
