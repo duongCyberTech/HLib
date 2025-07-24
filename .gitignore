@@ -4,4 +4,6 @@ mobile/.expo/
 mobile/node_modules/
 backend/node_modules/
 backend/auth/node_modules/
+backend/redis/node_modules/
 backend/middleware/node_modules/
+/node_modules
