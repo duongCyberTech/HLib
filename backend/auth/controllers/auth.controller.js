@@ -1,9 +1,8 @@
 const AuthService = require('../services/auth.service');
 const { generateOTP, storeOTP, verifyOTP } = require('../services/otp.service');
 const { sendOTPEmail, sendPasswordEmail } = require('../services/mail.service');
-const pool = require('../config/dbConfig');
 const {checkExist} = require('../utils/checkExist');
-const {client} = require('../../redis/redis_cache')
+const {client, pool} = require('../config/dbConfig')
 
 class AuthController {
     async register(req, res) {

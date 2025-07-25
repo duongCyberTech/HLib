@@ -1,5 +1,15 @@
 const sql = require('mysql2/promise');
-require('dotenv').config();
+require('dotenv').config({ path: __dirname + '/.env' });
+const redis = require("redis");
+
+// Tạo client Redis
+const client = redis.createClient({
+  url: process.env.REDIS_URL 
+});
+
+client.connect()
+  .then(() => console.log("✅ Redis connected"))
+  .catch(err => console.error("❌ Redis connection error:", err));
 
 const pool = sql.createPool({
     host: process.env.HOST || 'localhost',
@@ -11,4 +21,4 @@ const pool = sql.createPool({
     connectionLimit: 100
 });
 
-module.exports = pool;
+module.exports = {client, pool};
