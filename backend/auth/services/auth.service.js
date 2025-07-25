@@ -1,8 +1,8 @@
-const pool = require('../config/dbConfig');
+const {pool} = require('../config/dbConfig');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
-require('dotenv').config({ path: '../config/.env' });
+require('dotenv').config({ path: __dirname + '/.env' });
 
 function parseUnicode(str) {
   return str.normalize("NFD")
