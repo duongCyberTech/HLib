@@ -146,7 +146,7 @@ create table tags(
 create table courses(
 	course_id varchar(255) primary key,
     title varchar(255) not null,
-    discription text,
+    description text,
     price decimal(10,2) default 0.00,
     sale_number int default 0,
     is_active boolean default false,
