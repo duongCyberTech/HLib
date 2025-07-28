@@ -10,6 +10,7 @@ const router = express.Router();
 // console.log(typeof authorize(['user'])); // cũng phải là 'function'
 // console.log(typeof CourseController.CreateCourse); // phải là 'function'
 
-router.post('/create', CourseController.CreateCourse)
+router.post('/create-course', authenticate, authorize(['user']), CourseController.CreateCourse)
+router.post('/create-section', authenticate, authorize(['user']), CourseController.CreateSection)
 
 module.exports = router;

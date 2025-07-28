@@ -10,7 +10,7 @@ class CourseService{
             await connection.query(`
                 insert into courses(course_id, title, description, is_active, uid)
                 values (?, ?, ?, ?, ?)
-            `,[id, data.title, data.description, "active", data.uid])
+            `,[id, data.title, data.description || "", true, data.uid])
             await connection.commit()
             return {course_id: id, data: data, message: "Create course successfully!"}
         } catch(error){
@@ -30,13 +30,13 @@ class CourseService{
             await connection.query(`
                 insert into section(course_id, section_id, title, description)
                 values (?, ?, ?, ?)
-            `,[data.course_id, id, data.title, data.description])
+            `,[data.course_id, id, data.title, data.description || ""])
             await connection.commit()
             return {section_id: id, data: data, message: "Create section successfully!"}
         } catch(error){
             console.log(error)
             await connection.rollback()
-            return {message: "Error while creating course"}
+            return {message: `Error while adding section into course ${course_id}`}
         } finally {
             connection.release()
         }        

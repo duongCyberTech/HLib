@@ -6,7 +6,17 @@ class CourseController{
             const result = await CourseService.CreateCourse(req.body)
             if (!result?.data) return res.status(400).json(result)
             return res.status(201).json(result)
-        }catch(err){
+        }catch(error){
+            return res.status(500).json({message: "Network Error!"})
+        }
+    }
+
+    async CreateSection(req, res){
+        try {
+            const result = await CourseService.CreateSection(req.body)
+            if (!result?.data) return res.status(400).json(result)
+            return res.status(201).json(result)
+        } catch (error) {
             return res.status(500).json({message: "Network Error!"})
         }
     }
