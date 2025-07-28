@@ -156,6 +156,14 @@ create table courses(
     foreign key (uid) references users(uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+create table course_docs(
+    course_id varchar(255) not null,
+    doc_id    varchar(255) not null,
+    primary key(course_id, doc_id),
+    foreign key (course_id) references courses(course_id),
+    foreign key (doc_id) references documents(did)
+)
+
 create table access_course(
     uid varchar(255) not null,
     course_id varchar(255) not null,
