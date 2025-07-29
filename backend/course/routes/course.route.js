@@ -2,13 +2,24 @@ const express = require('express');
 const CourseController = require('../controllers/course.controller');
 const authenticate = require('../../middlewares/authentication');
 const authorize = require('../../middlewares/authorization');
+const multer = require('multer');
 
 const router = express.Router();
+const path = require('path');
+const { uploadWithProgress } = require('../controllers/upload.controller');
 
-// console.log(typeof authenticate); // phải là 'function'
-// console.log(typeof authorize);    // phải là 'function'
-// console.log(typeof authorize(['user'])); // cũng phải là 'function'
-// console.log(typeof CourseController.CreateCourse); // phải là 'function'
+// Cấu hình lưu file tạm
+const storage = multer.diskStorage({
+  destination: 'uploads/',
+  filename: (req, file, cb) => {
+    const name = Date.now() + '-' + file.originalname;
+    cb(null, name);
+  }
+});
+
+const upload = multer({ storage });
+
+router.post('/upload-file', upload.single('file'), uploadWithProgress);
 
 router.post('/create-course', authenticate, authorize(['user']), CourseController.CreateCourse)
 router.post('/create-section', authenticate, authorize(['user']), CourseController.CreateSection)
