@@ -33,6 +33,8 @@ app.use(bodyParser.json());
 
 app.use('/api/course', courseRoutes);
 
+require('./wsServer')
+
 const PORT = process.env.SERVICE_PORT || 3002;
 // http://localhost:3001/api/auth/register
 app.listen(PORT, () => {
