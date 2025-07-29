@@ -8,3 +8,7 @@ backend/auth/node_modules/
 backend/course/node_modules/
 backend/middleware/node_modules/
 /node_modules
+node_modules/
+.env
+backend/**/*.env
+**/.env
