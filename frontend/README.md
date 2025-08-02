@@ -496,5 +496,5 @@ Nếu có thắc mắc về frontend, liên hệ:
 
 ---
 
-*Last updated: [Current Date]*
+*Last updated: [02/08/2025]*
 *Version: 1.0.0*
