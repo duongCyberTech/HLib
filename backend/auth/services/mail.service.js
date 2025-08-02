@@ -1,11 +1,11 @@
 const nodemailer = require('nodemailer');
-require('dotenv').config();
+require('dotenv').config({ path: __dirname + '/.env' });
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: "themrz1404@gmail.com",
-    pass: "knrr uzou bjxk ryxc" // app password của Gmail
+    user: process.env.USER,
+    pass: process.env.PASS_
   }
 });
 

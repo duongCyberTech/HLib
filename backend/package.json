@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "auth": "node auth/server.js",
-    "redis": "node redis/redis_cache.js",
-    "start:all": "concurrently \"npm run auth\" \"npm run redis\""
+    "course": "node course/server.js",
+    "start:all": "concurrently \"npm run auth\" \"npm run course\""
   },
   "keywords": [],
   "author": "",
