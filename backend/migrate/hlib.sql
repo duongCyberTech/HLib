@@ -31,7 +31,7 @@ create table collections(
     create_date datetime default current_timestamp,
     update_date datetime default current_timestamp,
     uid varchar(255) not null,
-    child_section_id varchar(255) not null,
+    child_section_id varchar(255),
     foreign key (child_section_id) references collections(cid),
     foreign key (uid) references users(uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -146,7 +146,7 @@ create table tags(
 create table courses(
 	course_id varchar(255) primary key,
     title varchar(255) not null,
-    discription text,
+    description text,
     price decimal(10,2) default 0.00,
     sale_number int default 0,
     is_active boolean default false,
@@ -155,6 +155,14 @@ create table courses(
     uid varchar(255) not null,
     foreign key (uid) references users(uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+create table course_docs(
+    course_id varchar(255) not null,
+    doc_id    varchar(255) not null,
+    primary key(course_id, doc_id),
+    foreign key (course_id) references courses(course_id),
+    foreign key (doc_id) references documents(did)
+)
 
 create table access_course(
     uid varchar(255) not null,

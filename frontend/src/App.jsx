@@ -1,24 +1,51 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Signup from './components/Signup';
-import Verify from './components/Verify';
-import Login from './components/Login';
-import ForgotPassword from './components/ForgotPassword';
-import Test from './pages/Test'
+import { AuthProvider } from './context';
+import { AuthLayout, MainLayout } from './layouts';
+import { Login, Signup, Verify, ForgotPassword } from './pages/auth';
+import { Dashboard } from './pages/dashboard';
+import { Profile } from './pages/profile';
 
 function App() {
   return (
-    <BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
         <Routes>
-            {/* Auth */}
-            <Route path="/" element={<Signup />} />
-            <Route path="/verify" element={<Verify />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            {/* Add more routes as needed */}
-            {/* Test */}
-            <Route path='/test' element={<Test />}/>
+          {/* Auth routes with AuthLayout */}
+          <Route path="/" element={
+            <AuthLayout>
+              <Signup />
+            </AuthLayout>
+          } />
+          <Route path="/login" element={
+            <AuthLayout>
+              <Login />
+            </AuthLayout>
+          } />
+          <Route path="/verify" element={
+            <AuthLayout>
+              <Verify />
+            </AuthLayout>
+          } />
+          <Route path="/forgot-password" element={
+            <AuthLayout>
+              <ForgotPassword />
+            </AuthLayout>
+          } />
+
+          {/* Protected routes with MainLayout */}
+          <Route path="/dashboard" element={
+            <MainLayout>
+              <Dashboard />
+            </MainLayout>
+          } />
+          <Route path="/profile" element={
+            <MainLayout>
+              <Profile />
+            </MainLayout>
+          } />
         </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

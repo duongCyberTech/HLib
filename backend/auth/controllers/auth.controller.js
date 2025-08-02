@@ -1,8 +1,8 @@
 const AuthService = require('../services/auth.service');
 const { generateOTP, storeOTP, verifyOTP } = require('../services/otp.service');
 const { sendOTPEmail, sendPasswordEmail } = require('../services/mail.service');
-const pool = require('../config/dbConfig');
 const {checkExist} = require('../utils/checkExist');
+const {client, pool} = require('../config/dbConfig')
 
 class AuthController {
     async register(req, res) {
@@ -23,6 +23,11 @@ class AuthController {
         try {
             const userData = req.body;
             const result = await AuthService.loginUser(userData);
+            await client.set(`token:${result.token}`, JSON.stringify(result), {EX: 3600})
+            const isCached = await client.get(`token:${result.token}`)
+            if (isCached) {
+                console.log("✅ From cache:", JSON.parse(isCached));
+            }
             res.status(200).json({ message: 'Login successful', token: result.token });
         } catch (error) {
             console.error('Error during login:', error);
