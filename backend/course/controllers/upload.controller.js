@@ -44,13 +44,20 @@ function uploadWithProgress(req, res) {
       readStream.pipe(megaStream);
 
       megaStream.on('complete', (uploadedFile) => {
+        console.log('✅ Upload MEGA xong:', uploadedFile.name);
+
         uploadedFile.link((err, url) => {
-          fs.unlinkSync(filePath); // Xóa file tạm
+          console.log('📡 Đã gọi link() callback');
+
+          fs.unlinkSync(filePath);
+
           if (err) {
+            console.error('❌ Không lấy được link:', err);
             return res.status(500).json({ message: 'Không lấy được link MEGA', error: err.message });
           }
 
           sendProgress(uploadId, 100);
+          console.log('✅ Gửi response về client: ', url);
           return res.status(200).json({
             name: uploadedFile.name,
             link: url
@@ -83,4 +90,58 @@ function uploadWithProgress(req, res) {
   });
 }
 
-module.exports = { uploadWithProgress };
+async function downloadFromMega(req, res) {
+  const { link, downloadId } = req.body;
+
+  if (!link || !downloadId) {
+    return res.status(400).json({ message: 'Thiếu link hoặc downloadId' });
+  }
+
+  const file = mega.File.fromURL(link);
+
+  file.loadAttributes((err, fileData) => {
+    if (err) {
+      return res.status(500).json({ message: 'Lỗi lấy thông tin file MEGA' });
+    }
+
+    const totalSize = fileData.size;
+    let downloaded = 0;
+
+    const fileName = fileData.name;
+    const tempPath = path.join(__dirname, '..', 'downloads', fileName);
+    const writeStream = fs.createWriteStream(tempPath);
+
+    const dlStream = file.download();
+
+    dlStream.on('data', (chunk) => {
+      downloaded += chunk.length;
+      const percent = Math.floor((downloaded / totalSize) * 100);
+      sendProgress(downloadId, { percent });
+    });
+
+    dlStream.on('end', () => {
+      sendProgress(downloadId, {
+        percent: 100,
+        status: 'done',
+        name: fileName
+      });
+
+      // Gửi file về client nếu cần
+      return res.download(tempPath, fileName, () => {
+        fs.unlinkSync(tempPath); // Xóa file sau khi gửi
+      });
+    });
+
+    dlStream.on('error', (err) => {
+      sendProgress(downloadId, {
+        error: 'Lỗi khi tải file MEGA',
+        detail: err.message
+      });
+      return res.status(500).json({ message: 'Lỗi tải file MEGA' });
+    });
+
+    dlStream.pipe(writeStream);
+  });
+}
+
+module.exports = { uploadWithProgress, downloadFromMega };

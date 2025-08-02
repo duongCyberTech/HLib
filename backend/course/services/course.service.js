@@ -56,6 +56,49 @@ class CourseService{
             return {message: "Get course failed!"}
         }   
     }
+
+    async getCourseById(course_id){
+        try {
+            const result = await pool.query(`
+                SELECT * FROM courses
+                WHERE course_id = ?
+            `,[course_id])
+            return {data: result, message: `Get course: ${result.title}`}
+        } catch (error) {
+            console.log(error)
+            return {message: "Get course failed!"}
+        }
+    }
+
+    async getAllSectionByCourse(course_id){
+        try {
+            const result = await pool.query(`
+                SELECT * FROM section
+                WHERE course_id = ?
+            `,[course_id])
+            return {data: result, message: `Sections in course: ${course_id}`}
+        } catch (error) {
+            console.log(error)
+            return {message: "Get course failed!"}
+        }        
+    }
+
+    async getSectionDetail(course_id, section_id){
+        try {
+            const section = await pool.query(`
+                SELECT * FROM courses
+                WHERE course_id = ? AND section_id = ?
+            `,[course_id, section_id])
+            const img = await pool.query(`
+                SELECT file_path from image 
+                WHERE course_id = ? AND section_id = ?
+            `,[course_id, section_id])
+            return {data: result, message: `Get section: ${course_id} - ${section_id}`}
+        } catch (error) {
+            console.log(error)
+            return {message: "Get course failed!"}
+        }        
+    }
 }
 
 module.exports = new CourseService()
