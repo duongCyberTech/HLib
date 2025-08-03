@@ -2,6 +2,8 @@ const sql = require('mysql2/promise');
 require('dotenv').config();
 const redis = require("redis");
 
+console.log("Connecting to Redis...", process.env.REDIS_URL);
+
 // Tạo client Redis
 const client = redis.createClient({
   url: process.env.REDIS_URL 

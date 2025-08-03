@@ -5,9 +5,15 @@
   "scripts": {
     "install:auth": "cd auth && npm install",
     "install:course": "cd course && npm install",
+    "install:middlewares": "cd middlewares && npm install",
     "install:gateway": "cd gateway && npm install",
 
-    "install:all": "npm-run-all install:auth install:course install:gateway",
+    "install:all": "npm-run-all install:auth install:course install:middlewares install:gateway",
+
+    "auth": "node auth/server.js",
+    "course": "node course/server.js",
+    "gateway": "node gateway/index.js",
+
     "start:all": "npm-run-all --parallel auth course gateway"
   },
   "keywords": [],
