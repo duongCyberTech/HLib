@@ -111,7 +111,7 @@ npm run start:all
 ```
 
 ## 🤖 API Docs
-API Document được tạo dựa trên **Swagger**, truy cập **Swagger UI** thông qua đường dẫn ```bash http://localhost:3000/api-docs ```
+API Document được tạo dựa trên **Swagger**, truy cập **Swagger UI** thông qua đường dẫn http://localhost:3000/api-docs
 Để test api từng service, thay đổi servers end-point qua service cần test với
 - **API Gateway:** http://localhost:3000
 - **Authentication:** http://localhost:3001
