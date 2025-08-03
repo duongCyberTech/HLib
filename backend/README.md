@@ -1,4 +1,4 @@
-# HCMUT Academic Forum - Frontend
+# HCMUT Academic Forum - Backend
 
 ## 📋 Tổng quan
 
