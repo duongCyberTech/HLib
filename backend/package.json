@@ -3,16 +3,20 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "auth": "node auth/server.js",
-    "course": "node course/server.js",
-    "start:all": "concurrently \"npm run auth\" \"npm run course\""
+    "install:auth": "cd auth && npm install",
+    "install:course": "cd course && npm install",
+    "install:gateway": "cd gateway && npm install",
+
+    "install:all": "npm-run-all install:auth install:course install:gateway",
+    "start:all": "npm-run-all --parallel auth course gateway"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "concurrently": "^9.2.0"
+    "concurrently": "^9.2.0",
+    "npm-run-all": "^4.1.5"
   },
   "dependencies": {
     "body-parser": "^2.2.0",
