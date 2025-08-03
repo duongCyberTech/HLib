@@ -35,8 +35,8 @@ app.use('/api/course', courseRoutes);
 
 require('./wsServer')
 
-const PORT = process.env.SERVICE_PORT || 3002;
-// http://localhost:3001/api/auth/register
+const PORT = process.env.COURSE_PORT || 3002;
+// http://localhost:3002/api/course
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
