@@ -101,7 +101,7 @@ Backend của HCMUT Academic Forum được xây dựng với kiến trúc Micro
 
 ```bash
 # Di chuyển vào thư mục dự án
-cd HLib
+cd backend
 
 # Cài đặt dependencies
 npm run install:all
@@ -109,3 +109,11 @@ npm run install:all
 # Chạy server
 npm run start:all
 ```
+
+## 🤖 API Docs
+API Document được tạo dựa trên **Swagger**, truy cập **Swagger UI** thông qua đường dẫn http://localhost:3000/api-docs
+Để test api từng service, thay đổi servers end-point qua service cần test với
+- **API Gateway:** http://localhost:3000
+- **Authentication:** http://localhost:3001
+- **Course:** http://localhost:3002
+
