@@ -100,6 +100,9 @@ Backend của HCMUT Academic Forum được xây dựng với kiến trúc Micro
 ## 🔄 Luồng hoạt động của ứng dụng
 
 ```bash
+# Thêm file biến môi trường vào thư mục backend
+.env
+
 # Di chuyển vào thư mục dự án
 cd backend
 
