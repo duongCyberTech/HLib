@@ -2,7 +2,7 @@ const fs = require('fs');
 const mega = require('megajs');
 const { sendProgress } = require('../wsServer');
 
-require('dotenv').config({ path: __dirname + '/.env' });
+require('dotenv').config();
 
 function uploadWithProgress(req, res) {
   const file = req.file;

@@ -1,6 +1,8 @@
 const sql = require('mysql2/promise');
-require('dotenv').config({ path: __dirname + '/.env' });
+require('dotenv').config();
 const redis = require("redis");
+
+console.log("Connecting to Redis...", process.env.REDIS_URL);
 
 // Tạo client Redis
 const client = redis.createClient({
@@ -12,11 +14,11 @@ client.connect()
   .catch(err => console.error("❌ Redis connection error:", err));
 
 const pool = sql.createPool({
-    host: process.env.HOST || 'localhost',
-    user: process.env.USER || 'root',
-    password: process.env.PASSWORD || '123456',
-    database: process.env.DATABASE || 'hcmutlib',
-    port: process.env.PORT || 3306,
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE,
+    port: process.env.PORT,
     waitForConnections: true,
     connectionLimit: 100
 });
