@@ -10,6 +10,7 @@ import {
 import {SensorOccupiedTwoTone} from '@mui/icons-material';
 import axios from 'axios';
 import CountdownTimer from '../../components/CountDown';
+import Swal from 'sweetalert2';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Verify() {
@@ -21,7 +22,12 @@ export default function Verify() {
   const handleVerify = async (event) => {
     event.preventDefault();
     if (!otp) {
-        alert("Please enter the OTP code");
+        Swal.fire({
+            title: 'Error!',
+            text: "Please enter the OTP code",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
         return;
     }
     alert(localStorage.getItem("uid"))
@@ -31,11 +37,21 @@ export default function Verify() {
             otp
         })
         console.log(res.data)
-        alert("Register successfully, please login to continue")
+        Swal.fire({
+            title: 'Registration Successful!',
+            text: "Register successfully, please login to continue",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        })
         navigate('/login')
     } catch (error) {
         console.error(error.message)
-        alert("Something went wrong, please try again later")
+        Swal.fire({
+            title: 'Error!',
+            text: "Something went wrong, please try again later",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        })
     }
   }
 
@@ -50,11 +66,21 @@ export default function Verify() {
             uid,
         });
         console.log(res.data);
-        alert("OTP code has been resent to your email");
+        Swal.fire({
+            title: 'OTP Resent!',
+            text: "OTP code has been resent to your email",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
         setSeconds(120); // Reset countdown timer
     } catch (error) {
         console.error(error.message);
-        alert("Something went wrong, please try again later");
+        Swal.fire({
+            title: 'Error!',
+            text: "Something went wrong, please try again later",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
     }
     }
   return (

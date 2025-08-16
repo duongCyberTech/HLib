@@ -18,6 +18,9 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import AppleIcon from '@mui/icons-material/Apple';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
+
+import Swal from 'sweetalert2';
+
 import { useNavigate } from 'react-router-dom';
 
 const VisuallyHiddenInput = styled('input')({
@@ -50,11 +53,23 @@ export default function Login() {
         })
         console.log(res.data)
         localStorage.setItem("token", res.data.token)
-        alert("Login successfully!")
-        //navigate("/verify",{state: {uid: res.data.data.uid}});
+        Swal.fire({
+            title: 'Login Successful!',
+            text: "You have logged in successfully.",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        })
+        navigate("/dashboard");
+               //navigate("/verify",{state: {uid: res.data.data.uid}});
     } catch (error) {
         console.error(error.message)
-        alert("Something went wrong, please try again later")
+        Swal.fire({
+            title: 'Error!',
+            text: "Something went wrong, please try again later",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        })
+
     }
   }
 

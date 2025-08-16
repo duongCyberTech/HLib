@@ -3,7 +3,9 @@ import { Header, Footer } from '../components/common';
 
 export default function MainLayout({ children }) {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100vw' }}>
+
       {/* Header */}
       <Header />
 

@@ -2,7 +2,9 @@ import { Box, Typography } from '@mui/material';
 
 export default function AuthLayout({ children }) {
   return (
-    <>
+
+    <Box style={{ width: '100vw', justifyItems: 'center', position: 'relative' }}>
+
       {/* Background Video */}
       <video
         autoPlay
@@ -10,7 +12,7 @@ export default function AuthLayout({ children }) {
         muted
         playsInline
         style={{
-          position: 'fixed',
+          position: 'absolute',
           width: '100%',
           height: '100%',
           objectFit: 'cover',
@@ -36,13 +38,16 @@ export default function AuthLayout({ children }) {
         }} 
       >
         <img src="/assets/Logo.png" alt="Logo" style={{ width: 50, height: 50 }} />
-        <Typography variant="h5" color="#40C4FF" fontWeight="bold">
+
+        <Typography variant="h4" color="#40C4FF" fontWeight="bold">
           HCMUT ACADEMIC FORUM
         </Typography>
       </Box>
 
       {/* Main Content */}
-      {children}
-    </>
+
+      <Box sx={{justifyItems: 'center'}}>{children}</Box>
+    </Box>
+
   );
 }
