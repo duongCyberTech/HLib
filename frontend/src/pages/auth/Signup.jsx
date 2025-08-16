@@ -83,7 +83,6 @@ export default function SignupForm() {
         })
         console.log(res.data)
         localStorage.setItem("uid", res.data.data.uid)
-
         await axios.post(`http://localhost:3001/api/auth/otp/request`,{uid: res.data.data.uid});
         Swal.fire({
             title: 'Registration Successful!',

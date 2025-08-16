@@ -14,7 +14,9 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('token') ? true : false);
+
 
   useEffect(() => {
     checkAuthStatus();
