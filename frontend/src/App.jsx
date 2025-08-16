@@ -5,6 +5,8 @@ import { Login, Signup, Verify, ForgotPassword } from './pages/auth';
 import { Dashboard } from './pages/dashboard';
 import { Profile } from './pages/profile';
 import { ProtectedRoute } from './components/common';
+import FontAwesomeTest from './components/common/FontAwesomeTest';
+import CoursesDemo from './pages/courses/CoursesDemo';
 
 function App() {
   return (
@@ -90,6 +92,24 @@ function App() {
             <ProtectedRoute>
               <MainLayout>
                 <div>Revenue Report Page - Coming Soon</div>
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Font Awesome Test Route */}
+          <Route path="/test-icons" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <FontAwesomeTest />
+              </MainLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Courses Demo Route */}
+          <Route path="/courses-demo" element={
+            <ProtectedRoute>
+              <MainLayout>
+                <CoursesDemo />
               </MainLayout>
             </ProtectedRoute>
           } />

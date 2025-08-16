@@ -1,61 +1,52 @@
-import { 
-  Box, 
-  List, 
-  ListItem, 
-  ListItemButton, 
-  ListItemIcon, 
-  ListItemText, 
-  Avatar, 
-  Typography, 
-  Divider 
-} from '@mui/material';
 import {
-  AccountCircle as AccountIcon,
-  School as CoursesIcon,
-  Forum as ThreadsIcon,
-  Collections as CollectionsIcon,
-  Description as DocumentsIcon,
-  Favorite as FavoriteIcon,
-  Assessment as RevenueIcon
-} from '@mui/icons-material';
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Avatar,
+  Typography
+} from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context';
+import { SimpleIcon } from './';
 
 const menuItems = [
-  { 
-    text: 'My account', 
-    icon: <AccountIcon />, 
-    path: '/profile' 
+  {
+    text: 'My account',
+    icon: 'fas fa-user-circle',
+    path: '/profile'
   },
-  { 
-    text: 'Courses', 
-    icon: <CoursesIcon />, 
-    path: '/courses' 
+  {
+    text: 'Courses',
+    icon: 'fas fa-graduation-cap',
+    path: '/courses'
   },
-  { 
-    text: 'Threads', 
-    icon: <ThreadsIcon />, 
-    path: '/threads' 
+  {
+    text: 'Threads',
+    icon: 'fas fa-comments',
+    path: '/threads'
   },
-  { 
-    text: 'My Collections', 
-    icon: <CollectionsIcon />, 
-    path: '/collections' 
+  {
+    text: 'My Collections',
+    icon: 'fas fa-bookmark',
+    path: '/collections'
   },
-  { 
-    text: 'My Documents', 
-    icon: <DocumentsIcon />, 
-    path: '/documents' 
+  {
+    text: 'My Documents',
+    icon: 'fas fa-file-alt',
+    path: '/documents'
   },
-  { 
-    text: 'Favorite Documents', 
-    icon: <FavoriteIcon />, 
-    path: '/favorites' 
+  {
+    text: 'Favorite Documents',
+    icon: 'fas fa-heart',
+    path: '/favorites'
   },
-  { 
-    text: 'Revenue Report', 
-    icon: <RevenueIcon />, 
-    path: '/revenue' 
+  {
+    text: 'Revenue Report',
+    icon: 'fas fa-chart-line',
+    path: '/revenue'
   }
 ];
 
@@ -75,7 +66,7 @@ export default function Sidebar() {
         minWidth: 250,
         maxWidth: 250,
         height: 'calc(100vh - 64px)', // Subtract header height
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#ffffffff',
         borderRight: '1px solid #e0e0e0',
         display: 'flex',
         flexDirection: 'column',
@@ -121,25 +112,40 @@ export default function Sidebar() {
               sx={{
                 mx: 1,
                 borderRadius: 1,
+                transition: 'all 0.3s ease',
                 '&.Mui-selected': {
                   backgroundColor: '#e3f2fd',
+                  transform: 'translateX(5px)',
+                  boxShadow: '0 2px 8px rgba(64, 196, 255, 0.3)',
                   '&:hover': {
                     backgroundColor: '#bbdefb',
                   },
                 },
                 '&:hover': {
                   backgroundColor: '#f5f5f5',
+                  transform: 'translateX(3px)',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                 },
               }}
             >
               <ListItemIcon sx={{ minWidth: 40 }}>
-                {item.icon}
+                <SimpleIcon
+                  icon={item.icon}
+                  size="1.2rem"
+                  color={location.pathname === item.path ? '#09034dff' : '#09034dff'}
+                />
               </ListItemIcon>
-              <ListItemText 
+              <ListItemText
                 primary={item.text}
-                primaryTypographyProps={{
-                  fontSize: '0.9rem',
-                  fontWeight: location.pathname === item.path ? 'bold' : 'normal'
+                slotProps={{
+                  primary: {
+                    style: {
+                      fontSize: '0.9rem',
+                      fontWeight: location.pathname === item.path ? 'bold' : 'normal',
+                      fontFamily: 'Roboto-SemiBold, system-ui, sans-serif',
+                      color: '#040035ff'
+                    }
+                  }
                 }}
               />
             </ListItemButton>

@@ -1,3 +1,6 @@
+/* Font Awesome CSS */
+@import url('../assets/fontawesome-free/css/all.min.css');
+
 /* Font definitions */
 @font-face {
   font-family: 'Roboto-SemiBold';
@@ -42,6 +45,8 @@ body, html {
 .MuiListItemText-root {
   font-family: 'Roboto-SemiBold', system-ui, sans-serif !important;
 }
+
+/* Remove all animations for static design */
 
 /* Ensure font loads properly */
 @media screen {

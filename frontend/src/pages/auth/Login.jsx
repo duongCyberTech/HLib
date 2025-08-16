@@ -13,14 +13,11 @@ import {
   Typography,
   Alert
 } from '@mui/material';
-import {SensorOccupiedTwoTone, CloudUpload} from '@mui/icons-material';
-import GoogleIcon from '@mui/icons-material/Google';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import AppleIcon from '@mui/icons-material/Apple';
+
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context';
-import { TestInfo } from '../../components/common';
+import { TestInfo, FontAwesomeIcon } from '../../components/common';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -84,7 +81,12 @@ export default function Login() {
             {/* Left Side - Form */}
             <Box sx={{ flex: 1, width: "100%", boxShadow: 3, p: 4, borderRadius: 2, backgroundColor: '#fff', justifyItems: 'space-between' }}>
                 <Box display={'flex'} flexDirection="column" alignItems="center" mb={3}>
-                    <SensorOccupiedTwoTone sx={{ fontSize: 50, color: '#40C4FF', mb: 1 }} />
+                    <FontAwesomeIcon
+                        icon="fas fa-user-lock"
+                        size="3rem"
+                        color="#40C4FF"
+                        sx={{ mb: 1 }}
+                    />
                     <Typography variant="h5" fontWeight="bold" gutterBottom>
                         LOG IN
                     </Typography>
@@ -140,13 +142,25 @@ export default function Login() {
 
                 <Box display="flex" justifyContent="center" gap={2}>
                     <IconButton>
-                        <GoogleIcon />
+                        <FontAwesomeIcon
+                            icon="fab fa-google"
+                            size="1.5rem"
+                            color="#db4437"
+                        />
                     </IconButton>
                     <IconButton>
-                        <FacebookIcon />
+                        <FontAwesomeIcon
+                            icon="fab fa-facebook"
+                            size="1.5rem"
+                            color="#3b5998"
+                        />
                     </IconButton>
                     <IconButton>
-                        <AppleIcon />
+                        <FontAwesomeIcon
+                            icon="fab fa-apple"
+                            size="1.5rem"
+                            color="#000000"
+                        />
                     </IconButton>
                 </Box>
 

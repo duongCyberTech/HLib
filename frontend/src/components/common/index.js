@@ -4,3 +4,6 @@ export { default as Loading } from './Loading';
 export { default as Sidebar } from './Sidebar';
 export { default as ProtectedRoute } from './ProtectedRoute';
 export { default as TestInfo } from './TestInfo';
+export { default as FontAwesomeIcon } from './FontAwesomeIcon';
+export { default as SimpleIcon } from './SimpleIcon';
+export { default as CourseCard } from './CourseCard';
