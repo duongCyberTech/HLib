@@ -22,6 +22,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -39,6 +40,7 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
   const navigate = useNavigate();
+  const { login} = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -47,20 +49,24 @@ export default function Login() {
     }
 
     try {
-        const res = await axios.post("http://localhost:3001/api/auth/login",{
-            email,
-            password
-        })
-        console.log(res.data)
-        localStorage.setItem("token", res.data.token)
-        Swal.fire({
-            title: 'Login Successful!',
-            text: "You have logged in successfully.",
-            icon: 'success',
-            confirmButtonText: 'OK'
-        })
-        navigate("/dashboard");
-               //navigate("/verify",{state: {uid: res.data.data.uid}});
+        const res = await login(email, password);
+        if (res.success) {
+            Swal.fire({
+                title: 'Login Successful!',
+                text: "You have logged in successfully.",
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+            navigate("/dashboard");
+        }
+        else {
+            Swal.fire({
+                title: 'Error!',
+                text: "Invalid email or password.",
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
     } catch (error) {
         console.error(error.message)
         Swal.fire({
