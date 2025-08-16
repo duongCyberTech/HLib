@@ -5,82 +5,69 @@ import {
   Container,
   Grid,
   TextField,
-  Typography
+  Typography,
+  Alert,
+  CircularProgress
 } from '@mui/material';
 import {SensorOccupiedTwoTone} from '@mui/icons-material';
 import axios from 'axios';
 import CountdownTimer from '../../components/CountDown';
-import Swal from 'sweetalert2';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Verify() {
     const [otp, setOTP] = useState('');
     const [seconds, setSeconds] = useState(120);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const location = useLocation()
     const uid = location.state.uid
     const navigate = useNavigate()
   const handleVerify = async (event) => {
     event.preventDefault();
+    setError('');
+    setSuccess('');
+
     if (!otp) {
-        Swal.fire({
-            title: 'Error!',
-            text: "Please enter the OTP code",
-            icon: 'error',
-            confirmButtonText: 'OK'
-        });
+        setError('Please enter the OTP code');
         return;
     }
-    alert(localStorage.getItem("uid"))
+
+    setLoading(true);
+
     try {
         const res = await axios.post(`http://localhost:3001/api/auth/otp/verify`,{
             uid,
             otp
         })
         console.log(res.data)
-        Swal.fire({
-            title: 'Registration Successful!',
-            text: "Register successfully, please login to continue",
-            icon: 'success',
-            confirmButtonText: 'OK'
-        })
-        navigate('/login')
+        setSuccess('Registration successful! Please login to continue');
+        setTimeout(() => {
+            navigate('/login')
+        }, 2000);
     } catch (error) {
         console.error(error.message)
-        Swal.fire({
-            title: 'Error!',
-            text: "Something went wrong, please try again later",
-            icon: 'error',
-            confirmButtonText: 'OK'
-        })
+        setError('Invalid OTP code or something went wrong, please try again');
+    } finally {
+        setLoading(false);
     }
   }
 
   const handleResend = async (event) => {
     event.preventDefault();
-    if (!otp) {
-        alert("Please enter the OTP code");
-        return;
-    }
+    setError('');
+    setSuccess('');
+
     try {
         const res = await axios.post(`http://localhost:3001/api/auth/otp/request`,{
             uid,
         });
         console.log(res.data);
-        Swal.fire({
-            title: 'OTP Resent!',
-            text: "OTP code has been resent to your email",
-            icon: 'success',
-            confirmButtonText: 'OK'
-        });
+        setSuccess('OTP code has been resent to your email');
         setSeconds(120); // Reset countdown timer
     } catch (error) {
         console.error(error.message);
-        Swal.fire({
-            title: 'Error!',
-            text: "Something went wrong, please try again later",
-            icon: 'error',
-            confirmButtonText: 'OK'
-        });
+        setError('Failed to resend OTP, please try again later');
     }
     }
   return (
@@ -107,6 +94,19 @@ export default function Verify() {
                     </Grid>
                 </Grid>
                 <CountdownTimer seconds={seconds} setSeconds={setSeconds}/>
+
+                {error && (
+                    <Alert severity="error" sx={{ mt: 2 }}>
+                        {error}
+                    </Alert>
+                )}
+
+                {success && (
+                    <Alert severity="success" sx={{ mt: 2 }}>
+                        {success}
+                    </Alert>
+                )}
+
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', gap: 3 }}>
                     <Button
                         fullWidth
@@ -123,10 +123,10 @@ export default function Verify() {
                         variant="contained"
                         sx={{ mt: 2, py: 1.2, fontWeight: 'bold' }}
                         onClick={(e) => handleVerify(e)}
-                        {...(!otp || otp.length < 6
-                        ) ? { disabled: true } : {}}
+                        disabled={loading || !otp || otp.length < 6}
+                        startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
                     >
-                        Verify
+                        {loading ? 'Verifying...' : 'Verify'}
                     </Button>
                 </Box>
                 

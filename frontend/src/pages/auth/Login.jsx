@@ -175,22 +175,17 @@ export default function Login() {
             {/* Right Side - Info */}
             <Box sx={{ flex: 1}}>
                 <Typography variant="h4" fontWeight="bold" gutterBottom>
-                Come join us
+                Tài khoản để test
                 </Typography>
                 <ul style={{ paddingLeft: '1rem', marginTop: '1rem' }}>
                 <li>
                     <Typography>
-                    💡 Explore articles, tutorials, and guides on diverse subjects
+                    Email: user@hcmut.edu.vn
                     </Typography>
                 </li>
                 <li>
                     <Typography>
-                    ⏰ Learn at your own pace and access educational resources anytime
-                    </Typography>
-                </li>
-                <li>
-                    <Typography>
-                    🌐 Engage with a community of learners and share insights
+                    Password: user123
                     </Typography>
                 </li>
                 </ul>
