@@ -10,7 +10,8 @@ import {
   IconButton,
   Link,
   TextField,
-  Typography
+  Typography,
+  CircularProgress
 } from '@mui/material';
 import {SensorOccupiedTwoTone, CloudUpload} from '@mui/icons-material';
 import GoogleIcon from '@mui/icons-material/Google';
@@ -18,6 +19,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import AppleIcon from '@mui/icons-material/Apple';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 const VisuallyHiddenInput = styled('input')({
@@ -81,18 +83,27 @@ export default function SignupForm() {
         })
         console.log(res.data)
         localStorage.setItem("uid", res.data.data.uid)
-        alert("Register successfully, please login to continue")
         await axios.post(`http://localhost:3001/api/auth/otp/request`,{uid: res.data.data.uid});
-        alert("OTP code has been sent to your email, please check your inbox")
+        Swal.fire({
+            title: 'Registration Successful!',
+            text: "OTP code has been sent to your email, please check your inbox",
+            icon: 'success',
+            confirmButtonText: 'OK'
+        })
         navigate("/verify",{state: {uid: res.data.data.uid}});
     } catch (error) {
         console.error(error.message)
-        alert("Something went wrong, please try again later")
+        Swal.fire({
+            title: 'Error!',
+            text: "Something went wrong, please try again later",
+            icon: 'error',
+            confirmButtonText: 'OK'
+        })
     }
 
   }
   return (
-    <Container sx={{ ml: 0, mt: 5, mb: 5, display: 'flex', gap: 4, width: '100%', flexWrap:"wrap" }}>
+    <Container sx={{ ml: 0, mt: 5, mb: 5, display: 'flex', gap: 4, width: '100vw', flexWrap:"wrap", justifyItems: 'center' }}>
             {/* Left Side - Form */}
             <Box sx={{ flex: 1, width: "100%", boxShadow: 3, p: 4, borderRadius: 2, backgroundColor: '#fff', justifyItems: 'space-between' }}>
                 <Box display={'flex'} flexDirection="column" alignItems="center" mb={3}>
@@ -168,7 +179,8 @@ export default function SignupForm() {
                         variant="contained"
                         tabIndex={-1}
                         startIcon={<CloudUpload />}
-                        >
+                        loading={!image ? <CircularProgress size={24} /> : null}
+                    >
                         {image ? image.name : 'Upload Avatar'}
                         <VisuallyHiddenInput
                             type="file"
