@@ -96,6 +96,15 @@ class AuthService {
         }
         return subpassword;
     }
+
+    async getUserById(uid) {
+        const query = 'SELECT uid, fname, mname, lname, username, email, avata, role, salary, status FROM users WHERE uid = ?';
+        const [rows] = await pool.query(query, [uid]);
+        if (rows.length === 0) {
+            throw new Error('User not found');
+        }
+        return rows[0];
+    }
 }
 
 module.exports = new AuthService();

@@ -38,7 +38,7 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#40C4FF' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#1488D8' }}>
       <Toolbar>
         <img 
           src="/assets/Logo.png" 
@@ -46,10 +46,16 @@ export default function Header() {
           style={{ width: 40, height: 40, marginRight: 16, cursor: 'pointer' }} 
           onClick={() => navigate('/dashboard')}
         />
-        <Typography 
-          variant="h6" 
-          component="div" 
-          sx={{ flexGrow: 1, cursor: 'pointer' }}
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{
+            flexGrow: 1,
+            cursor: 'pointer',
+            fontFamily: 'Roboto-SemiBold, system-ui, sans-serif',
+            fontWeight: 600,
+            letterSpacing: '0.5px'
+          }}
           onClick={() => navigate('/dashboard')}
         >
           HCMUT ACADEMIC FORUM

@@ -10,15 +10,17 @@ import {
   IconButton,
   Link,
   TextField,
-  Typography
+  Typography,
+  Alert
 } from '@mui/material';
 import {SensorOccupiedTwoTone, CloudUpload} from '@mui/icons-material';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import AppleIcon from '@mui/icons-material/Apple';
 import { styled } from '@mui/material/styles';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context';
+import { TestInfo } from '../../components/common';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -34,32 +36,51 @@ const VisuallyHiddenInput = styled('input')({
 
 export default function Login() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('')
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuth();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if ( !email || !password) {
-        return;
+    if (!email || !password) {
+      setError('Please fill in all fields');
+      return;
     }
 
+    setLoading(true);
+    setError('');
+
     try {
-        const res = await axios.post("http://localhost:3001/api/auth/login",{
-            email,
-            password
-        })
-        console.log(res.data)
-        localStorage.setItem("token", res.data.token)
-        alert("Login successfully!")
-        //navigate("/verify",{state: {uid: res.data.data.uid}});
+      const result = await login(email, password);
+      if (result.success) {
+        navigate('/dashboard');
+      } else {
+        setError(result.error || 'Login failed');
+      }
     } catch (error) {
-        console.error(error.message)
-        alert("Something went wrong, please try again later")
+      console.error('Login error:', error);
+      setError('Something went wrong, please try again later');
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <Container sx={{ ml: 0, mt: 5, mb: 5, display: 'flex', gap: 4, width: '100%', flexWrap:"wrap" }}>
+            {/* Test Info */}
+            <Box sx={{ width: '100%' }}>
+                <TestInfo />
+            </Box>
+
             {/* Left Side - Form */}
             <Box sx={{ flex: 1, width: "100%", boxShadow: 3, p: 4, borderRadius: 2, backgroundColor: '#fff', justifyItems: 'space-between' }}>
                 <Box display={'flex'} flexDirection="column" alignItems="center" mb={3}>
@@ -70,14 +91,20 @@ export default function Login() {
                 </Box>
                 
 
+                {error && (
+                    <Alert severity="error" sx={{ mb: 2 }}>
+                        {error}
+                    </Alert>
+                )}
+
                 <Grid container spacing={2} sx={{justifyItems: 'center', alignSelf: 'center'}}>
                     <Grid item xs={12}>
-                        <TextField 
-                            fullWidth 
-                            label="Email" 
-                            type="email" 
+                        <TextField
+                            fullWidth
+                            label="Email"
+                            type="email"
                             required
-                            value={email} 
+                            value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
                     </Grid>
@@ -104,9 +131,9 @@ export default function Login() {
                     variant="contained"
                     sx={{ mt: 2, py: 1.2, fontWeight: 'bold' }}
                     onClick={(e) => handleSubmit(e)}
-                    {...(!email || !password) ? { disabled: true } : {}}
+                    disabled={!email || !password || loading}
                 >
-                    Log in
+                    {loading ? 'Logging in...' : 'Log in'}
                 </Button>
 
                 <Divider sx={{ my: 3 }}>OR</Divider>

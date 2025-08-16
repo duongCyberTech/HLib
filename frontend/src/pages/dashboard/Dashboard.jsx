@@ -58,11 +58,16 @@ export default function Dashboard() {
       {/* Welcome Section */}
       <Box mb={4}>
         <Typography variant="h4" gutterBottom>
-          Welcome back, {user?.fname || 'User'}!
+          Welcome back, {user?.fname || user?.email?.split('@')[0] || 'User'}!
         </Typography>
         <Typography variant="body1" color="text.secondary">
           Here's what's happening in your academic community today.
         </Typography>
+        {user && (
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+            Logged in as: {user.email} ({user.role || 'user'})
+          </Typography>
+        )}
       </Box>
 
       {/* Stats Cards */}

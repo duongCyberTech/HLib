@@ -19,5 +19,7 @@ router.post('/otp/request', otpLimiter, AuthController.requestOTP);
 router.post('/otp/verify', AuthController.verifyOTPCode);
 router.post('/forgot-password', AuthController.forgotPassword);
 router.post('/reset-password', authenticate, AuthController.changePassword);
+router.get('/verify-token', authenticate, AuthController.verifyToken);
+router.get('/profile', authenticate, AuthController.getProfile);
 
 module.exports = router;

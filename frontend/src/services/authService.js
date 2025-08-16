@@ -1,6 +1,10 @@
 import api from './api';
+import { mockAuthService } from './mockAuthService';
 
-export const authService = {
+// Set to true to use mock service for testing without backend
+const USE_MOCK = true;
+
+export const authService = USE_MOCK ? mockAuthService : {
   // Login user
   login: async (email, password) => {
     const response = await api.post('/auth/login', {
