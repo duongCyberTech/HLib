@@ -40,6 +40,7 @@ class AuthService {
         //console.log('Logging in user with data:', { username, email, password });
         const query = 'SELECT uid, username, password, status FROM users WHERE username = ? OR email = ?';
         const [rows] = await pool.query(query, [username || "-", email || "-"]);
+        console.log('Found user:', rows);
 
         if (rows.length === 0) {
             throw new Error('User not found');
