@@ -10,19 +10,14 @@ import {
   IconButton,
   Link,
   TextField,
-  Typography
+  Typography,
+  Alert
 } from '@mui/material';
-import {SensorOccupiedTwoTone, CloudUpload} from '@mui/icons-material';
-import GoogleIcon from '@mui/icons-material/Google';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import AppleIcon from '@mui/icons-material/Apple';
+
 import { styled } from '@mui/material/styles';
-import axios from 'axios';
-
-import Swal from 'sweetalert2';
-
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context';
+import { TestInfo, FontAwesomeIcon } from '../../components/common';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -38,67 +33,80 @@ const VisuallyHiddenInput = styled('input')({
 
 export default function Login() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('')
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login} = useAuth();
+  const { login, isAuthenticated } = useAuth();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if ( !email || !password) {
-        return;
+    if (!email || !password) {
+      setError('Please fill in all fields');
+      return;
     }
 
-    try {
-        const res = await login(email, password);
-        if (res.success) {
-            Swal.fire({
-                title: 'Login Successful!',
-                text: "You have logged in successfully.",
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-            navigate("/dashboard");
-        }
-        else {
-            Swal.fire({
-                title: 'Error!',
-                text: "Invalid email or password.",
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-        }
-    } catch (error) {
-        console.error(error.message)
-        Swal.fire({
-            title: 'Error!',
-            text: "Something went wrong, please try again later",
-            icon: 'error',
-            confirmButtonText: 'OK'
-        })
+    setLoading(true);
+    setError('');
 
+    try {
+      const result = await login(email, password);
+      if (result.success) {
+        navigate('/dashboard');
+      } else {
+        setError(result.error || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('Something went wrong, please try again later');
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <Container sx={{ ml: 0, mt: 5, mb: 5, display: 'flex', gap: 4, width: '100%', flexWrap:"wrap" }}>
+            {/* Test Info */}
+            <Box sx={{ width: '100%' }}>
+                <TestInfo />
+            </Box>
+
             {/* Left Side - Form */}
             <Box sx={{ flex: 1, width: "100%", boxShadow: 3, p: 4, borderRadius: 2, backgroundColor: '#fff', justifyItems: 'space-between' }}>
                 <Box display={'flex'} flexDirection="column" alignItems="center" mb={3}>
-                    <SensorOccupiedTwoTone sx={{ fontSize: 50, color: '#40C4FF', mb: 1 }} />
+                    <FontAwesomeIcon
+                        icon="fas fa-user-lock"
+                        size="3rem"
+                        color="#40C4FF"
+                        sx={{ mb: 1 }}
+                    />
                     <Typography variant="h5" fontWeight="bold" gutterBottom>
                         LOG IN
                     </Typography>
                 </Box>
                 
 
+                {error && (
+                    <Alert severity="error" sx={{ mb: 2 }}>
+                        {error}
+                    </Alert>
+                )}
+
                 <Grid container spacing={2} sx={{justifyItems: 'center', alignSelf: 'center'}}>
                     <Grid item xs={12}>
-                        <TextField 
-                            fullWidth 
-                            label="Email" 
-                            type="email" 
+                        <TextField
+                            fullWidth
+                            label="Email"
+                            type="email"
                             required
-                            value={email} 
+                            value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
                     </Grid>
@@ -125,22 +133,34 @@ export default function Login() {
                     variant="contained"
                     sx={{ mt: 2, py: 1.2, fontWeight: 'bold' }}
                     onClick={(e) => handleSubmit(e)}
-                    {...(!email || !password) ? { disabled: true } : {}}
+                    disabled={!email || !password || loading}
                 >
-                    Log in
+                    {loading ? 'Logging in...' : 'Log in'}
                 </Button>
 
                 <Divider sx={{ my: 3 }}>OR</Divider>
 
                 <Box display="flex" justifyContent="center" gap={2}>
                     <IconButton>
-                        <GoogleIcon />
+                        <FontAwesomeIcon
+                            icon="fab fa-google"
+                            size="1.5rem"
+                            color="#db4437"
+                        />
                     </IconButton>
                     <IconButton>
-                        <FacebookIcon />
+                        <FontAwesomeIcon
+                            icon="fab fa-facebook"
+                            size="1.5rem"
+                            color="#3b5998"
+                        />
                     </IconButton>
                     <IconButton>
-                        <AppleIcon />
+                        <FontAwesomeIcon
+                            icon="fab fa-apple"
+                            size="1.5rem"
+                            color="#000000"
+                        />
                     </IconButton>
                 </Box>
 
@@ -155,22 +175,17 @@ export default function Login() {
             {/* Right Side - Info */}
             <Box sx={{ flex: 1}}>
                 <Typography variant="h4" fontWeight="bold" gutterBottom>
-                Come join us
+                Tài khoản để test
                 </Typography>
                 <ul style={{ paddingLeft: '1rem', marginTop: '1rem' }}>
                 <li>
                     <Typography>
-                    💡 Explore articles, tutorials, and guides on diverse subjects
+                    Email: user@hcmut.edu.vn
                     </Typography>
                 </li>
                 <li>
                     <Typography>
-                    ⏰ Learn at your own pace and access educational resources anytime
-                    </Typography>
-                </li>
-                <li>
-                    <Typography>
-                    🌐 Engage with a community of learners and share insights
+                    Password: user123
                     </Typography>
                 </li>
                 </ul>

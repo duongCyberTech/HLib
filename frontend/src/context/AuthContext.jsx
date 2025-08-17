@@ -26,10 +26,18 @@ export const AuthProvider = ({ children }) => {
     try {
       const token = localStorage.getItem('token');
       if (token) {
-        // Verify token with backend
-        const userData = await authService.verifyToken(token);
-        setUser(userData);
-        setIsAuthenticated(true);
+        try {
+          // Verify token with backend
+          const response = await authService.verifyToken(token);
+          setUser(response.user);
+          setIsAuthenticated(true);
+        } catch (error) {
+          // If backend is not available or token is invalid, remove token
+          console.error('Token verification failed:', error);
+          localStorage.removeItem('token');
+          setUser(null);
+          setIsAuthenticated(false);
+        }
       }
     } catch (error) {
       console.error('Auth check failed:', error);
@@ -42,15 +50,24 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await authService.login(email, password);
-      const { token, user: userData } = response;
-      
+      const { token } = response;
+
       localStorage.setItem('token', token);
-      setUser(userData);
+
+      try {
+        // Get user profile after login
+        const profileResponse = await authService.getProfile();
+        setUser(profileResponse.user);
+      } catch (profileError) {
+        // If profile fetch fails, create a basic user object
+        console.warn('Failed to fetch profile, using basic user data:', profileError);
+        setUser({ email });
+      }
+
       setIsAuthenticated(true);
-      
       return { success: true };
     } catch (error) {
-      return { success: false, error: error.message };
+      return { success: false, error: error.message || 'Login failed' };
     }
   };
 

@@ -127,6 +127,29 @@ class AuthController {
             res.status(500).json({ message: 'An error occurred while resetting the password.' });
         }
     }
+
+    async verifyToken(req, res) {
+        try {
+            // Token đã được verify trong middleware authenticate
+            const { decoded } = req.body;
+            const user = await AuthService.getUserById(decoded.uid);
+            res.status(200).json({ message: 'Token valid', user });
+        } catch (error) {
+            console.error('Error during token verification:', error);
+            res.status(401).json({ message: 'Invalid token' });
+        }
+    }
+
+    async getProfile(req, res) {
+        try {
+            const { decoded } = req.body;
+            const user = await AuthService.getUserById(decoded.uid);
+            res.status(200).json({ message: 'Profile retrieved successfully', user });
+        } catch (error) {
+            console.error('Error getting profile:', error);
+            res.status(400).json({ message: error.message });
+        }
+    }
 }
 
 module.exports = new AuthController();

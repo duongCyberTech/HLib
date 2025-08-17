@@ -1,0 +1,55 @@
+/* FontAwesome removed - using Material-UI icons instead */
+
+/* Font definitions */
+@font-face {
+  font-family: 'Roboto-SemiBold';
+  src: url('../assets/Roboto-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Global font application */
+* {
+  font-family: 'Roboto-SemiBold', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+}
+
+/* Specific element targeting */
+body, html {
+  font-family: 'Roboto-SemiBold', system-ui, sans-serif !important;
+}
+
+/* MUI component overrides */
+.MuiTypography-root {
+  font-family: 'Roboto-SemiBold', system-ui, sans-serif !important;
+}
+
+.MuiButton-root {
+  font-family: 'Roboto-SemiBold', system-ui, sans-serif !important;
+  font-weight: 500 !important;
+}
+
+.MuiTextField-root input {
+  font-family: 'Roboto-SemiBold', system-ui, sans-serif !important;
+}
+
+.MuiTextField-root label {
+  font-family: 'Roboto-SemiBold', system-ui, sans-serif !important;
+}
+
+.MuiAppBar-root {
+  font-family: 'Roboto-SemiBold', system-ui, sans-serif !important;
+}
+
+.MuiListItemText-root {
+  font-family: 'Roboto-SemiBold', system-ui, sans-serif !important;
+}
+
+/* Remove all animations for static design */
+
+/* Ensure font loads properly */
+@media screen {
+  * {
+    font-family: 'Roboto-SemiBold', system-ui, sans-serif !important;
+  }
+}

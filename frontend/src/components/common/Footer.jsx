@@ -14,7 +14,7 @@ export default function Footer() {
     >
       <Container maxWidth="lg">
         <Grid container spacing={4}>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Typography variant="h6" color="text.primary" gutterBottom>
               HCMUT Forum
             </Typography>
@@ -22,7 +22,7 @@ export default function Footer() {
               Academic forum for HCMUT students and faculty.
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Typography variant="h6" color="text.primary" gutterBottom>
               Quick Links
             </Typography>
@@ -33,7 +33,7 @@ export default function Footer() {
               Profile
             </Link>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Typography variant="h6" color="text.primary" gutterBottom>
               Support
             </Typography>
@@ -44,7 +44,7 @@ export default function Footer() {
               Contact Us
             </Link>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Typography variant="h6" color="text.primary" gutterBottom>
               Legal
             </Typography>
