@@ -5,7 +5,7 @@ import { Login, Signup, Verify, ForgotPassword } from './pages/auth';
 import { Dashboard } from './pages/dashboard';
 import { Profile } from './pages/profile';
 import { ProtectedRoute } from './components/common';
-import FontAwesomeTest from './components/common/FontAwesomeTest';
+import MaterialUIIconsTest from './components/common/FontAwesomeTest';
 import CoursesDemo from './pages/courses/CoursesDemo';
 
 function App() {
@@ -96,11 +96,11 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* Font Awesome Test Route */}
+          {/* Material-UI Icons Test Route */}
           <Route path="/test-icons" element={
             <ProtectedRoute>
               <MainLayout>
-                <FontAwesomeTest />
+                <MaterialUIIconsTest />
               </MainLayout>
             </ProtectedRoute>
           } />

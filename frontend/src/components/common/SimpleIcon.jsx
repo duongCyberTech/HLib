@@ -1,44 +1,51 @@
 import { Box } from '@mui/material';
-import {
-  Person as PersonIcon,
-  Home as HomeIcon,
-  School as SchoolIcon,
-  Chat as ChatIcon,
-  Bookmark as BookmarkIcon,
-  Description as DescriptionIcon,
-  Favorite as FavoriteIcon,
-  TrendingUp as TrendingUpIcon,
-  Google as GoogleIcon,
-  Facebook as FacebookIcon,
-  Apple as AppleIcon,
-  Lock as LockIcon,
-  ExitToApp as ExitToAppIcon,
-  Article as ArticleIcon,
-  People as PeopleIcon,
-  BarChart as BarChartIcon
-} from '@mui/icons-material';
+import { getIconByName } from './Icons';
 
-// Icon mapping for fallback
-const iconMap = {
-  'fas fa-user-circle': PersonIcon,
-  'fas fa-user': PersonIcon,
-  'fas fa-home': HomeIcon,
-  'fas fa-graduation-cap': SchoolIcon,
-  'fas fa-comments': ChatIcon,
-  'fas fa-bookmark': BookmarkIcon,
-  'fas fa-file-alt': DescriptionIcon,
-  'fas fa-heart': FavoriteIcon,
-  'fas fa-chart-line': TrendingUpIcon,
-  'fab fa-google': GoogleIcon,
-  'fab fa-facebook': FacebookIcon,
-  'fab fa-apple': AppleIcon,
-  'fas fa-user-lock': LockIcon,
-  'fas fa-sign-out-alt': ExitToAppIcon,
-  'fas fa-users': PeopleIcon,
-  'fas fa-chart-bar': BarChartIcon
+// FontAwesome to Material-UI icon mapping
+const fontAwesomeToMuiMap = {
+  'fas fa-user-circle': 'person',
+  'fas fa-user': 'person',
+  'fas fa-home': 'home',
+  'fas fa-graduation-cap': 'school',
+  'fas fa-comments': 'chat',
+  'fas fa-bookmark': 'bookmark',
+  'fas fa-file-alt': 'document',
+  'fas fa-heart': 'favorite',
+  'fas fa-chart-line': 'trending-up',
+  'fab fa-google': 'google',
+  'fab fa-facebook': 'facebook',
+  'fab fa-apple': 'apple',
+  'fas fa-user-lock': 'lock',
+  'fas fa-sign-out-alt': 'logout',
+  'fas fa-users': 'people',
+  'fas fa-chart-bar': 'bar-chart',
+  'fas fa-star': 'favorite',
+  'fas fa-cog': 'settings',
+  'fas fa-search': 'search',
+  'fas fa-plus': 'add',
+  'fas fa-edit': 'edit',
+  'fas fa-trash': 'delete',
+  'fas fa-download': 'download',
+  'fas fa-upload': 'upload',
+  'fas fa-share': 'share',
+  'fas fa-bell': 'notifications',
+  'fas fa-envelope': 'email',
+  'fas fa-phone': 'phone',
+  'fas fa-image': 'image',
+  'fas fa-video': 'video',
+  'fas fa-file': 'file',
+  'fas fa-folder': 'folder',
+  'fas fa-check': 'check',
+  'fas fa-times': 'close',
+  'fas fa-arrow-left': 'arrow-back',
+  'fas fa-arrow-right': 'arrow-forward',
+  'fas fa-info': 'info',
+  'fas fa-warning': 'warning',
+  'fas fa-error': 'error',
+  'fas fa-help': 'help'
 };
 
-// Simple icon component with Font Awesome fallback to MUI
+// Simple icon component using Material-UI icons
 export default function SimpleIcon({
   icon,
   size = '1rem',
@@ -48,16 +55,14 @@ export default function SimpleIcon({
   sx = {},
   ...props
 }) {
-  // No animations for static design
-  const getAnimationStyle = () => {
-    return {};
-  };
+  // Convert FontAwesome class to Material-UI icon name
+  const iconName = fontAwesomeToMuiMap[icon] || icon;
 
-  // Try Font Awesome first, fallback to MUI icon
-  const MuiIcon = iconMap[icon];
+  // Get the Material-UI icon component
+  const MuiIcon = getIconByName(iconName);
 
   if (MuiIcon) {
-    // Use MUI Icon as fallback
+    // Use Material-UI Icon
     return (
       <MuiIcon
         onClick={onClick}
@@ -72,11 +77,10 @@ export default function SimpleIcon({
     );
   }
 
-  // Try Font Awesome
+  // Fallback: return a placeholder or null if icon not found
+  console.warn(`Icon not found: ${icon} (mapped to: ${iconName})`);
   return (
     <Box
-      component="i"
-      className={icon}
       onClick={onClick}
       sx={{
         fontSize: size,
@@ -85,9 +89,13 @@ export default function SimpleIcon({
         alignItems: 'center',
         justifyContent: 'center',
         cursor: onClick ? 'pointer' : 'default',
+        width: size,
+        height: size,
         ...sx
       }}
       {...props}
-    />
+    >
+      ?
+    </Box>
   );
 }

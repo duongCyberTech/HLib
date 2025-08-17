@@ -14,10 +14,7 @@ import {
   CircularProgress,
   Alert
 } from '@mui/material';
-import {SensorOccupiedTwoTone, CloudUpload} from '@mui/icons-material';
-import GoogleIcon from '@mui/icons-material/Google';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import AppleIcon from '@mui/icons-material/Apple';
+import { CloudUploadIcon, GoogleIcon, FacebookIcon, AppleIcon, PersonAddIcon } from '../../components/common/Icons';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -114,7 +111,7 @@ export default function SignupForm() {
             {/* Left Side - Form */}
             <Box sx={{ flex: 1, width: "100%", boxShadow: 3, p: 4, borderRadius: 2, backgroundColor: '#fff', justifyItems: 'space-between' }}>
                 <Box display={'flex'} flexDirection="column" alignItems="center" mb={3}>
-                    <SensorOccupiedTwoTone sx={{ fontSize: 50, color: '#40C4FF', mb: 1 }} />
+                    <PersonAddIcon sx={{ fontSize: 50, color: '#40C4FF', mb: 1 }} />
                     <Typography variant="h5" fontWeight="bold" gutterBottom>
                         SIGN IN
                     </Typography>
@@ -185,7 +182,7 @@ export default function SignupForm() {
                         role={undefined}
                         variant="contained"
                         tabIndex={-1}
-                        startIcon={<CloudUpload />}
+                        startIcon={<CloudUploadIcon />}
                         loading={!image ? <CircularProgress size={24} /> : null}
                     >
                         {image ? image.name : 'Upload Avatar'}

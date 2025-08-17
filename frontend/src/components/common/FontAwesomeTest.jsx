@@ -1,71 +1,88 @@
 import { Box, Typography, Grid, Paper } from '@mui/material';
+import {
+  PersonIcon,
+  HomeIcon,
+  FavoriteIcon,
+  GoogleIcon,
+  FacebookIcon,
+  SchoolIcon,
+  ChatIcon,
+  BarChartIcon,
+  TrendingUpIcon,
+  PeopleIcon
+} from './Icons';
 
-export default function FontAwesomeTest() {
+export default function MaterialUIIconsTest() {
   const testIcons = [
-    'fas fa-user',
-    'fas fa-home',
-    'fas fa-heart',
-    'fas fa-star',
-    'fab fa-google',
-    'fab fa-facebook',
-    'fas fa-graduation-cap',
-    'fas fa-comments'
+    { component: PersonIcon, name: 'Person' },
+    { component: HomeIcon, name: 'Home' },
+    { component: FavoriteIcon, name: 'Favorite' },
+    { component: GoogleIcon, name: 'Google' },
+    { component: FacebookIcon, name: 'Facebook' },
+    { component: SchoolIcon, name: 'School' },
+    { component: ChatIcon, name: 'Chat' },
+    { component: BarChartIcon, name: 'Bar Chart' },
+    { component: TrendingUpIcon, name: 'Trending Up' },
+    { component: PeopleIcon, name: 'People' }
   ];
 
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" gutterBottom>
-        Font Awesome Test Page
+        Material-UI Icons Test Page
       </Typography>
-      
+
       <Typography variant="body1" gutterBottom>
-        Testing Font Awesome icons. If you see actual icons below, Font Awesome is working:
+        Testing Material-UI icons. All icons below are from Material-UI icons library:
       </Typography>
 
       <Grid container spacing={2} sx={{ mt: 2 }}>
-        {testIcons.map((iconClass, index) => (
-          <Grid item xs={6} sm={4} md={3} key={index}>
-            <Paper sx={{ p: 2, textAlign: 'center' }}>
-              <Box sx={{ fontSize: '2rem', mb: 1 }}>
-                <i className={iconClass}></i>
-              </Box>
-              <Typography variant="caption">
-                {iconClass}
-              </Typography>
-            </Paper>
-          </Grid>
-        ))}
+        {testIcons.map((iconData, index) => {
+          const IconComponent = iconData.component;
+          return (
+            <Grid item xs={6} sm={4} md={3} key={index}>
+              <Paper sx={{ p: 2, textAlign: 'center' }}>
+                <Box sx={{ fontSize: '2rem', mb: 1, display: 'flex', justifyContent: 'center' }}>
+                  <IconComponent sx={{ fontSize: '2rem' }} />
+                </Box>
+                <Typography variant="caption">
+                  {iconData.name}
+                </Typography>
+              </Paper>
+            </Grid>
+          );
+        })}
       </Grid>
 
       <Box sx={{ mt: 4 }}>
         <Typography variant="h6" gutterBottom>
-          Direct HTML Test:
+          Direct Icon Components Test:
         </Typography>
-        <Box sx={{ fontSize: '2rem', display: 'flex', gap: 2 }}>
-          <i className="fas fa-user"></i>
-          <i className="fas fa-home"></i>
-          <i className="fas fa-heart"></i>
-          <i className="fab fa-google"></i>
+        <Box sx={{ fontSize: '2rem', display: 'flex', gap: 2, alignItems: 'center' }}>
+          <PersonIcon sx={{ fontSize: '2rem' }} />
+          <HomeIcon sx={{ fontSize: '2rem' }} />
+          <FavoriteIcon sx={{ fontSize: '2rem' }} />
+          <GoogleIcon sx={{ fontSize: '2rem' }} />
         </Box>
       </Box>
 
       <Box sx={{ mt: 4 }}>
         <Typography variant="h6" gutterBottom>
-          CSS Classes Test:
+          Icon Sizes Test:
         </Typography>
-        <Box sx={{ fontSize: '1.5rem', display: 'flex', gap: 2, flexDirection: 'column' }}>
-          <div>
-            <span>fa-solid fa-user: </span>
-            <i className="fa-solid fa-user"></i>
-          </div>
-          <div>
-            <span>fas fa-user: </span>
-            <i className="fas fa-user"></i>
-          </div>
-          <div>
-            <span>fa fa-user: </span>
-            <i className="fa fa-user"></i>
-          </div>
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexDirection: 'column' }}>
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            <span>Small: </span>
+            <PersonIcon sx={{ fontSize: '1rem' }} />
+          </Box>
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            <span>Medium: </span>
+            <PersonIcon sx={{ fontSize: '1.5rem' }} />
+          </Box>
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            <span>Large: </span>
+            <PersonIcon sx={{ fontSize: '2rem' }} />
+          </Box>
         </Box>
       </Box>
     </Box>
