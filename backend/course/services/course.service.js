@@ -45,15 +45,31 @@ class CourseService{
         }     
     }
 
-    async getAllCourse(filter, offset){
+    async getAllCourse(filter, offset, limit){
         try{
-            const result = await pool.query(`
-                SELECT  course_id, title, description, price, is_active
-                FROM courses
-                WHERE title LIKE ? OR description LIKE ?
-                LIMIT ? OFFSET 0;
-            `,[`%${filter}%`, `%${filter}%`, offset]) 
-            return {data: result, message: "Get all course!"}
+            let query = `
+            SELECT course_id, title, description, price, is_active
+            FROM courses
+            `;
+
+            const params = [];
+
+            // add filter condition
+            if (filter) {
+                query += " WHERE title LIKE ? OR description LIKE ?";
+                params.push(`%${filter}%`, `%${filter}%`);
+            }
+
+            // add limit & offset
+            if (limit && offset !== undefined) {
+                query += " LIMIT ? OFFSET ?";
+                params.push(limit, offset);
+            }
+
+            const [result] = await pool.query(query, params);
+
+            console.log(">>> data: ", result[0])
+            return {data: result[0], message: "Get all course!"}
         }catch(error){
             console.log(error)
             return {message: "Get course failed!"}

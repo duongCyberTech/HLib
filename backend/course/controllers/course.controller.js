@@ -21,6 +21,24 @@ class CourseController{
         }
     }
 
+    async getAllCourse(req, res){
+        try {
+            const result = await CourseService.getAllCourse(req.query?.filter, req.query?.offset, req.query?.limit)
+            return res.status(200).json(result)
+        } catch (error) {
+            return res.status(500).json({message: "Internal Error"})
+        }
+    }
+
+    async getCourseById(req,res){
+        try {
+            const result = await CourseService.getCourseById(req.params.course_id)
+            return res.status(200).json(result)
+        } catch (error) {
+            return res.status(500).json({message: "Internal Error"})
+        }
+    }
+
     async UploadImage(req, res){
         try {
             const result = await CourseService.uploadImage(req.body, req.file)
