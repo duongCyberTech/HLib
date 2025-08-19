@@ -20,6 +20,15 @@ class CourseController{
             return res.status(500).json({message: "Network Error!"})
         }
     }
+
+    async UploadImage(req, res){
+        try {
+            const result = await CourseService.uploadImage(req.body, req.file)
+            return res.status(201).json(result)
+        } catch (error) {
+            return res.status(500).json({message: "Error Network"})
+        }
+    }
 }
 
 module.exports = new CourseController()

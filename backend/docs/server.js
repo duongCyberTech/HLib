@@ -1,5 +1,5 @@
 const express = require('express');
-const courseRoutes = require('./routes/course.route');
+const docsRoutes = require('./routes/docs.route');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
@@ -8,12 +8,12 @@ require('dotenv').config({ path: './config/.env' });
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use('/api/course', courseRoutes);
+app.use('/api/docs', docsRoutes);
 
-require('./wsServer');
+require('./wsServer')
 
-const PORT = process.env.COURSE_PORT || 3002;
-// http://localhost:3002/api/course
+const PORT = process.env.DOCS_PORT || 3003;
+// http://localhost:3003/api/docs
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

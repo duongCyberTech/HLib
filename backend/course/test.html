@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Image with Metadata</title>
+</head>
+<body>
+  <h2>Upload Image with Description, Section, Course</h2>
+
+  <form id="imageForm" enctype="multipart/form-data" method="POST" action="http://localhost:3002/api/course/upload-img">
+    <label>
+      Course ID:
+      <input type="text" name="course_id" required />
+    </label>
+    <br><br>
+
+    <label>
+      Section ID:
+      <input type="text" name="section_id" required />
+    </label>
+    <br><br>
+
+    <label>
+      Description:
+      <input type="text" name="description" />
+    </label>
+    <br><br>
+
+    <label>
+      Choose Image:
+      <input type="file" name="image" accept="image/*" required />
+    </label>
+    <br><br>
+
+    <button type="submit">Upload</button>
+  </form>
+
+  <hr>
+
+  <h3>Upload with JavaScript (fetch)</h3>
+  <input type="text" id="courseId" placeholder="Course ID" />
+  <input type="text" id="sectionId" placeholder="Section ID" />
+  <input type="text" id="desc" placeholder="Description" />
+  <input type="file" id="fileInput" accept="image/*" />
+  <button onclick="uploadFile()">Upload via Fetch</button>
+
+  <pre id="result"></pre>
+
+  <script>
+    async function uploadFile() {
+      const file = document.getElementById("fileInput").files[0];
+      const courseId = document.getElementById("courseId").value;
+      const sectionId = document.getElementById("sectionId").value;
+      const desc = document.getElementById("desc").value;
+
+      if (!file || !courseId || !sectionId) {
+        alert("Please fill required fields and select a file.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("course_id", courseId);
+      formData.append("section_id", sectionId);
+      formData.append("description", desc);
+
+      try {
+        const res = await fetch("http://localhost:3002/api/course/upload-img", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+        console.log(data)
+        document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        console.error("Upload failed", err);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,5 +1,8 @@
 const {client, pool, sql} = require('../config/dbConfig')
 const { v4: uuidv4 } = require('uuid');
+const v2 = require('./cloudinary')
+const fs = require('fs');
+const path = require('path');
 
 class CourseService{
     async CreateCourse(data) {
@@ -39,7 +42,7 @@ class CourseService{
             return {message: `Error while adding section into course ${course_id}`}
         } finally {
             connection.release()
-        }        
+        }     
     }
 
     async getAllCourse(filter, offset){
@@ -98,6 +101,82 @@ class CourseService{
             console.log(error)
             return {message: "Get course failed!"}
         }        
+    }
+
+    async uploadImage(imgData, imgFile) {
+        try {
+            const iid = uuidv4();
+            const result = await v2.uploader.upload(imgFile.path, {
+                resource_type: "auto",
+                public_id: `courses/${imgData.course_id}/sections/${imgData.section_id}/${imgFile.originalname}`
+            });
+
+            const formattedRes = {
+                course_id: imgData.course_id,
+                section_id: imgData.section_id,
+                image_id: iid,
+                image_name:  imgFile.originalname,
+                file_path: result.secure_url,
+                fileSizeInKB: (result.bytes).toFixed(2),
+                fileType: result.format,
+                description: imgData.description
+            }
+
+            await pool.query(`
+                INSERT INTO image(
+                    image_id, course_id, section_id,
+                    title, description, file_path,
+                    file_size, file_type
+                )
+                VALUES(?,?,?,?,?,?,?,?);
+            `, [
+                formattedRes.image_id, formattedRes.course_id, formattedRes.section_id,
+                formattedRes.image_name, formattedRes.description || '', formattedRes.file_path,
+                formattedRes.fileSizeInKB || 0, formattedRes.fileType
+            ])
+            return {data: formattedRes, message: "Upload image successfully!"}
+        } catch (error) {
+            console.log(error)
+            throw new Error("Upload Failed!")
+        }
+    }
+
+    async uploadVideo(videoDes, videoFile){
+        try{
+            const vid = uuidv4()
+            const result = await v2.uploader.upload(videoFile.path, {
+                resource_type: 'video',
+                folder:`courses/${videoDes.course_id}/sections/${videoDes.section_id}`,
+                public_id: `courses/${videoDes.course_id}/sections/${videoDes.section_id}/${videoFile.originalname}`,
+                chunk_size: 6000000
+            })
+            const video_time = result.duration;
+            const video_length = `${video_time/3600}:${(video_time/60)%60}:${video_time%60}`
+            const formattedRes = {
+                title: videoFile.originalname,
+                file_path: result.secure_url
+            }
+
+            await pool.query(`
+                INSERT INTO videos
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `,[
+                vid, videoDes.section_id, videoDes.course_id, formattedRes.title,
+                videoDes.description || '', formattedRes.path, videoFile.mimetype,
+                video_length || '00:00'
+            ])
+
+            return {
+                data: {
+                    video_id: vid,
+                    title: formattedRes.title,
+                    file_path: formattedRes.secure_url
+                },
+                message: "Upload Successfully!"
+            }
+        } catch(err){
+            throw new Error("Upload Failure!")
+        }
     }
 }
 
