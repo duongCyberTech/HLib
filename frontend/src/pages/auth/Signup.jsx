@@ -11,15 +11,12 @@ import {
   Link,
   TextField,
   Typography,
-  CircularProgress
+  CircularProgress,
+  Alert
 } from '@mui/material';
-import {SensorOccupiedTwoTone, CloudUpload} from '@mui/icons-material';
-import GoogleIcon from '@mui/icons-material/Google';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import AppleIcon from '@mui/icons-material/Apple';
+import { CloudUploadIcon, GoogleIcon, FacebookIcon, AppleIcon, PersonAddIcon } from '../../components/common/Icons';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
-import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 const VisuallyHiddenInput = styled('input')({
@@ -43,6 +40,9 @@ export default function SignupForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
   const [confirmPass, setConfirmPass] = useState('')
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
   const handleUpload = async (event) => {
@@ -67,10 +67,19 @@ export default function SignupForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setError('');
+    setSuccess('');
+
     if (!fname || !lname || !email || !password || !mname || !confirmPass) {
+        setError('Please fill in all fields');
         return;
     }
-    if (password !== confirmPass) return;
+    if (password !== confirmPass) {
+        setError('Passwords do not match');
+        return;
+    }
+
+    setLoading(true);
 
     try {
         const res = await axios.post("http://localhost:3001/api/auth/register",{
@@ -83,23 +92,17 @@ export default function SignupForm() {
         })
         console.log(res.data)
         localStorage.setItem("uid", res.data.data.uid)
-
         await axios.post(`http://localhost:3001/api/auth/otp/request`,{uid: res.data.data.uid});
-        Swal.fire({
-            title: 'Registration Successful!',
-            text: "OTP code has been sent to your email, please check your inbox",
-            icon: 'success',
-            confirmButtonText: 'OK'
-        })
-        navigate("/verify",{state: {uid: res.data.data.uid}});
+
+        setSuccess('Registration successful! OTP code has been sent to your email, please check your inbox');
+        setTimeout(() => {
+            navigate("/verify",{state: {uid: res.data.data.uid}});
+        }, 2000);
     } catch (error) {
         console.error(error.message)
-        Swal.fire({
-            title: 'Error!',
-            text: "Something went wrong, please try again later",
-            icon: 'error',
-            confirmButtonText: 'OK'
-        })
+        setError('Something went wrong, please try again later');
+    } finally {
+        setLoading(false);
     }
 
   }
@@ -108,7 +111,7 @@ export default function SignupForm() {
             {/* Left Side - Form */}
             <Box sx={{ flex: 1, width: "100%", boxShadow: 3, p: 4, borderRadius: 2, backgroundColor: '#fff', justifyItems: 'space-between' }}>
                 <Box display={'flex'} flexDirection="column" alignItems="center" mb={3}>
-                    <SensorOccupiedTwoTone sx={{ fontSize: 50, color: '#40C4FF', mb: 1 }} />
+                    <PersonAddIcon sx={{ fontSize: 50, color: '#40C4FF', mb: 1 }} />
                     <Typography variant="h5" fontWeight="bold" gutterBottom>
                         SIGN IN
                     </Typography>
@@ -179,7 +182,7 @@ export default function SignupForm() {
                         role={undefined}
                         variant="contained"
                         tabIndex={-1}
-                        startIcon={<CloudUpload />}
+                        startIcon={<CloudUploadIcon />}
                         loading={!image ? <CircularProgress size={24} /> : null}
                     >
                         {image ? image.name : 'Upload Avatar'}
@@ -204,14 +207,27 @@ export default function SignupForm() {
                     sx={{ mt: 1 }}
                 />
 
+                {error && (
+                    <Alert severity="error" sx={{ mt: 2 }}>
+                        {error}
+                    </Alert>
+                )}
+
+                {success && (
+                    <Alert severity="success" sx={{ mt: 2 }}>
+                        {success}
+                    </Alert>
+                )}
+
                 <Button
                     fullWidth
                     variant="contained"
                     sx={{ mt: 2, py: 1.2, fontWeight: 'bold' }}
                     onClick={(e) => handleSubmit(e)}
-                    {...(!fname || !lname || !email || !password || !mname || !confirmPass || !url || url === '') ? { disabled: true } : {}}
+                    disabled={loading || !fname || !lname || !email || !password || !mname || !confirmPass || !url || url === ''}
+                    startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
                 >
-                    Register
+                    {loading ? 'Registering...' : 'Register'}
                 </Button>
 
                 <Divider sx={{ my: 3 }}>OR</Divider>

@@ -78,7 +78,7 @@ create table documents(
     pages smallint,
     nb_of_favorites int default 0,
     fee decimal(10,2) default 0.00,
-    cid varchar(255) not null,
+    cid varchar(255),
     uid varchar(255) not null,
     tid varchar(255) not null,
     constraint fk_con

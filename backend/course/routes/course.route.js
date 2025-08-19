@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-
+router.post('/upload-img', upload.single('image'), CourseController.UploadImage)
 router.post('/upload-file', upload.single('file'), uploadWithProgress);
 
 router.post('/create-course', authenticate, authorize(['user']), CourseController.CreateCourse)
