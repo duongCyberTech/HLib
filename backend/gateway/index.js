@@ -4,6 +4,7 @@ const swaggerCombine = require('swagger-combine');
 const path = require('path');
 
 const app = express();
+require('dotenv').config()
 
 // Gộp Swagger spec từ nhiều file
 const swaggerFile = path.join(__dirname, 'swagger', 'combined.yaml');
@@ -21,7 +22,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 app.use('/api/auth', createProxyMiddleware({ target: 'http://localhost:3001', changeOrigin: true }));
 app.use('/api/user', createProxyMiddleware({ target: 'http://localhost:3002', changeOrigin: true }));
 
-const PORT = 3000;
+const PORT = process.env.GATEWAY_PORT;
 app.listen(PORT, () => {
   console.log(`🚀 API Gateway running at http://localhost:${PORT}`);
 });

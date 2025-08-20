@@ -1,0 +1,54 @@
+paths:
+  /api/course/get-all-course:
+    get:
+      summary: Get All Course
+      tags:
+        - Course
+      parameters:
+        - name: filter
+          in: query
+          required: false
+          description: Compare [filter] with substring of [title, description]
+          schema:
+            type: string
+            default: ''
+        - name: limit
+          in: query
+          required: false
+          description: Maximum numbers of courses in each response
+          schema:
+            type: integer
+            minimum: 0
+            default: 4
+        - name: offset
+          in: query
+          required: false
+          description: Start index of course set 
+          minimum: 0
+          default: 0
+      responses:
+        '200':
+          description: Access Successfully
+        '500':
+          description: Internal Server Error
+
+  /api/course/get-course/{course_id}:
+    get:
+      summary: Get Course Details By ID 
+      tags: 
+        - Course
+      parameters:
+        - name: course_id
+          in: path 
+          required: true
+          description: The unique ID of a course 
+          schema:
+            type: string
+      responses:
+        '200': 
+          description: Get course successfully
+        '500':
+          description: Get course failed
+
+      
+  

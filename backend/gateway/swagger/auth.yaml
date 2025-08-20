@@ -1,13 +1,7 @@
-openapi: 3.0.0
-info:
-  title: Auth API
-  version: 1.0.0
-  description: API xác thực tài khoản người dùng
-
 paths:
   /api/auth/register:
     post:
-      summary: Đăng ký tài khoản
+      summary: Register New Account
       tags:
         - Auth
       requestBody:
@@ -17,21 +11,29 @@ paths:
             schema:
               type: object
               properties:
-                username:
+                fname:
+                  type: string
+                mname:
+                  type: string
+                lname:
                   type: string
                 password:
                   type: string
                 email:
                   type: string
+                avata:
+                  type: string
       responses:
         '201':
-          description: Đăng ký thành công
+          description: Register Successfully
         '400':
-          description: Dữ liệu không hợp lệ
+          description: Validation Error
+        '500':
+          description: Internal Server Error
 
   /api/auth/login:
     post:
-      summary: Đăng nhập
+      summary: Login
       tags:
         - Auth
       requestBody:
@@ -43,35 +45,43 @@ paths:
               properties:
                 username:
                   type: string
+                email:
+                  type: string
                 password:
                   type: string
       responses:
         '200':
-          description: Đăng nhập thành công
+          description: Login Successfully
         '400':
-          description: Sai tài khoản hoặc mật khẩu
-
-  /api/auth/logout:
-    post:
-      summary: Đăng xuất
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: Đăng xuất thành công
+          description: Wrong Password or Email
 
   /api/auth/otp/request:
     post:
-      summary: Gửi yêu cầu OTP
+      summary: Request OTP through email
       tags:
         - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid: 
+                  type: string
+                email: 
+                  type: string
       responses:
         '200':
-          description: OTP đã được gửi
+          description: OTP is sent successfully
+        '400':
+          description: Email missed
+        '404':
+          description: User not found
 
   /api/auth/otp/verify:
     post:
-      summary: Xác thực mã OTP
+      summary: OTP Verification
       tags:
         - Auth
       requestBody:
@@ -83,44 +93,14 @@ paths:
               properties:
                 otpCode:
                   type: string
-      responses:
-        '200':
-          description: Xác thực thành công
-
-  /api/auth/forgot-password:
-    post:
-      summary: Yêu cầu đặt lại mật khẩu
-      tags:
-        - Auth
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
+                uid: 
+                  type: string
+                email: 
                   type: string
       responses:
         '200':
-          description: Yêu cầu thành công
-
-  /api/auth/reset-password:
-    post:
-      summary: Đặt lại mật khẩu
-      tags:
-        - Auth
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                token:
-                  type: string
-                newPassword:
-                  type: string
-      responses:
-        '200':
-          description: Đặt lại mật khẩu thành công
+          description: Verify Successfully
+        '400':
+          description: Invalid OTP
+        '404':
+          description: User Not Found
