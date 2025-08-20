@@ -98,11 +98,26 @@ Backend của HCMUT Academic Forum được xây dựng với kiến trúc Micro
 ```
 
 ## 🔄 Luồng hoạt động của ứng dụng
-
+### 1. Cài đặt doppler để truy cập biến môi trường
 ```bash
-# Thêm file biến môi trường vào thư mục backend
-.env
+# Cài đặt, giải nén và thêm doppler.exe vào biến môi trường của máy: https://github.com/DopplerHQ/cli/releases/tag/3.75.1
 
+# Kiểm tra xem đã cài đặt doppler thành công hay chưa
+doppler --version
+
+# Kết nối doppler
+doppler setup --token=<YOUR_TOKEN>
+
+# Kiểm tra kết nối
+doppler secrets
+```
+### 2. Combine Swagger API Document
+```bash
+npm run apis
+```
+
+### 3. Chạy backend
+```bash
 # Di chuyển vào thư mục dự án
 cd backend
 

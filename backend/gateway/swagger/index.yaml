@@ -1,10 +1,25 @@
-version: "1.0"         # <- BẮT BUỘC với swagger-combine
-name: Gateway API
-description: Tổng hợp các dịch vụ con thành một spec
+openapi: 3.0.3
+info:
+  title: Gateway API
+  version: 1.0.0
+  description: API Specification
 
-# Servers là phần OpenAPI chấp nhận, nhưng không bắt buộc ở đây
-output: ./combined.yaml
+servers:
+  - url: http://localhost:3000
+  - url: http://localhost:3001
+  - url: http://localhost:3002
 
-apis:
-  - url: ./swagger/auth.yaml
-    name: auth
+paths:
+  /api/auth/register:
+    $ref: './auth.yaml#/paths/~1api~1auth~1register'
+  /api/auth/login:
+    $ref: './auth.yaml#/paths/~1api~1auth~1login'
+  /api/auth/otp/request:
+    $ref: './auth.yaml#/paths/~1api~1auth~1otp~1request'
+  /api/auth/otp/verify:
+    $ref: './auth.yaml#/paths/~1api~1auth~1otp~1verify'       
+  /api/course/get-all-course:
+    $ref: './course.yaml#/paths/~1api~1course~1get-all-course'
+  /api/course/get-course/{course_id}:
+    $ref: './course.yaml#/paths/~1api~1course~1get-course~1{course_id}'
+

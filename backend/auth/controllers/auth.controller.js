@@ -15,7 +15,7 @@ class AuthController {
             res.status(201).json({ message: 'User registered successfully', data: result });
         } catch (error) {
             console.error('Error during registration:', error);
-            res.status(400).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
     }
 
@@ -41,7 +41,7 @@ class AuthController {
         console.log("Check Request 1 ---", uid, email);
         const checkUp = await checkExist('users', 'uid', uid) || await checkExist('users', 'email', email);
         if (!checkUp) {
-            return res.status(400).json({ message: 'User not found.' });
+            return res.status(404).json({ message: 'User not found.' });
         }
         var emailres;
 
@@ -51,7 +51,7 @@ class AuthController {
             emailres = resp[0][0].email;
             console.log("Email result:", emailres);
             if (resp.length === 0) {
-                return res.status(400).json({ message: 'User not found.' });
+                return res.status(404).json({ message: 'User not found.' });
             }
         }
 
@@ -80,7 +80,7 @@ class AuthController {
         const checkUp = await checkExist('users', 'uid', uid) || await checkExist('users', 'email', email);
         console.log("Logging in verifyOTPCode with uid:", uid);
         if (!checkUp) {
-            return res.status(400).json({ message: 'Missing user.' });
+            return res.status(404).json({ message: 'Missing user.' });
         }
         if (!otp || otp.length < 6) {
             return res.status(400).json({ message: 'Invalid OTP code.' });
@@ -90,7 +90,7 @@ class AuthController {
             const resp = await pool.query('SELECT email FROM users WHERE uid = ?', [uid]);
             emailres = resp[0][0].email;
             if (resp[0].length === 0) {
-                return res.status(400).json({ message: 'User not found.' });
+                return res.status(404).json({ message: 'User not found.' });
             }
         }
 
