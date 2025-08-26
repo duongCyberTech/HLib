@@ -133,5 +133,6 @@ API Document được tạo dựa trên **Swagger**, truy cập **Swagger UI** t
 Để test api từng service, thay đổi servers end-point qua service cần test với
 - **API Gateway:** http://localhost:3000
 - **Authentication:** http://localhost:3001
+- **User Management:** http://localhost:5000
 - **Course:** http://localhost:3002
 
