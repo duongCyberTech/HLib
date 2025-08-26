@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import { useState, useEffect} from 'react';
 import {
   Box,
   Button,
@@ -6,8 +6,7 @@ import {
   Grid,
   TextField,
   Typography,
-  Alert,
-  CircularProgress
+  Alert
 } from '@mui/material';
 import {SensorOccupiedTwoTone} from '@mui/icons-material';
 import axios from 'axios';
@@ -15,60 +14,57 @@ import CountdownTimer from '../../components/CountDown';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Verify() {
-    const [otp, setOTP] = useState('');
-    const [seconds, setSeconds] = useState(120);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
     const location = useLocation()
     const uid = location.state.uid
     const navigate = useNavigate()
+    const [otp, setOTP] = useState('');
+    const [seconds, setSeconds] = useState(localStorage.getItem("seconds") ? parseInt(localStorage.getItem("seconds")) : 120); // 2 minutes for signup, 0 for login
+    const [message, setMessage] = useState('');
+    const [mesType, setMesType] = useState('');
+
+    useEffect(() => {
+        localStorage.setItem("seconds", seconds);
+    }, [seconds]);
   const handleVerify = async (event) => {
     event.preventDefault();
-    setError('');
-    setSuccess('');
-
     if (!otp) {
-        setError('Please enter the OTP code');
+        setMessage('Please enter the OTP code');
+        setMesType('error');
         return;
     }
-
-    setLoading(true);
-
+    alert(localStorage.getItem("uid"))
     try {
         const res = await axios.post(`http://localhost:3001/api/auth/otp/verify`,{
             uid,
             otp
         })
         console.log(res.data)
-        setSuccess('Registration successful! Please login to continue');
-        setTimeout(() => {
-            navigate('/login')
-        }, 2000);
+        setMessage('Registration successful! Please login to continue');
+        setMesType('success');
+        navigate('/login')
     } catch (error) {
         console.error(error.message)
-        setError('Invalid OTP code or something went wrong, please try again');
-    } finally {
-        setLoading(false);
+        setMessage('Something went wrong, please try again later');
+        setMesType('error');
     }
   }
 
   const handleResend = async (event) => {
-    event.preventDefault();
-    setError('');
-    setSuccess('');
-
-    try {
-        const res = await axios.post(`http://localhost:3001/api/auth/otp/request`,{
-            uid,
-        });
-        console.log(res.data);
-        setSuccess('OTP code has been resent to your email');
-        setSeconds(120); // Reset countdown timer
-    } catch (error) {
-        console.error(error.message);
-        setError('Failed to resend OTP, please try again later');
-    }
+        event.preventDefault();
+        try {
+            const res = await axios.post(`http://localhost:3001/api/auth/otp/request`,{
+                uid,
+            });
+            console.log(res.data);
+            setMessage("OTP code has been resent to your email");
+            setMesType("success");
+            setSeconds(120); // Reset countdown timer
+            localStorage.setItem("seconds", 120);
+        } catch (error) {
+            console.error(error.message);
+            setMessage("Something went wrong, please try again later");
+            setMesType("error");
+        }
     }
   return (
     <Container sx={{ ml: 0, mt: 5, mb: 5, display: 'flex', gap: 4, width: '100%', flexWrap:"wrap" }}>
@@ -94,19 +90,11 @@ export default function Verify() {
                     </Grid>
                 </Grid>
                 <CountdownTimer seconds={seconds} setSeconds={setSeconds}/>
-
-                {error && (
-                    <Alert severity="error" sx={{ mt: 2 }}>
-                        {error}
+                {message && (
+                    <Alert severity={mesType} sx={{ mt: 2 }}>
+                        {message}
                     </Alert>
                 )}
-
-                {success && (
-                    <Alert severity="success" sx={{ mt: 2 }}>
-                        {success}
-                    </Alert>
-                )}
-
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', gap: 3 }}>
                     <Button
                         fullWidth
@@ -123,16 +111,16 @@ export default function Verify() {
                         variant="contained"
                         sx={{ mt: 2, py: 1.2, fontWeight: 'bold' }}
                         onClick={(e) => handleVerify(e)}
-                        disabled={loading || !otp || otp.length < 6}
-                        startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
+                        {...(!otp || otp.length < 6
+                        ) ? { disabled: true } : {}}
                     >
-                        {loading ? 'Verifying...' : 'Verify'}
+                        Verify
                     </Button>
                 </Box>
                 
 
             </Box>
-
+            
             {/* Right Side - Info */}
             <Box sx={{ flex: 1}}>
                 <Typography variant="h4" fontWeight="bold" gutterBottom>

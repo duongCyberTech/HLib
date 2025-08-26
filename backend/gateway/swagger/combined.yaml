@@ -3,6 +3,12 @@ info:
   title: Gateway API
   version: 1.0.0
   description: API Specification
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 servers:
   - url: 'http://localhost:3000'
   - url: 'http://localhost:3001'
@@ -111,6 +117,8 @@ paths:
         '404':
           description: User Not Found
   /api/course/get-all-course:
+    sercurity:
+      - bearerAuth: []
     get:
       summary: Get All Course
       tags:
@@ -135,8 +143,10 @@ paths:
           in: query
           required: false
           description: Start index of course set
-          minimum: 0
-          default: 0
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
       responses:
         '200':
           description: Access Successfully

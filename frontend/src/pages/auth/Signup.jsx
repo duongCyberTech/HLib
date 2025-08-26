@@ -44,6 +44,7 @@ export default function SignupForm() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
+  const [toggleUpload, setToggleUpload] = useState(1);
 
   const handleUpload = async (event) => {
     const file = event.target.files[0];
@@ -55,12 +56,15 @@ export default function SignupForm() {
     formData.append('cloud_name', 'dsivbzwgs');       // 👈 Replace
 
     try {
+      setToggleUpload(2)
       const res = await axios.post(
         'https://api.cloudinary.com/v1_1/dsivbzwgs/image/upload',
         formData
       );
       setUrl(res.data.secure_url);
+      setToggleUpload(3);
     } catch (err) {
+        setToggleUpload(1);
       console.error('Upload failed:', err);
     }
   };
@@ -96,7 +100,7 @@ export default function SignupForm() {
 
         setSuccess('Registration successful! OTP code has been sent to your email, please check your inbox');
         setTimeout(() => {
-            navigate("/verify",{state: {uid: res.data.data.uid}});
+            navigate("/verify",{state: {uid: res.data.data.uid, isSignup: true}});
         }, 2000);
     } catch (error) {
         console.error(error.message)
@@ -183,9 +187,8 @@ export default function SignupForm() {
                         variant="contained"
                         tabIndex={-1}
                         startIcon={<CloudUploadIcon />}
-                        loading={!image ? <CircularProgress size={24} /> : null}
                     >
-                        {image ? image.name : 'Upload Avatar'}
+                        {toggleUpload === 1 ? 'Upload Avatar' : toggleUpload === 2 ? 'Uploading...' : image.name}
                         <VisuallyHiddenInput
                             type="file"
                             onChange={(event) => handleUpload(event)}
@@ -224,7 +227,7 @@ export default function SignupForm() {
                     variant="contained"
                     sx={{ mt: 2, py: 1.2, fontWeight: 'bold' }}
                     onClick={(e) => handleSubmit(e)}
-                    disabled={loading || !fname || !lname || !email || !password || !mname || !confirmPass || !url || url === ''}
+                    disabled={loading || !fname || !lname || !email || !password || !mname || !confirmPass || toggleUpload === 2}
                     startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
                 >
                     {loading ? 'Registering...' : 'Register'}

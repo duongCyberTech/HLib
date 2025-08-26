@@ -4,6 +4,13 @@ info:
   version: 1.0.0
   description: API Specification
 
+components:
+  securitySchemes:
+    bearerAuth:        # tên có thể đặt tùy ý
+      type: http
+      scheme: bearer
+      bearerFormat: JWT   # để swagger UI biết đây là JWT
+
 servers:
   - url: http://localhost:3000
   - url: http://localhost:3001
@@ -20,6 +27,8 @@ paths:
     $ref: './auth.yaml#/paths/~1api~1auth~1otp~1verify'       
   /api/course/get-all-course:
     $ref: './course.yaml#/paths/~1api~1course~1get-all-course'
+    sercurity:
+      - bearerAuth: []
   /api/course/get-course/{course_id}:
     $ref: './course.yaml#/paths/~1api~1course~1get-course~1{course_id}'
 
