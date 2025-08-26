@@ -63,7 +63,7 @@ class CourseService{
             // add limit & offset
             if (limit && offset !== undefined) {
                 query += " LIMIT ? OFFSET ?";
-                params.push(limit, offset);
+                params.push(Number(limit), Number(offset));
             }
 
             const [result] = await pool.query(query, params);

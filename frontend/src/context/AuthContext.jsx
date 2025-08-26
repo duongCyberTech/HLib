@@ -14,9 +14,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
   const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('token') ? true : false);
-
 
   useEffect(() => {
     checkAuthStatus();
@@ -26,18 +24,10 @@ export const AuthProvider = ({ children }) => {
     try {
       const token = localStorage.getItem('token');
       if (token) {
-        try {
-          // Verify token with backend
-          const response = await authService.verifyToken(token);
-          setUser(response.user);
-          setIsAuthenticated(true);
-        } catch (error) {
-          // If backend is not available or token is invalid, remove token
-          console.error('Token verification failed:', error);
-          localStorage.removeItem('token');
-          setUser(null);
-          setIsAuthenticated(false);
-        }
+        // Verify token with backend
+        const userData = await authService.verifyToken(token);
+        setUser(userData);
+        setIsAuthenticated(true);
       }
     } catch (error) {
       console.error('Auth check failed:', error);
@@ -50,24 +40,15 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await authService.login(email, password);
-      const { token } = response;
-
+      const { token, user: userData } = response;
+      
       localStorage.setItem('token', token);
-
-      try {
-        // Get user profile after login
-        const profileResponse = await authService.getProfile();
-        setUser(profileResponse.user);
-      } catch (profileError) {
-        // If profile fetch fails, create a basic user object
-        console.warn('Failed to fetch profile, using basic user data:', profileError);
-        setUser({ email });
-      }
-
+      setUser(userData);
       setIsAuthenticated(true);
+      
       return { success: true };
     } catch (error) {
-      return { success: false, error: error.message || 'Login failed' };
+      return { success: false, error: error.message };
     }
   };
 
@@ -91,6 +72,7 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     isAuthenticated,
+    setIsAuthenticated,
     login,
     register,
     logout,
