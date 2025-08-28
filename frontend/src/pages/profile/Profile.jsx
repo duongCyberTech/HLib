@@ -6,23 +6,23 @@ import {
   Button,
   Chip,
   Divider,
-} from "@mui/material";
-import { Edit as EditIcon, Email as EmailIcon } from "@mui/icons-material";
-import { useAuth } from "../../context";
-import { useState } from "react";
-import Dashboard from "../dashboard/Dashboard";
+} from '@mui/material';
+import { Edit as EditIcon, Email as EmailIcon } from '@mui/icons-material';
+import { useAuth } from '../../context';
+import { useState } from 'react';
+import Dashboard from '../dashboard/Dashboard';
 export default function Profile() {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState("course");
+  const [activeTab, setActiveTab] = useState('course');
   const userInfo = {
-    name: `${user?.fname || "John"} ${user?.mname || "M"} ${
-      user?.lname || "Doe"
+    name: `${user?.fname || 'John'} ${user?.mname || 'M'} ${
+      user?.lname || 'Doe'
     }`,
-    email: user?.email || "john.doe@hcmut.edu.vn",
-    avatar: user?.avatar || "/assets/default-avatar.png",
-    joinDate: "2024-01-01",
-    department: "Computer Science",
-    studentId: "2021001234",
+    email: user?.email || 'john.doe@hcmut.edu.vn',
+    avatar: user?.avatar || '/assets/default-avatar.png',
+    joinDate: '2024-01-01',
+    department: 'Computer Science',
+    studentId: '2021001234',
     posts: 15,
     followers: 234,
     following: 89,
@@ -37,11 +37,11 @@ export default function Profile() {
       {/* Bìa gradient */}
       <Box
         sx={{
-          width: "100%",
+          width: '100%',
           height: 220,
           background:
-            "linear-gradient(135deg, #88c4f9ff, #3c51d5ff, #f06262ff)",
-          position: "relative",
+            'linear-gradient(135deg, #88c4f9ff, #3c51d5ff, #f06262ff)',
+          position: 'relative',
           boxShadow: 3,
         }}
       />
@@ -63,14 +63,14 @@ export default function Profile() {
             sx={{
               width: 150,
               height: 150,
-              border: "5px solid white",
+              border: '5px solid white',
               boxShadow: 3,
             }}
           >
             {userInfo.name
-              .split(" ")
+              .split(' ')
               .map((n) => n[0])
-              .join("")}
+              .join('')}
           </Avatar>
 
           {/* Thông tin chính */}
@@ -106,7 +106,7 @@ export default function Profile() {
           {/* Edit Button */}
           <Box
             display="flex"
-            flexDirection={"column"}
+            flexDirection={'column'}
             gap={1}
             mb={2}
             sx={{ mt: 8 }}
@@ -116,10 +116,10 @@ export default function Profile() {
               startIcon={<EditIcon />}
               sx={{
                 borderRadius: 50, // luôn giữ oval
-                transition: "all 0.3s ease",
-                "&:hover": {
-                  transform: "scale(1.05)",
-                  backgroundColor: "primary.dark",
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                  backgroundColor: 'primary.dark',
                 },
               }}
             >
@@ -139,25 +139,25 @@ export default function Profile() {
         {/* Tab headers */}
         <Box
           sx={{
-            display: "flex",
+            display: 'flex',
             borderRadius: 2,
-            overflow: "hidden",
-            boxShadow: "0px 2px 6px rgba(0,0,0,0.1)",
+            overflow: 'hidden',
+            boxShadow: '0px 2px 6px rgba(0,0,0,0.1)',
           }}
         >
           <Box
-            onClick={() => setActiveTab("course")}
+            onClick={() => setActiveTab('course')}
             sx={{
               flex: 1,
-              textAlign: "center",
+              textAlign: 'center',
               py: 2,
-              cursor: "pointer",
-              fontWeight: activeTab === "course" ? "bold" : "500",
-              color: activeTab === "course" ? "primary.main" : "text.secondary",
-              backgroundColor: activeTab === "course" ? "#e3f2fd" : "#fff",
-              transition: "all 0.2s ease",
-              "&:hover": {
-                backgroundColor: "#d0e7ff",
+              cursor: 'pointer',
+              fontWeight: activeTab === 'course' ? 'bold' : '500',
+              color: activeTab === 'course' ? 'primary.main' : 'text.secondary',
+              backgroundColor: activeTab === 'course' ? '#e3f2fd' : '#fff',
+              transition: 'all 0.2s ease',
+              '&:hover': {
+                backgroundColor: '#d0e7ff',
               },
             }}
           >
@@ -167,22 +167,22 @@ export default function Profile() {
           <Divider
             orientation="vertical"
             flexItem
-            sx={{ backgroundColor: "#ddd" }}
+            sx={{ backgroundColor: '#ddd' }}
           />
 
           <Box
-            onClick={() => setActiveTab("thread")}
+            onClick={() => setActiveTab('thread')}
             sx={{
               flex: 1,
-              textAlign: "center",
+              textAlign: 'center',
               py: 2,
-              cursor: "pointer",
-              fontWeight: activeTab === "thread" ? "bold" : "500",
-              color: activeTab === "thread" ? "primary.main" : "text.secondary",
-              backgroundColor: activeTab === "thread" ? "#e3f2fd" : "#fff",
-              transition: "all 0.2s ease",
-              "&:hover": {
-                backgroundColor: "#d0e7ff",
+              cursor: 'pointer',
+              fontWeight: activeTab === 'thread' ? 'bold' : '500',
+              color: activeTab === 'thread' ? 'primary.main' : 'text.secondary',
+              backgroundColor: activeTab === 'thread' ? '#e3f2fd' : '#fff',
+              transition: 'all 0.2s ease',
+              '&:hover': {
+                backgroundColor: '#d0e7ff',
               },
             }}
           >
@@ -192,8 +192,8 @@ export default function Profile() {
 
         {/* Tab content */}
         <Box sx={{ mt: 3 }}>
-          {activeTab === "course" && <Dashboard />}
-          {activeTab === "thread" && (
+          {activeTab === 'course' && <Dashboard />}
+          {activeTab === 'thread' && (
             <Typography variant="body1">Hiển thị Threads ở đây</Typography>
           )}
         </Box>

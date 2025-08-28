@@ -1,16 +1,16 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./context";
-import { AuthLayout, MainLayout } from "./layouts";
-import { Login, Signup, Verify, ForgotPassword } from "./pages/auth";
-import { Dashboard } from "./pages/dashboard";
-import { Profile } from "./pages/profile";
-import { ProtectedRoute } from "./components/common";
-import MaterialUIIconsTest from "./components/common/FontAwesomeTest";
-import CoursesDemo from "./pages/courses/CoursesDemo";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context';
+import { AuthLayout, MainLayout } from './layouts';
+import { Login, Signup, Verify, ForgotPassword } from './pages/auth';
+import { Dashboard } from './pages/dashboard';
+import { Profile } from './pages/profile';
+import { ProtectedRoute } from './components/common';
+import MaterialUIIconsTest from './components/common/FontAwesomeTest';
+import CoursesDemo from './pages/courses/CoursesDemo';
 
 function App() {
   return (
-    <div style={{ width: "100%", height: "100%", margin: 0, padding: 0 }}>
+    <div style={{ width: '100%', height: '100%', margin: 0, padding: 0 }}>
       <AuthProvider>
         <BrowserRouter>
           <Routes>
