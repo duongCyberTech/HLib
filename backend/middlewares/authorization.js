@@ -6,7 +6,7 @@ const authorize = (roles = []) => {
     if (!roles.includes(req.body.role)) {
       return res.status(403).json({ message: 'Access denied' });
     }
-    req.body = req.body.data
+    req.body = req.body
     next();
   };
 };

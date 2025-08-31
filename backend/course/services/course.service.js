@@ -45,7 +45,7 @@ class CourseService{
         }     
     }
 
-    async getAllCourse(filter, offset, limit){
+    async getAllCourse(filter, offset, limit, sortPrice, startDate, endDate){
         try{
             let query = `
             SELECT course_id, title, description, price, is_active
@@ -54,16 +54,31 @@ class CourseService{
 
             const params = [];
 
+            if (filter || startDate || endDate) query += " WHERE "
+
             // add filter condition
             if (filter) {
-                query += " WHERE title LIKE ? OR description LIKE ?";
+                query += " title LIKE ? OR description LIKE ?";
                 params.push(`%${filter}%`, `%${filter}%`);
             }
 
+            if (startDate){
+                query += (filter ? " AND update_date >= ?": " update_date >= ?")
+                params.push(startDate)
+            }
+
+            if (endDate){
+                query += (filter || startDate ? " AND update_date <= ?" : " update_date <= ?")
+            }
             // add limit & offset
             if (limit && offset !== undefined) {
                 query += " LIMIT ? OFFSET ?";
                 params.push(Number(limit), Number(offset));
+            }
+
+            if (sortPrice){
+                query += " ORDER BY price ?"
+                params.push(sortPrice)
             }
 
             const [result] = await pool.query(query, params);

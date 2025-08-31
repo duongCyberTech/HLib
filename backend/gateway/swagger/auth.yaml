@@ -23,13 +23,33 @@ paths:
                   type: string
                 avata:
                   type: string
+            example:
+              fname: John
+              mname: A.
+              lname: Doe
+              password: P@ssw0rd!
+              email: john.doe@example.com
+              avata: https://example.com/avatar.png
       responses:
         '201':
           description: Register Successfully
+          content:
+            application/json:
+              example:
+                message: "Register Successfully"
+                uid: 123
         '400':
           description: Validation Error
+          content:
+            application/json:
+              example:
+                error: "Email already exists"
         '500':
           description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: "Unexpected error occurred"
 
   /api/auth/login:
     post:
@@ -49,11 +69,23 @@ paths:
                   type: string
                 password:
                   type: string
+            example:
+              email: maianh12@example.com
+              password: HLib@2025
       responses:
         '200':
           description: Login Successfully
+          content:
+            application/json:
+              example:
+                message: "Login successfully"
+                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
         '400':
           description: Wrong Password or Email
+          content:
+            application/json:
+              example:
+                error: "Invalid email or password"
 
   /api/auth/otp/request:
     post:
@@ -71,13 +103,28 @@ paths:
                   type: string
                 email: 
                   type: string
+            example:
+              uid: "123"
+              email: john.doe@example.com
       responses:
         '200':
           description: OTP is sent successfully
+          content:
+            application/json:
+              example:
+                message: "OTP has been sent to john.doe@example.com"
         '400':
           description: Email missed
+          content:
+            application/json:
+              example:
+                error: "Email is required"
         '404':
           description: User not found
+          content:
+            application/json:
+              example:
+                error: "User not found"
 
   /api/auth/otp/verify:
     post:
@@ -97,10 +144,26 @@ paths:
                   type: string
                 email: 
                   type: string
+            example:
+              otpCode: "123456"
+              uid: "123"
+              email: john.doe@example.com
       responses:
         '200':
           description: Verify Successfully
+          content:
+            application/json:
+              example:
+                message: "OTP verified successfully"
         '400':
           description: Invalid OTP
+          content:
+            application/json:
+              example:
+                error: "Invalid or expired OTP"
         '404':
           description: User Not Found
+          content:
+            application/json:
+              example:
+                error: "User not found"

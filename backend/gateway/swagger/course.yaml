@@ -28,6 +28,31 @@ paths:
             type: integer
             minimum: 0
             default: 0
+        - name: startDate
+          in: query
+          required: false
+          description: Start updated time of course
+          schema:
+            type: string
+            format: date 
+            example: '2025-08-15'
+        - name: endDate
+          in: query
+          required: false
+          description: End updated time of course
+          schema:
+            type: string
+            format: date 
+            example: '2025-08-15'   
+        - name: sortPrice
+          in: query
+          required: false
+          description: Sort ASC or DESC by price 
+          schema:
+            type: string
+            enum: [ASC, DESC]
+            default: ASC
+                    
       responses:
         '200':
           description: Access Successfully
@@ -51,6 +76,9 @@ paths:
           description: Get course successfully
         '500':
           description: Get course failed
+  /api/course/create-course:
+    post:
+      
 
       
   
