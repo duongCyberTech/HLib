@@ -38,13 +38,33 @@ paths:
                   type: string
                 avata:
                   type: string
+            example:
+              fname: John
+              mname: A.
+              lname: Doe
+              password: P@ssw0rd!
+              email: john.doe@example.com
+              avata: 'https://example.com/avatar.png'
       responses:
         '201':
           description: Register Successfully
+          content:
+            application/json:
+              example:
+                message: Register Successfully
+                uid: 123
         '400':
           description: Validation Error
+          content:
+            application/json:
+              example:
+                error: Email already exists
         '500':
           description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: Unexpected error occurred
   /api/auth/login:
     post:
       summary: Login
@@ -63,11 +83,23 @@ paths:
                   type: string
                 password:
                   type: string
+            example:
+              email: maianh12@example.com
+              password: HLib@2025
       responses:
         '200':
           description: Login Successfully
+          content:
+            application/json:
+              example:
+                message: Login successfully
+                token: eyJhbGciOiJIUzI1NiIsInR5cCI6...
         '400':
           description: Wrong Password or Email
+          content:
+            application/json:
+              example:
+                error: Invalid email or password
   /api/auth/otp/request:
     post:
       summary: Request OTP through email
@@ -84,13 +116,28 @@ paths:
                   type: string
                 email:
                   type: string
+            example:
+              uid: '123'
+              email: john.doe@example.com
       responses:
         '200':
           description: OTP is sent successfully
+          content:
+            application/json:
+              example:
+                message: OTP has been sent to john.doe@example.com
         '400':
           description: Email missed
+          content:
+            application/json:
+              example:
+                error: Email is required
         '404':
           description: User not found
+          content:
+            application/json:
+              example:
+                error: User not found
   /api/auth/otp/verify:
     post:
       summary: OTP Verification
@@ -109,20 +156,36 @@ paths:
                   type: string
                 email:
                   type: string
+            example:
+              otpCode: '123456'
+              uid: '123'
+              email: john.doe@example.com
       responses:
         '200':
           description: Verify Successfully
+          content:
+            application/json:
+              example:
+                message: OTP verified successfully
         '400':
           description: Invalid OTP
+          content:
+            application/json:
+              example:
+                error: Invalid or expired OTP
         '404':
           description: User Not Found
+          content:
+            application/json:
+              example:
+                error: User not found
   /api/course/get-all-course:
-    sercurity:
-      - bearerAuth: []
     get:
       summary: Get All Course
       tags:
         - Course
+      security:
+        - bearerAuth: []
       parameters:
         - name: filter
           in: query
@@ -147,6 +210,32 @@ paths:
             type: integer
             minimum: 0
             default: 0
+        - name: startDate
+          in: query
+          required: false
+          description: Start updated time of course
+          schema:
+            type: string
+            format: date
+            example: '2025-08-15'
+        - name: endDate
+          in: query
+          required: false
+          description: End updated time of course
+          schema:
+            type: string
+            format: date
+            example: '2025-08-15'
+        - name: sortPrice
+          in: query
+          required: false
+          description: Sort ASC or DESC by price
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+            default: ASC
       responses:
         '200':
           description: Access Successfully
@@ -169,3 +258,83 @@ paths:
           description: Get course successfully
         '500':
           description: Get course failed
+  /users:
+    get:
+      summary: Get all users
+      tags:
+        - Users
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    uid:
+                      type: integer
+                      example: 1
+                    fname:
+                      type: string
+                      example: John
+                    lname:
+                      type: string
+                      example: Doe
+                    email:
+                      type: string
+                      example: john.doe@example.com
+                    status:
+                      type: string
+                      example: active
+                    role:
+                      type: string
+                      example: admin
+    post:
+      summary: Create a new user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - fname
+                - lname
+                - email
+                - status
+                - role
+              properties:
+                fname:
+                  type: string
+                  example: Jane
+                lname:
+                  type: string
+                  example: Smith
+                email:
+                  type: string
+                  example: jane.smith@example.com
+                status:
+                  type: string
+                  example: active
+                role:
+                  type: string
+                  example: user
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Created
+                  uid:
+                    type: integer
+        '400':
+          description: Invalid input

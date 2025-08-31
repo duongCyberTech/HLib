@@ -32,7 +32,7 @@ class AuthService {
         const query = `INSERT INTO users (uid, fname, mname, lname, username, password, email, avata, role, salary) 
                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
         await pool.query(query, [userId, fname, mname, lname, username, hashedPassword, email, avata || null, role || 'user', salary || 0]);
-        return { uid: userId, username };
+        return { uid: userId, username, role: role || 'user' };
     }
 
     async loginUser(userData) {

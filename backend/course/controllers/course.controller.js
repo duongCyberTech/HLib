@@ -22,6 +22,7 @@ class CourseController{
     }
 
     async getAllCourse(req, res){
+        console.log(req.body)
         try {
             const result = await CourseService.getAllCourse(req.query?.filter, req.query?.offset, req.query?.limit)
             return res.status(200).json(result)
