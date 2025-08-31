@@ -19,9 +19,9 @@ const options = {
 const PORT = process.env.AUTH_PORT;
 // http://localhost:3001/api/auth/register
 
-https.createServer(options, app).listen(PORT, () => {
-    console.log(`Server is running at https://localhost:${PORT}`)
-})
-// app.listen(PORT, () => {
-//     console.log(`Server is running on port ${PORT}`);
-// });
+// https.createServer(options, app).listen(PORT, () => {
+//     console.log(`Server is running at https://localhost:${PORT}`)
+// })
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
