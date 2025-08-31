@@ -180,12 +180,12 @@ paths:
               example:
                 error: User not found
   /api/course/get-all-course:
+    security:
+      - bearerAuth: []
     get:
       summary: Get All Course
       tags:
         - Course
-      security:
-        - bearerAuth: []
       parameters:
         - name: filter
           in: query
