@@ -16,7 +16,7 @@
     "gateway": "node gateway/index.js",
     "apis": "cd gateway && npx swagger-cli bundle swagger/index.yaml -o swagger/combined.yaml -t yaml",
 
-    "start:all": "doppler run -- npm-run-all --parallel auth user course gateway"
+    "start:all": "doppler run -- npm-run-all --parallel auth course gateway"
   },
   "keywords": [],
   "author": "",
