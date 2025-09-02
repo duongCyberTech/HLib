@@ -7,11 +7,17 @@ import {
   Avatar,
   Container
 } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../../context';
 import { FontAwesomeIcon, CourseCard } from '../../components/common';
+import { coursesService } from '../../services/coursesService';
+import { useApi } from '../../hooks/useApi';
+import { normalizeCourse } from '../../utils/course';
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const { loading, error, execute } = useApi();
+  const [recentCourses, setRecentCourses] = useState([]);
 
   const stats = [
     {
@@ -34,61 +40,17 @@ export default function Dashboard() {
     },
   ];
 
-  // Mock recent courses data
-  const recentCourses = [
-    {
-      id: 1,
-      title: 'Advanced Data Structures',
-      instructor: 'Dr. Nguyen Van Minh',
-      category: 'Computer Science',
-      date: '2024-01-20',
-      likes: 89,
-      description: 'Deep dive into advanced data structures including trees, graphs, and hash tables with practical implementations.',
-      duration: '10 weeks',
-      level: 'Advanced',
-      students: 145,
-      image: null
-    },
-    {
-      id: 2,
-      title: 'Linear Algebra Applications',
-      instructor: 'Prof. Tran Thi Lan',
-      category: 'Mathematics',
-      date: '2024-01-18',
-      likes: 67,
-      description: 'Explore real-world applications of linear algebra in machine learning, computer graphics, and engineering.',
-      duration: '8 weeks',
-      level: 'Intermediate',
-      students: 203,
-      image: null
-    },
-    {
-      id: 3,
-      title: 'Quantum Physics Fundamentals',
-      instructor: 'Dr. Le Van Duc',
-      category: 'Physics',
-      date: '2024-01-16',
-      likes: 54,
-      description: 'Introduction to quantum mechanics principles and their applications in modern technology.',
-      duration: '12 weeks',
-      level: 'Advanced',
-      students: 98,
-      image: null
-    },
-    {
-      id: 4,
-      title: 'Software Engineering Practices',
-      instructor: 'Dr. Pham Thi Mai',
-      category: 'Computer Science',
-      date: '2024-01-15',
-      likes: 123,
-      description: 'Learn industry best practices for software development, testing, and project management.',
-      duration: '14 weeks',
-      level: 'Intermediate',
-      students: 267,
-      image: null
-    }
-  ];
+  useEffect(() => {
+    const fetchRecent = async () => {
+      const { success, data } = await execute(() => coursesService.list({ page: 1, limit: 6, sort: '-createdAt' }));
+      if (success) {
+        const items = Array.isArray(data?.data) ? data.data : Array.isArray(data) ? data : [];
+        setRecentCourses(items.map(normalizeCourse));
+      }
+    };
+    fetchRecent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleCourseClick = (course) => {
     console.log('Course clicked:', course);
@@ -156,17 +118,25 @@ export default function Dashboard() {
         <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
           Recent Courses
         </Typography>
-        <Grid container spacing={3}>
-          {recentCourses.map((course) => (
-            <Grid size={{ xs: 12, md: 6, lg: 4 }} key={course.id}>
-              <CourseCard
-                course={course}
-                onClick={handleCourseClick}
-                variant="default"
-              />
-            </Grid>
-          ))}
-        </Grid>
+        {loading && (
+          <Typography variant="body2" color="text.secondary">Loading...</Typography>
+        )}
+        {error && (
+          <Typography variant="body2" color="error">{error}</Typography>
+        )}
+        {!loading && !error && (
+          <Grid container spacing={3}>
+            {recentCourses.map((course) => (
+              <Grid size={{ xs: 12, md: 6, lg: 4 }} key={course.id}>
+                <CourseCard
+                  course={course}
+                  onClick={handleCourseClick}
+                  variant="default"
+                />
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Box>
     </Container>
   );

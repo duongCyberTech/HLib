@@ -48,19 +48,19 @@ export default function CourseCard({
   course = {},
   onClick,
   showReadMore = true,
-  variant = 'default' // 'default', 'compact', 'detailed'
+  variant = 'default' 
 }) {
   // Default course data structure
   const {
-    title = 'Course Title',
-    instructor = 'Instructor Name',
-    category = 'General',
-    date = '2024-01-15',
+    title = '',
+    instructor = '',
+    category = '',
+    date = '',
     likes = 0,
     image = null,
     description = '',
     duration = '',
-    level = 'Beginner',
+    level = '',
     students = 0
   } = course;
 
