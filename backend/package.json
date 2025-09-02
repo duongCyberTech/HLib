@@ -11,7 +11,7 @@
     "install:all": "npm-run-all install:auth install:user install:course install:middlewares install:gateway",
 
     "auth": "node auth/server.js",
-    "user": "cd user && venv\\Scripts\\activate && python information.py",
+    "user": "cd user && python -m venv venv && venv\\Scripts\\activate && python information.py",
     "course": "node course/server.js",
     "gateway": "node gateway/index.js",
     "apis": "cd gateway && npx swagger-cli bundle swagger/index.yaml -o swagger/combined.yaml -t yaml",
