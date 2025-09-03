@@ -12,7 +12,7 @@ const authenticate = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET); // Kiểm tra token hợp lệ
     console.log("Decode: ", decoded)
-    req.body = req.body ? {...req.body, role: decoded.role} : {role: decoded.role}; // gắn thông tin user vào request
+    req.body = req.body ? {...req.body, role: decoded.role, decoded: decoded} : {role: decoded.role, decoded: decoded}; // gắn thông tin user vào request
     next();
   } catch (err) {
     return res.status(401).json({ message: 'Invalid token' });

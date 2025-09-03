@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Button,
@@ -16,8 +16,9 @@ import {
 } from '@mui/material';
 import { CloudUploadIcon, GoogleIcon, FacebookIcon, AppleIcon, PersonAddIcon } from '../../components/common/Icons';
 import { styled } from '@mui/material/styles';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context';
+import { authService } from '../../services';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -44,6 +45,7 @@ export default function SignupForm() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [toggleUpload, setToggleUpload] = useState(1);
 
   const handleUpload = async (event) => {
@@ -86,27 +88,27 @@ export default function SignupForm() {
     setLoading(true);
 
     try {
-        const res = await axios.post("http://localhost:3001/api/auth/register",{
-            fname,
-            mname,
-            lname,
-            email,
-            avata: url,
-            password
-        })
-        console.log(res.data)
-        localStorage.setItem("uid", res.data.data.uid)
-        await axios.post(`http://localhost:3001/api/auth/otp/request`,{uid: res.data.data.uid});
+      const result = await register({ fname, mname, lname, email, avata: url, password });
+      if (result.success) {
+        // Store uid for OTP verification
+        const uid = result.data.data.uid;
+        localStorage.setItem("uid", uid);
+
+        // Request OTP
+        await authService.requestOTP(uid);
 
         setSuccess('Registration successful! OTP code has been sent to your email, please check your inbox');
         setTimeout(() => {
-            navigate("/verify",{state: {uid: res.data.data.uid, isSignup: true}});
+          navigate("/verify", { state: { uid: uid, isSignup: true } });
         }, 2000);
+      } else {
+        setError(result.error || 'Registration failed');
+      }
     } catch (error) {
-        console.error(error.message)
-        setError('Something went wrong, please try again later');
+      console.error('Registration error:', error);
+      setError('Something went wrong, please try again later');
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
 
   }
