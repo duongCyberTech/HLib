@@ -7,9 +7,11 @@ import {
   Verify,
   ForgotPassword,
   Dashboard,
-  Profile
+  Profile, 
+  Document,
+  FavDocument,
+  Courses
 } from './pages'
-import { Courses } from './pages/courses'
 import { ProtectedRoute } from './components/common';
 import MaterialUIIconsTest from './components/common/FontAwesomeTest';
 import CoursesDemo from './pages/courses/CoursesDemo';
@@ -112,7 +114,9 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MainLayout>
-                    <div>Documents Page - Coming Soon</div>
+                    <div>
+                      <Document />
+                    </div>
                   </MainLayout>
                 </ProtectedRoute>
               }
@@ -122,7 +126,9 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MainLayout>
-                    <div>Favorites Page - Coming Soon</div>
+                    <div>
+                      <FavDocument />
+                    </div>
                   </MainLayout>
                 </ProtectedRoute>
               }

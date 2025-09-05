@@ -6,3 +6,4 @@ export { default as ProtectedRoute } from './ProtectedRoute';
 export { default as FontAwesomeIcon } from './FontAwesomeIcon';
 export { default as SimpleIcon } from './SimpleIcon';
 export { default as CourseCard } from './CourseCard';
+export { default as DocumentCard } from './DocumentCard';
