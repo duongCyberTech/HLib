@@ -6,7 +6,7 @@ import {
   Chip,
   Box,
   Button,
-  Avatar
+  Avatar,
 } from '@mui/material';
 import { SimpleIcon } from './';
 
@@ -20,13 +20,13 @@ const ImagePlaceholder = ({ height = 200, title = 'Course Image' }) => (
       alignItems: 'center',
       justifyContent: 'center',
       border: '1px solid #e0e0e0',
-      borderRadius: height === 120 ? '4px 0 0 4px' : '4px 4px 0 0'
+      borderRadius: height === 120 ? '4px 0 0 4px' : '4px 4px 0 0',
     }}
   >
     <Box sx={{ textAlign: 'center' }}>
       <SimpleIcon
         icon="fas fa-image"
-        size={height === 120 ? "1.5rem" : "2.5rem"}
+        size={height === 120 ? '1.5rem' : '2.5rem'}
         color="#bbb"
         sx={{ mb: 1 }}
       />
@@ -35,7 +35,7 @@ const ImagePlaceholder = ({ height = 200, title = 'Course Image' }) => (
         color="#bbb"
         sx={{
           fontSize: height === 120 ? '0.75rem' : '0.875rem',
-          fontWeight: 500
+          fontWeight: 500,
         }}
       >
         {title}
@@ -44,11 +44,11 @@ const ImagePlaceholder = ({ height = 200, title = 'Course Image' }) => (
   </Box>
 );
 
-export default function CourseCard({ 
+export default function CourseCard({
   course = {},
   onClick,
   showReadMore = true,
-  variant = 'default' // 'default', 'compact', 'detailed'
+  variant = 'default', // 'default', 'compact', 'detailed'
 }) {
   // Default course data structure
   const {
@@ -61,25 +61,23 @@ export default function CourseCard({
     description = '',
     duration = '',
     level = 'Beginner',
-    students = 0
+    students = 0,
   } = course;
 
   // Category colors mapping
   const getCategoryColor = (category) => {
     const colors = {
       'Computer Science': '#40C4FF',
-      'Mathematics': '#FF6B6B', 
-      'Physics': '#4ECDC4',
-      'Chemistry': '#45B7D1',
-      'Biology': '#96CEB4',
-      'Engineering': '#FECA57',
-      'Business': '#FF9FF3',
-      'General': '#95A5A6'
+      Mathematics: '#FF6B6B',
+      Physics: '#4ECDC4',
+      Chemistry: '#45B7D1',
+      Biology: '#96CEB4',
+      Engineering: '#FECA57',
+      Business: '#FF9FF3',
+      General: '#95A5A6',
     };
     return colors[category] || colors['General'];
   };
-
-
 
   const handleCardClick = () => {
     if (onClick) {
@@ -96,13 +94,15 @@ export default function CourseCard({
 
   if (variant === 'compact') {
     return (
-      <Card 
-        sx={{ 
+      <Card
+        sx={{
           height: '100%',
           cursor: onClick ? 'pointer' : 'default',
-          '&:hover': onClick ? {
-            boxShadow: 3
-          } : {}
+          '&:hover': onClick
+            ? {
+                boxShadow: 3,
+              }
+            : {},
         }}
         onClick={handleCardClick}
       >
@@ -119,28 +119,38 @@ export default function CourseCard({
               alt={title}
             />
           )}
-          <CardContent sx={{
-            flex: 1,
-            p: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between'
-          }}>
+          <CardContent
+            sx={{
+              flex: 1,
+              p: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+          >
             <Box>
-              <Typography variant="h6" component="h3" sx={{
-                fontSize: '1rem',
-                fontWeight: 600,
-                mb: 0.25,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                lineHeight: 1.3
-              }}>
+              <Typography
+                variant="h6"
+                component="h3"
+                sx={{
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  mb: 0.25,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  lineHeight: 1.3,
+                }}
+              >
                 {title}
               </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 0.75 }}>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mb: 0.75 }}
+              >
                 by {instructor}
               </Typography>
             </Box>
@@ -151,7 +161,7 @@ export default function CourseCard({
                 backgroundColor: getCategoryColor(category),
                 color: 'white',
                 fontSize: '0.75rem',
-                alignSelf: 'flex-start'
+                alignSelf: 'flex-start',
               }}
             />
           </CardContent>
@@ -168,9 +178,11 @@ export default function CourseCard({
         display: 'flex',
         flexDirection: 'column',
         cursor: onClick ? 'pointer' : 'default',
-        '&:hover': onClick ? {
-          boxShadow: 3
-        } : {}
+        '&:hover': onClick
+          ? {
+              boxShadow: 3,
+            }
+          : {},
       }}
       onClick={handleCardClick}
     >
@@ -184,31 +196,37 @@ export default function CourseCard({
           image={image}
           alt={title}
           sx={{
-            objectFit: 'cover'
+            objectFit: 'cover',
           }}
         />
       )}
-      
+
       {/* Course Content */}
-      <CardContent sx={{
-        flexGrow: 1,
-        p: 3,
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative'
-      }}>
+      <CardContent
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+        }}
+      >
         {/* Course Title */}
-        <Typography variant="h6" component="h3" sx={{
-          fontWeight: 600,
-          mb: 0.5,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          display: '-webkit-box',
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: 'vertical',
-          minHeight: '3rem',
-          lineHeight: 1.4
-        }}>
+        <Typography
+          variant="h6"
+          component="h3"
+          sx={{
+            fontWeight: 600,
+            mb: 0.5,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            minHeight: '3rem',
+            lineHeight: 1.4,
+          }}
+        >
           {title}
         </Typography>
 
@@ -225,7 +243,7 @@ export default function CourseCard({
             sx={{
               backgroundColor: getCategoryColor(category),
               color: 'white',
-              fontWeight: 500
+              fontWeight: 500,
             }}
           />
           <Typography variant="body2" color="text.secondary">
@@ -237,7 +255,9 @@ export default function CourseCard({
         {variant === 'detailed' && (
           <Box sx={{ mb: 1.5 }}>
             {duration && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+              <Box
+                sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}
+              >
                 <SimpleIcon icon="fas fa-clock" size="0.875rem" color="#666" />
                 <Typography variant="body2" color="text.secondary">
                   {duration}
@@ -245,7 +265,9 @@ export default function CourseCard({
               </Box>
             )}
             {level && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+              <Box
+                sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}
+              >
                 <SimpleIcon icon="fas fa-signal" size="0.875rem" color="#666" />
                 <Typography variant="body2" color="text.secondary">
                   {level}
@@ -265,15 +287,19 @@ export default function CourseCard({
 
         {/* Description */}
         {description && (
-          <Typography variant="body2" color="text.secondary" sx={{
-            mb: 1.5,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            display: '-webkit-box',
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: 'vertical',
-            lineHeight: 1.5
-          }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              mb: 1.5,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+              lineHeight: 1.5,
+            }}
+          >
             {description}
           </Typography>
         )}
@@ -282,12 +308,14 @@ export default function CourseCard({
         <Box sx={{ flexGrow: 1 }} />
 
         {/* Actions - Fixed position from bottom */}
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          pt: 1.5
-        }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            pt: 1.5,
+          }}
+        >
           {showReadMore && (
             <Button
               variant="text"
@@ -298,7 +326,7 @@ export default function CourseCard({
                 fontWeight: 500,
                 textTransform: 'none',
                 p: 0,
-                minWidth: 'auto'
+                minWidth: 'auto',
               }}
             >
               Read More
