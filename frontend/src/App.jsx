@@ -4,6 +4,7 @@ import { AuthLayout, MainLayout } from './layouts';
 import { Login, Signup, Verify, ForgotPassword } from './pages/auth';
 import { Dashboard } from './pages/dashboard';
 import { Profile } from './pages/profile';
+import { Document, FavDocument } from './pages/documents';
 import { ProtectedRoute } from './components/common';
 import MaterialUIIconsTest from './components/common/FontAwesomeTest';
 import CoursesDemo from './pages/courses/CoursesDemo';
@@ -106,7 +107,9 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MainLayout>
-                    <div>Documents Page - Coming Soon</div>
+                    <div>
+                      <Document />
+                    </div>
                   </MainLayout>
                 </ProtectedRoute>
               }
@@ -116,7 +119,9 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MainLayout>
-                    <div>Favorites Page - Coming Soon</div>
+                    <div>
+                      <FavDocument />
+                    </div>
                   </MainLayout>
                 </ProtectedRoute>
               }
