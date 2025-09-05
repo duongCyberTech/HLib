@@ -9,9 +9,9 @@ import {
   Alert
 } from '@mui/material';
 import {SensorOccupiedTwoTone} from '@mui/icons-material';
-import axios from 'axios';
 import CountdownTimer from '../../components/CountDown';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { authService } from '../../services';
 
 export default function Verify() {
     const location = useLocation()
@@ -32,19 +32,15 @@ export default function Verify() {
         setMesType('error');
         return;
     }
-    alert(localStorage.getItem("uid"))
     try {
-        const res = await axios.post(`http://localhost:3001/api/auth/otp/verify`,{
-            uid,
-            otp
-        })
-        console.log(res.data)
-        setMessage('Registration successful! Please login to continue');
+        const response = await authService.verifyOTP(uid, otp);
+        console.log(response);
+        setMessage('Verification successful! Please login to continue');
         setMesType('success');
-        navigate('/login')
+        navigate('/login');
     } catch (error) {
-        console.error(error.message)
-        setMessage('Something went wrong, please try again later');
+        console.error('Verification error:', error);
+        setMessage(error.message || 'Something went wrong, please try again later');
         setMesType('error');
     }
   }
@@ -52,17 +48,15 @@ export default function Verify() {
   const handleResend = async (event) => {
         event.preventDefault();
         try {
-            const res = await axios.post(`http://localhost:3001/api/auth/otp/request`,{
-                uid,
-            });
-            console.log(res.data);
+            const response = await authService.requestOTP(uid);
+            console.log(response);
             setMessage("OTP code has been resent to your email");
             setMesType("success");
             setSeconds(120); // Reset countdown timer
             localStorage.setItem("seconds", 120);
         } catch (error) {
-            console.error(error.message);
-            setMessage("Something went wrong, please try again later");
+            console.error('Resend OTP error:', error);
+            setMessage(error.message || "Something went wrong, please try again later");
             setMesType("error");
         }
     }

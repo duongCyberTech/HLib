@@ -12,10 +12,13 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/api/auth', authRoutes);
-const options = {
-    key: fs.readFileSync("../server.key"),
-    cert: fs.readFileSync('../server.cert'),
-}
+
+// SSL options - uncomment when SSL certificates are available
+// const options = {
+//     key: fs.readFileSync("../server.key"),
+//     cert: fs.readFileSync('../server.cert'),
+// }
+
 const PORT = process.env.AUTH_PORT;
 // http://localhost:3001/api/auth/register
 

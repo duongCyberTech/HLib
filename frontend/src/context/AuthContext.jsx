@@ -40,12 +40,19 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await authService.login(email, password);
-      const { token, user: userData } = response;
-      
+      const { token } = response;
+
       localStorage.setItem('token', token);
-      setUser(userData);
       setIsAuthenticated(true);
-      
+
+      // Get user profile after successful login
+      try {
+        const userData = await authService.verifyToken(token);
+        setUser(userData.user);
+      } catch (profileError) {
+        console.warn('Could not fetch user profile:', profileError);
+      }
+
       return { success: true };
     } catch (error) {
       return { success: false, error: error.message };

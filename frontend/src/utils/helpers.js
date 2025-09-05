@@ -46,6 +46,16 @@ export const formatDateTime = (date) => {
   return `${formatDate(date)} at ${formatTime(date)}`;
 };
 
+export const formatCurrency = (amount) => {
+  if (typeof amount !== 'number') return '0đ';
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(amount);
+};
+
 // String helpers
 export const truncateText = (text, maxLength = 100) => {
   if (text.length <= maxLength) return text;

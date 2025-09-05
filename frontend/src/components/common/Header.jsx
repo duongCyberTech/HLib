@@ -39,7 +39,7 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#1488D8' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#05326d' }}>
       <Toolbar>
         <Box
           sx={{

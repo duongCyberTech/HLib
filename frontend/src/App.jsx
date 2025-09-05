@@ -1,10 +1,17 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context';
 import { AuthLayout, MainLayout } from './layouts';
-import { Login, Signup, Verify, ForgotPassword } from './pages/auth';
-import { Dashboard } from './pages/dashboard';
-import { Profile } from './pages/profile';
-import { Document, FavDocument } from './pages/documents';
+import {
+  Login,
+  Signup,
+  Verify,
+  ForgotPassword,
+  Dashboard,
+  Profile, 
+  Document,
+  FavDocument,
+  Courses
+} from './pages'
 import { ProtectedRoute } from './components/common';
 import MaterialUIIconsTest from './components/common/FontAwesomeTest';
 import CoursesDemo from './pages/courses/CoursesDemo';
@@ -77,7 +84,7 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MainLayout>
-                    <div>Courses Page - Coming Soon</div>
+                    <Courses />
                   </MainLayout>
                 </ProtectedRoute>
               }
