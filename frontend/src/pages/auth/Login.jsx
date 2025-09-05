@@ -17,7 +17,7 @@ import {
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context';
-import { TestInfo, FontAwesomeIcon } from '../../components/common';
+import { FontAwesomeIcon } from '../../components/common';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -72,26 +72,40 @@ export default function Login() {
   }
 
   return (
-    <Container sx={{ ml: 0, mt: 5, mb: 5, display: 'flex', gap: 4, width: '100%', flexWrap:"wrap" }}>
+    <Container sx={{ display: 'flex', justifyContent:'center', alignItems:'center', minHeight: '100vh', width:'100%', backgroundColor:'#05326d' }}>
             {/* Test Info */}
-            <Box sx={{ width: '100%' }}>
-                <TestInfo />
-            </Box>
 
             {/* Left Side - Form */}
-            <Box sx={{ flex: 1, width: "100%", boxShadow: 3, p: 4, borderRadius: 2, backgroundColor: '#fff', justifyItems: 'space-between' }}>
+            <Box sx={{ maxWidth:'550px', maxHeight: '800px', width:'100%', boxShadow: 3, p: 4, borderRadius: 1, backgroundColor: "#fff" }}>
                 <Box display={'flex'} flexDirection="column" alignItems="center" mb={3}>
-                    <FontAwesomeIcon
-                        icon="fas fa-user-lock"
-                        size="3rem"
-                        color="#40C4FF"
-                        sx={{ mb: 1 }}
-                    />
-                    <Typography variant="h5" fontWeight="bold" gutterBottom>
-                        LOG IN
+                    <img src="/assets/Logo.png" alt="Logo" style={{ width: 50, height: 50 }} />
+                    <Typography
+                      variant="h5"
+                      color="#05326d"
+                      fontWeight="bold"
+                      sx={{
+                        fontFamily: 'Roboto-SemiBold, system-ui, sans-serif',
+                        letterSpacing: '0.5px'
+                      }}
+                    >
+                      HCMUT ACADEMIC FORUM
                     </Typography>
+                    <Box display={'flex'} flexDirection="column" alignItems="center" mt={3} mb={1}>
+                        <FontAwesomeIcon
+                            icon="fas fa-user-lock"
+                            size="3rem"
+                            color="#05326d"
+                            sx={{ mb: 1 }}
+                        />
+                        <Typography variant="h5" color='#05326d' fontWeight="bold" gutterBottom >
+                            LOG IN
+                        </Typography>
+                    </Box>
+
+
+
                 </Box>
-                
+
 
                 {error && (
                     <Alert severity="error" sx={{ mb: 2 }}>
@@ -99,7 +113,7 @@ export default function Login() {
                     </Alert>
                 )}
 
-                <Grid container spacing={2} sx={{justifyItems: 'center', alignSelf: 'center'}}>
+                <Grid container spacing={2} direction={'column'}>
                     <Grid item xs={12}>
                         <TextField
                             fullWidth
@@ -123,7 +137,7 @@ export default function Login() {
                 </Grid>
                 <Typography variant="body2" sx={{mt: 2}}>
                     Forgot your password ?{' '}
-                    <Link href="/forgot-password" underline="hover">
+                    <Link href="/forgot-password" underline="hover" sx={{ color: '#05326d' }}>
                             Click here
                     </Link>
                 </Typography>
@@ -131,7 +145,7 @@ export default function Login() {
                 <Button
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 2, py: 1.2, fontWeight: 'bold' }}
+                    sx={{ mt: 2, py: 1.2, fontWeight: 'bold', backgroundColor: '#05326d', '&:hover': {backgroundColor: '#4bbad5'}, color: '#fff' }}
                     onClick={(e) => handleSubmit(e)}
                     disabled={!email || !password || loading}
                 >
@@ -166,29 +180,10 @@ export default function Login() {
 
                 <Typography align="center" variant="body2" mt={3}>
                     New user ?{' '}
-                    <Link href="/" underline="hover">
+                    <Link href="/" underline="hover" sx={{ color: '#05326d' }}>
                         Register now
                     </Link>
                 </Typography>
-            </Box>
-
-            {/* Right Side - Info */}
-            <Box sx={{ flex: 1}}>
-                <Typography variant="h4" fontWeight="bold" gutterBottom>
-                Tài khoản để test
-                </Typography>
-                <ul style={{ paddingLeft: '1rem', marginTop: '1rem' }}>
-                <li>
-                    <Typography>
-                    Email: user@hcmut.edu.vn
-                    </Typography>
-                </li>
-                <li>
-                    <Typography>
-                    Password: user123
-                    </Typography>
-                </li>
-                </ul>
             </Box>
     </Container>
   );

@@ -113,104 +113,138 @@ export default function SignupForm() {
 
   }
   return (
-    <Container sx={{ ml: 0, mt: 5, mb: 5, display: 'flex', gap: 4, width: '100vw', flexWrap:"wrap", justifyItems: 'center' }}>
+    <Container sx={{ display: 'flex', justifyContent:'center', alignItems:'center', minHeight: '100vh', width:'100%', backgroundColor:'#05326d'  }}>
             {/* Left Side - Form */}
-            <Box sx={{ flex: 1, width: "100%", boxShadow: 3, p: 4, borderRadius: 2, backgroundColor: '#fff', justifyItems: 'space-between' }}>
+            <Box sx={{ maxWidth:'650px', maxHeight: '800px', width:'100%', boxShadow: 3, p: 4, borderRadius: 1, backgroundColor: "#fff" }}>
                 <Box display={'flex'} flexDirection="column" alignItems="center" mb={3}>
-                    <PersonAddIcon sx={{ fontSize: 50, color: '#40C4FF', mb: 1 }} />
-                    <Typography variant="h5" fontWeight="bold" gutterBottom>
+                    <PersonAddIcon sx={{ fontSize: 50, color: '#05326d', mb: 1 }} />
+                    <Typography variant="h5" color='#05326d' fontWeight="bold" gutterBottom>
                         SIGN IN
                     </Typography>
                 </Box>
                 
 
-                <Grid container spacing={2} sx={{justifyItems: 'center', alignSelf: 'center'}}>
-                    <Grid item xs={6}>
-                        <TextField 
-                            fullWidth 
-                            label="First name" 
-                            required
-                            value={fname} 
-                            onChange={(e) => setFname(e.target.value)}
-                        />
+                {/* Inputs */}
+                <Box component="form" noValidate>
+                  {/* Row 1: First name & Middle name */}
+                  <Grid container spacing={2} sx={{ mb: 2, justifyContent: "center" }}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        autoComplete="given-name"
+                        name="firstName"
+                        required
+                        fullWidth
+                        id="firstName"
+                        label="First Name"
+                        autoFocus
+                        value={fname}
+                        onChange={(e) => setFname(e.target.value)}
+                      />
                     </Grid>
-                    <Grid item xs={6}>
-                        <TextField 
-                            fullWidth 
-                            label="Middle name" 
-                            required
-                            value={mname} onChange={(e) => setMname(e.target.value)}
-                        />
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        id="middleName"
+                        label="Middle Name"
+                        name="middleName"
+                        value={mname}
+                        onChange={(e) => setMname(e.target.value)}
+                      />
                     </Grid>
-                    <Grid item xs={6}>
-                        <TextField 
-                            fullWidth 
-                            label="Last name" 
-                            value={lname} 
-                            required
-                            onChange={(e) => setLname(e.target.value)}
-                        />
+                  </Grid>
+                  {/* Row 2: Last name & Email */}
+                  <Grid container spacing={2} sx={{ mb: 2, justifyContent: "center" }}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        id="lastName"
+                        label="Last Name"
+                        name="lastName"
+                        autoComplete="family-name"
+                        value={lname}
+                        onChange={(e) => setLname(e.target.value)}
+                      />
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField 
-                            fullWidth 
-                            label="Email" 
-                            type="email" 
-                            required
-                            value={email} 
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            label="Password"
-                            type="password"
-                            required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
+                  </Grid>
+                  {/* Row 3: Password & Confirm password */}
+                  <Grid container spacing={2} sx={{ justifyContent: "center" }}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="new-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            label="Confirmed Password"
-                            type="password"
-                            required
-                            error={confirmPass !== password && confirmPass !== ''}
-                            helperText={confirmPass !== password && confirmPass !== '' ? "Passwords do not match" : "Matche"}
-                            value={confirmPass}
-                            onChange={(e) => setConfirmPass(e.target.value)}
-                        />
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        name="confirmPassword"
+                        label="Confirm Password"
+                        type="password"
+                        id="confirmPassword"
+                        error={confirmPass !== '' && confirmPass !== password}
+                        helperText={confirmPass !== '' && confirmPass !== password ? 'Passwords do not match' : ''}
+                        value={confirmPass}
+                        onChange={(e) => setConfirmPass(e.target.value)}
+                      />
                     </Grid>
-                    <Button
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        startIcon={<CloudUploadIcon />}
-                    >
-                        {toggleUpload === 1 ? 'Upload Avatar' : toggleUpload === 2 ? 'Uploading...' : image.name}
-                        <VisuallyHiddenInput
-                            type="file"
-                            onChange={(event) => handleUpload(event)}
-                            multiple
-                        />
-                    </Button>
-                </Grid>
+                  </Grid>
+                </Box>
 
-                <FormControlLabel
-                    control={<Checkbox size="small" />}
-                    label={
-                        <Typography variant="body2">
-                        By signing up, I agree with the{' '}
-                        <Link href="#" underline="hover">
-                            Terms of Use & Privacy Policy
-                        </Link>
-                        </Typography>
-                    }
-                    sx={{ mt: 1 }}
-                />
+                {/* Đưa Upload Avatar ra ngoài Grid để không phá layout */}
+                <Box mt={2} sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Button
+                    component="label"
+                    role={undefined}
+                    variant="contained"
+                    tabIndex={-1}
+                    startIcon={<CloudUploadIcon />}
+                >
+                    {toggleUpload === 1 ? 'Upload Avatar' : toggleUpload === 2 ? 'Uploading...' : image?.name}
+                    <VisuallyHiddenInput
+                    type="file"
+                    onChange={handleUpload}
+                    // chỉ up 1 ảnh avatar
+                    multiple={false}
+                    accept="image/*"
+                    />
+                </Button>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <FormControlLabel
+                      control={<Checkbox size="small" />}
+                      label={
+                          <Typography variant="body2">
+                          By signing up, I agree with the{' '}
+                          <Link href="#" underline="hover">
+                              Terms of Use & Privacy Policy
+                          </Link>
+                          </Typography>
+                      }
+                      sx={{ mt: 1 }}
+                  />
+                </Box>
 
                 {error && (
                     <Alert severity="error" sx={{ mt: 2 }}>
@@ -227,7 +261,7 @@ export default function SignupForm() {
                 <Button
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 2, py: 1.2, fontWeight: 'bold' }}
+                    sx={{ mt: 2, py: 1.2, fontWeight: 'bold', backgroundColor: '#05326d', '&:hover':{backgroundColor:'#4bbad4'}, color: '#fff' }}
                     onClick={(e) => handleSubmit(e)}
                     disabled={loading || !fname || !lname || !email || !password || !mname || !confirmPass || toggleUpload === 2}
                     startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
@@ -255,30 +289,6 @@ export default function SignupForm() {
                         Log in here
                     </Link>
                 </Typography>
-            </Box>
-
-            {/* Right Side - Info */}
-            <Box sx={{ flex: 1}}>
-                <Typography variant="h4" fontWeight="bold" gutterBottom>
-                Come join us
-                </Typography>
-                <ul style={{ paddingLeft: '1rem', marginTop: '1rem' }}>
-                <li>
-                    <Typography>
-                    💡 Explore articles, tutorials, and guides on diverse subjects
-                    </Typography>
-                </li>
-                <li>
-                    <Typography>
-                    ⏰ Learn at your own pace and access educational resources anytime
-                    </Typography>
-                </li>
-                <li>
-                    <Typography>
-                    🌐 Engage with a community of learners and share insights
-                    </Typography>
-                </li>
-                </ul>
             </Box>
     </Container>
   );

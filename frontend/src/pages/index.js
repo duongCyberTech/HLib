@@ -6,3 +6,5 @@ export * from './dashboard';
 
 // Profile pages
 export * from './profile';
+
+export * from './courses'

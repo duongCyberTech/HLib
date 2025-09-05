@@ -6,11 +6,14 @@ import {
   Button,
   Chip,
   Divider,
+  Container,
+  Grid,
+  CardContent,
 } from '@mui/material';
-import { Edit as EditIcon, Email as EmailIcon } from '@mui/icons-material';
+import { Edit as EditIcon } from '@mui/icons-material';
 import { useAuth } from '../../context';
 import { useState } from 'react';
-import Dashboard from '../dashboard/Dashboard';
+
 export default function Profile() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('course');
@@ -29,11 +32,7 @@ export default function Profile() {
   };
 
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom sx={{ px: 3, mt: 2 }}>
-        Profile
-      </Typography>
-
+    <Container maxWidth="lg" sx={{ py: 3 }}>
       {/* Bìa gradient */}
       <Box
         sx={{
@@ -192,12 +191,30 @@ export default function Profile() {
 
         {/* Tab content */}
         <Box sx={{ mt: 3 }}>
-          {activeTab === 'course' && <Dashboard />}
+          {activeTab === 'course' && (
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant='body1'> Hiển thị Course ở đây</Typography>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
+          )}
           {activeTab === 'thread' && (
-            <Typography variant="body1">Hiển thị Threads ở đây</Typography>
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant="body1">Hiển thị Threads ở đây</Typography>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
           )}
         </Box>
       </Box>
-    </Box>
+    </Container>
   );
 }
