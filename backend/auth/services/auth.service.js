@@ -1,4 +1,4 @@
-const {pool} = require('../config/dbConfig');
+const {client, pool} = require('../config/dbConfig');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
@@ -38,7 +38,7 @@ class AuthService {
     async loginUser(userData) {
         const { username, password, email } = userData;
         //console.log('Logging in user with data:', { username, email, password });
-        const query = 'SELECT uid, username, password, status FROM users WHERE username = ? OR email = ?';
+        const query = 'SELECT uid, username, password, status, role FROM users WHERE username = ? OR email = ?';
         const [rows] = await pool.query(query, [username || "-", email || "-"]);
         console.log('Found user:', rows);
 
@@ -57,7 +57,8 @@ class AuthService {
             throw new Error('Invalid password');
         }
         //console.log('User logged in:', user.username);
-        const token = jwt.sign({ uid: user.uid, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        
+        const token = jwt.sign({ uid: user.uid, username: user.username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
         return { token };
     }
     

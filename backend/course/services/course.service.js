@@ -48,8 +48,14 @@ class CourseService{
     async getAllCourse(filter, offset, limit, sortPrice, startDate, endDate){
         try{
             let query = `
-            SELECT course_id, title, description, price, is_active
-            FROM courses
+            SELECT c.course_id, c.title, c.description, c.price, c.is_active, c.sale_number, c.languages,
+            CONCAT(c.duration_num,' ', c.duration_unit) as duration, c.updated_date as last_update,
+            CONCAT(u.fname, ' ', u.mname, ' ', u.lname) as fullname, u.avata,
+            cat.name as category_name, b.breadcrumb_name
+            FROM courses as c JOIN users as u ON c.uid = u.uid
+            JOIN categories as cat ON c.category_id = cat.category_id
+            JOIN course_breadcrumbs as cb ON c.course_id = cb.course_id
+            JOIN breadcrumbs as b ON cb.breadcrumb_id = b.breadcrumb_id
             `;
 
             const params = [];
@@ -82,9 +88,17 @@ class CourseService{
             }
 
             const [result] = await pool.query(query, params);
-
-            console.log(">>> data: ", result[0])
-            return {data: result[0], message: "Get all course!"}
+            const rcourses = Object.values(
+                result.reduce((acc, course) => {
+                    if (!acc[course.course_id]) {
+                        acc[course.course_id] = { ...course, breadcrumbs: [] };
+                    }
+                    acc[course.course_id].breadcrumbs.push(course.breadcrumb_name);
+                    return acc;
+                }, {})
+            )
+            console.log(">>> data: ", rcourses)
+            return {data: rcourses, message: "Get all course!"}
         }catch(error){
             console.log(error)
             return {message: "Get course failed!"}

@@ -78,6 +78,9 @@ paths:
           description: Get course failed
   /api/course/create-course:
     post:
+      summary: Create new course
+      
+
       
 
       

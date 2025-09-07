@@ -2,7 +2,7 @@ import api from './api';
 import { mockAuthService } from './mockAuthService';
 
 // Set to true to use mock service for testing without backend
-const USE_MOCK = true;
+const USE_MOCK = false;
 
 export const authService = USE_MOCK ? mockAuthService : {
   // Login user

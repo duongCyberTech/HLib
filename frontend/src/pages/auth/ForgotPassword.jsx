@@ -8,49 +8,29 @@ import {
   Typography
 } from '@mui/material';
 import {SensorOccupiedTwoTone} from '@mui/icons-material';
-import axios from 'axios';
-import CountdownTimer from '../../components/CountDown';
-import { useLocation } from 'react-router-dom';
+import { authService } from '../../services';
 
 export default function ForgotPassword() {
-    const [otp, setOTP] = useState('');
-    const [seconds, setSeconds] = useState(0);
     const [email, setEmail] = useState('');
     const [isON, setIsON] = useState(false);
-  const handleVerify = async (event) => {
+  const handleSendPassword = async (event) => {
     event.preventDefault();
-    if (!otp) {
-        alert("Please enter the OTP code");
+    if (!email) {
+        alert("Please enter your email address");
         return;
     }
-    alert(localStorage.getItem("uid"))
     try {
-        const res = await axios.post(`http://localhost:3001/api/auth/otp/verify/`,{
-            email,
-            otp
-        })
-        console.log(res.data)
-        alert("Register successfully, please login to continue")
+        const response = await authService.forgotPassword(email);
+        console.log(response);
+        alert("New password has been sent to your email. Please check your inbox.");
+        setIsON(true);
     } catch (error) {
-        console.error(error.message)
-        alert("Something went wrong, please try again later")
+        console.error('Forgot password error:', error);
+        alert(error.message || "Something went wrong, please try again later");
     }
   }
 
-  const handleResend = async (event) => {
-    event.preventDefault();
-    try {
-        const res = await axios.post(`http://localhost:3001/api/auth/otp/request/`,{
-            email
-        });
-        console.log(res.data);
-        alert("OTP code has been resent to your email");
-        setSeconds(120); // Reset countdown timer
-    } catch (error) {
-        console.error(error.message);
-        alert("Something went wrong, please try again later");
-    }
-    }
+
   return (
     <Container sx={{ ml: 0, mt: 5, mb: 5, display: 'flex', gap: 4, width: '100%', flexWrap:"wrap" }}>
             {/* Left Side - Form */}
@@ -64,55 +44,34 @@ export default function ForgotPassword() {
                 
                 
                 <Grid container spacing={2} sx={{justifyItems: 'center', alignSelf: 'center'}}>
-                    {!isON ? 
-                        (
-                            <Grid item xs={12}>
-                                <TextField 
-                                    fullWidth 
-                                    label="Email" 
-                                    type="email" 
-                                    required
-                                    value={email} 
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </Grid>
-                        ) : (
-                            <Grid item xs={6}>
-                                <TextField 
-                                    fullWidth 
-                                    label="OTP Code" 
-                                    required
-                                    value={otp} 
-                                    onChange={(e) => setOTP(e.target.value)}
-                                />
-                            </Grid>
-                        )
-                    }
-                    
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            label="Email"
+                            type="email"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            disabled={isON}
+                        />
+                    </Grid>
                 </Grid>
-                <CountdownTimer seconds={seconds} setSeconds={setSeconds}/>
-                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', gap: 3 }}>
-                    <Button
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 2, py: 1.2, fontWeight: 'bold' }}
-                        onClick={(e) => handleResend(e)}
-                        {...(seconds > 0
-                        ) ? { disabled: true } : {}}
-                    >
-                        Send Code
-                    </Button>
-                    <Button
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 2, py: 1.2, fontWeight: 'bold' }}
-                        onClick={(e) => handleVerify(e)}
-                        {...(!otp || otp.length < 6
-                        ) ? { disabled: true } : {}}
-                    >
-                        Verify
-                    </Button>
-                </Box>
+
+                {isON && (
+                    <Typography variant="body1" sx={{ mt: 2, textAlign: 'center', color: 'green' }}>
+                        New password has been sent to your email. Please check your inbox and login with the new password.
+                    </Typography>
+                )}
+
+                <Button
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 2, py: 1.2, fontWeight: 'bold' }}
+                    onClick={(e) => handleSendPassword(e)}
+                    disabled={!email || isON}
+                >
+                    {isON ? 'Password Sent' : 'Send New Password'}
+                </Button>
                 
 
             </Box>

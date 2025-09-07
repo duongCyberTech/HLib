@@ -143,6 +143,18 @@ create table tags(
     foreign key (tag_id) references users(uid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+create table categories(
+    category_id varchar(255) primary key,
+    name nvarchar(255) not null,
+    description text
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Breadcrumbs for categories
+CREATE TABLE breadcrumbs(
+    breadcrumb_id INT AUTO_INCREMENT PRIMARY KEY,
+    breadcrumb_name VARCHAR(255) NOT NULL
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 create table courses(
 	course_id varchar(255) primary key,
     title varchar(255) not null,
@@ -152,8 +164,21 @@ create table courses(
     is_active boolean default false,
     created_date datetime default current_timestamp,
     updated_date datetime default current_timestamp,
+    duration_num int default 0,
+    duration_unit enum('hours', 'days', 'weeks', 'months', 'years') default 'hours',
+    languages varchar(255) default 'English',
     uid varchar(255) not null,
-    foreign key (uid) references users(uid)
+    foreign key (uid) references users(uid),
+    category_id varchar(255),
+    foreign key (category_id) references categories(category_id)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE TABLE course_breadcrumbs (
+    course_id VARCHAR(255) NOT NULL,
+    breadcrumb_id INT NOT NULL,
+    PRIMARY KEY (course_id, breadcrumb_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id),
+    FOREIGN KEY (breadcrumb_id) REFERENCES breadcrumbs(breadcrumb_id)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 create table course_docs(
@@ -162,7 +187,7 @@ create table course_docs(
     primary key(course_id, doc_id),
     foreign key (course_id) references courses(course_id),
     foreign key (doc_id) references documents(did)
-)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 create table access_course(
     uid varchar(255) not null,
@@ -262,6 +287,43 @@ INSERT INTO topics (tid, name, sid, description) VALUES
 ('t001', 'Normalization', 'sub001', 'Database normalization forms'),
 ('t002', 'Transactions', 'sub001', 'ACID properties and concurrency control'),
 ('t003', 'SEO Basics', 'sub003', 'Search Engine Optimization fundamentals');
+
+-- Insert categories
+INSERT INTO categories (category_id, name, description)
+VALUES
+('c1', 'Programming', 'Courses related to programming languages and software development'),
+('c2', 'Business', 'Courses related to business, management, and finance'),
+('c3', 'Design', 'Courses on design, creativity, and multimedia');
+
+-- Insert courses (must match existing users.uid)
+INSERT INTO courses (
+    course_id, title, description, price, sale_number, is_active,
+    created_date, updated_date, duration_num, duration_unit,
+    languages, uid, category_id
+)
+VALUES
+('course1', 'Learn Python', 'Beginner to advanced Python programming', 49.99, 120, true,
+ NOW(), NOW(), 40, 'hours', 'English', 'bf6f3a33-c0d4-4965-a9fb-f87ccfab5040-p7H2', 'c1'),
+('course2', 'Project Management Basics', 'Introduction to project management', 59.99, 80, true,
+ NOW(), NOW(), 2, 'weeks', 'English', 'bf6f3a33-c0d4-4965-a9fb-f87ccfab5040-p7H2', 'c2'),
+('course3', 'UI/UX Design Fundamentals', 'Principles of modern UI/UX design', 39.99, 45, false,
+ NOW(), NOW(), 30, 'days', 'English', 'bf6f3a33-c0d4-4965-a9fb-f87ccfab5040-p7H2', 'c3');
+
+-- Insert breadcrumbs
+INSERT INTO breadcrumbs (breadcrumb_name) VALUES
+('Python'),
+('Programming'),
+('Management'),
+('Design'),
+('UI/UX');
+
+-- Insert course-breadcrumb relationships
+INSERT INTO course_breadcrumbs (course_id, breadcrumb_id) VALUES
+('course1', 1),  -- Python
+('course1', 2),  -- Programming
+('course2', 3),  -- Management
+('course3', 4),  -- Design
+('course3', 5);  -- UI/UX
 
 -- Stored Procedures
 DELIMITER $$

@@ -26,9 +26,9 @@ paths:
   /api/auth/otp/verify:
     $ref: './auth.yaml#/paths/~1api~1auth~1otp~1verify'       
   /api/course/get-all-course:
-    $ref: './course.yaml#/paths/~1api~1course~1get-all-course'
     security:
       - bearerAuth: []
+    $ref: './course.yaml#/paths/~1api~1course~1get-all-course'
   /api/course/get-course/{course_id}:
     $ref: './course.yaml#/paths/~1api~1course~1get-course~1{course_id}'
   /users:

@@ -1,22 +1,26 @@
-import { 
-  Box, 
-  Typography, 
-  Card, 
-  CardContent, 
-  Avatar, 
+import {
+  Box,
+  Typography,
+  Card,
+  Avatar,
   Button,
-  Grid,
+  Chip,
   Divider,
-  Chip
+  Container,
+  Grid,
+  CardContent,
 } from '@mui/material';
-import { Edit as EditIcon, Email as EmailIcon } from '@mui/icons-material';
+import { Edit as EditIcon } from '@mui/icons-material';
 import { useAuth } from '../../context';
+import { useState } from 'react';
 
 export default function Profile() {
   const { user } = useAuth();
-
+  const [activeTab, setActiveTab] = useState('course');
   const userInfo = {
-    name: `${user?.fname || 'John'} ${user?.mname || 'M'} ${user?.lname || 'Doe'}`,
+    name: `${user?.fname || 'John'} ${user?.mname || 'M'} ${
+      user?.lname || 'Doe'
+    }`,
     email: user?.email || 'john.doe@hcmut.edu.vn',
     avatar: user?.avatar || '/assets/default-avatar.png',
     joinDate: '2024-01-01',
@@ -24,134 +28,193 @@ export default function Profile() {
     studentId: '2021001234',
     posts: 15,
     followers: 234,
-    following: 89
+    following: 89,
   };
 
-  const recentActivity = [
-    { action: 'Posted', item: 'Introduction to React Hooks', date: '2024-01-15' },
-    { action: 'Liked', item: 'Advanced JavaScript Concepts', date: '2024-01-14' },
-    { action: 'Commented on', item: 'Database Design Principles', date: '2024-01-13' },
-  ];
-
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        Profile
-      </Typography>
+    <Container maxWidth="lg" sx={{ py: 3 }}>
+      {/* Bìa gradient */}
+      <Box
+        sx={{
+          width: '100%',
+          height: 220,
+          background:
+            'linear-gradient(135deg, #88c4f9ff, #3c51d5ff, #f06262ff)',
+          position: 'relative',
+          boxShadow: 3,
+        }}
+      />
 
-      <Grid container spacing={3}>
-        {/* Profile Info Card */}
-        <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Box display="flex" flexDirection="column" alignItems="center" mb={3}>
-                <Avatar 
-                  src={userInfo.avatar}
-                  sx={{ width: 120, height: 120, mb: 2 }}
-                >
-                  {userInfo.name.split(' ').map(n => n[0]).join('')}
-                </Avatar>
-                <Typography variant="h5" gutterBottom>
-                  {userInfo.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                  {userInfo.department}
-                </Typography>
-                <Chip 
-                  label={`ID: ${userInfo.studentId}`} 
-                  size="small" 
-                  variant="outlined"
-                />
-              </Box>
+      {/* Card chứa thông tin */}
+      <Card
+        sx={{
+          p: 3,
+          mx: 1,
+          mt: -12,
+          boxShadow: 6,
+          borderRadius: 3,
+        }}
+      >
+        <Box display="flex" alignItems="center" gap={3}>
+          {/* Avatar */}
+          <Avatar
+            src={userInfo.avatar}
+            sx={{
+              width: 150,
+              height: 150,
+              border: '5px solid white',
+              boxShadow: 3,
+            }}
+          >
+            {userInfo.name
+              .split(' ')
+              .map((n) => n[0])
+              .join('')}
+          </Avatar>
 
-              <Divider sx={{ my: 2 }} />
+          {/* Thông tin chính */}
+          <Box flexGrow={1} sx={{ mt: 10 }}>
+            <Typography variant="h5" fontWeight="bold">
+              {userInfo.name}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              {userInfo.department}
+            </Typography>
+            <Box display="flex" gap={1} mb={2}>
+              <Chip label={`ID: ${userInfo.studentId}`} size="small" />
+            </Box>
+            <Box display="flex" gap={2}>
+              <Chip
+                label={`Posts: ${userInfo.posts}`}
+                color="primary"
+                size="small"
+              />
+              <Chip
+                label={`Followers: ${userInfo.followers}`}
+                color="secondary"
+                size="small"
+              />
+              <Chip
+                label={`Following: ${userInfo.following}`}
+                color="success"
+                size="small"
+              />
+            </Box>
+          </Box>
 
-              <Box display="flex" alignItems="center" gap={1} mb={2}>
-                <EmailIcon color="action" />
-                <Typography variant="body2">
-                  {userInfo.email}
-                </Typography>
-              </Box>
+          {/* Edit Button */}
+          <Box
+            display="flex"
+            flexDirection={'column'}
+            gap={1}
+            mb={2}
+            sx={{ mt: 8 }}
+          >
+            <Button
+              variant="contained"
+              startIcon={<EditIcon />}
+              sx={{
+                borderRadius: 50, // luôn giữ oval
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                  backgroundColor: 'primary.dark',
+                },
+              }}
+            >
+              Edit Profile
+            </Button>
 
-              <Typography variant="body2" color="text.secondary" mb={3}>
-                Member since {new Date(userInfo.joinDate).toLocaleDateString()}
-              </Typography>
+            <Chip
+              label={`Joined: ${new Date(
+                userInfo.joinDate
+              ).toLocaleDateString()}`}
+              size="small"
+            />
+          </Box>
+        </Box>
+      </Card>
+      <Box sx={{ mt: 4 }}>
+        {/* Tab headers */}
+        <Box
+          sx={{
+            display: 'flex',
+            borderRadius: 2,
+            overflow: 'hidden',
+            boxShadow: '0px 2px 6px rgba(0,0,0,0.1)',
+          }}
+        >
+          <Box
+            onClick={() => setActiveTab('course')}
+            sx={{
+              flex: 1,
+              textAlign: 'center',
+              py: 2,
+              cursor: 'pointer',
+              fontWeight: activeTab === 'course' ? 'bold' : '500',
+              color: activeTab === 'course' ? 'primary.main' : 'text.secondary',
+              backgroundColor: activeTab === 'course' ? '#e3f2fd' : '#fff',
+              transition: 'all 0.2s ease',
+              '&:hover': {
+                backgroundColor: '#d0e7ff',
+              },
+            }}
+          >
+            <Typography variant="h5">Your Courses</Typography>
+          </Box>
 
-              <Button 
-                variant="contained" 
-                startIcon={<EditIcon />}
-                fullWidth
-              >
-                Edit Profile
-              </Button>
-            </CardContent>
-          </Card>
-        </Grid>
+          <Divider
+            orientation="vertical"
+            flexItem
+            sx={{ backgroundColor: '#ddd' }}
+          />
 
-        {/* Stats and Activity */}
-        <Grid item xs={12} md={8}>
-          {/* Stats */}
-          <Card sx={{ mb: 3 }}>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Statistics
-              </Typography>
-              <Grid container spacing={3}>
-                <Grid item xs={4}>
-                  <Box textAlign="center">
-                    <Typography variant="h4" color="primary">
-                      {userInfo.posts}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Posts
-                    </Typography>
-                  </Box>
+          <Box
+            onClick={() => setActiveTab('thread')}
+            sx={{
+              flex: 1,
+              textAlign: 'center',
+              py: 2,
+              cursor: 'pointer',
+              fontWeight: activeTab === 'thread' ? 'bold' : '500',
+              color: activeTab === 'thread' ? 'primary.main' : 'text.secondary',
+              backgroundColor: activeTab === 'thread' ? '#e3f2fd' : '#fff',
+              transition: 'all 0.2s ease',
+              '&:hover': {
+                backgroundColor: '#d0e7ff',
+              },
+            }}
+          >
+            <Typography variant="h5">Your Threads</Typography>
+          </Box>
+        </Box>
+
+        {/* Tab content */}
+        <Box sx={{ mt: 3 }}>
+          {activeTab === 'course' && (
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant='body1'> Hiển thị Course ở đây</Typography>
+                        </CardContent>
+                    </Card>
                 </Grid>
-                <Grid item xs={4}>
-                  <Box textAlign="center">
-                    <Typography variant="h4" color="primary">
-                      {userInfo.followers}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Followers
-                    </Typography>
-                  </Box>
+            </Grid>
+          )}
+          {activeTab === 'thread' && (
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant="body1">Hiển thị Threads ở đây</Typography>
+                        </CardContent>
+                    </Card>
                 </Grid>
-                <Grid item xs={4}>
-                  <Box textAlign="center">
-                    <Typography variant="h4" color="primary">
-                      {userInfo.following}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Following
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-
-          {/* Recent Activity */}
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Recent Activity
-              </Typography>
-              {recentActivity.map((activity, index) => (
-                <Box key={index} mb={2}>
-                  <Typography variant="body1">
-                    <strong>{activity.action}</strong> "{activity.item}"
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {new Date(activity.date).toLocaleDateString()}
-                  </Typography>
-                  {index < recentActivity.length - 1 && <Divider sx={{ mt: 2 }} />}
-                </Box>
-              ))}
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-    </Box>
+            </Grid>
+          )}
+        </Box>
+      </Box>
+    </Container>
   );
 }
