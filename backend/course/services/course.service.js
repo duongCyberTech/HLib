@@ -83,8 +83,8 @@ class CourseService{
 
             const [result] = await pool.query(query, params);
 
-            console.log(">>> data: ", result[0])
-            return {data: result[0], message: "Get all course!"}
+            console.log(">>> data: ", result)
+            return {data: result, message: "Get all course!"}
         }catch(error){
             console.log(error)
             return {message: "Get course failed!"}

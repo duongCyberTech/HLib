@@ -24,7 +24,7 @@ router.post('/upload-file', upload.single('file'), uploadWithProgress);
 router.post('/create-course', authenticate, authorize(['user']), CourseController.CreateCourse)
 router.post('/create-section', authenticate, authorize(['user']), CourseController.CreateSection)
 
-router.get('/get-all-course', authenticate, authorize(['admin']), CourseController.getAllCourse)
+router.get('/get-all-course', authenticate, CourseController.getAllCourse)
 router.get('/get-course/:course_id', CourseController.getCourseById)
 //router.get('/get-sections-in-course/:course_id')
 

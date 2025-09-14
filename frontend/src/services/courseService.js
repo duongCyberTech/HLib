@@ -1,7 +1,9 @@
 const API_BASE_URL = '/api/course';
 
+import { tokenManager } from '../utils/tokenManager';
+
 const getToken = () => {
-  return localStorage.getItem('userToken');
+  return tokenManager.getToken();
 };
 
 export const courseService = {

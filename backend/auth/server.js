@@ -1,6 +1,5 @@
 const express = require('express');
 const authRoutes = require('./routes/auth.route');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const https = require("https")
 const fs = require('fs')
@@ -9,9 +8,9 @@ require('dotenv').config();
 
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json()); // Use built-in JSON parser
 
-app.use('/api/auth', authRoutes);
+app.use('/', authRoutes); // The gateway handles the /api/auth prefix
 
 // SSL options - uncomment when SSL certificates are available
 // const options = {

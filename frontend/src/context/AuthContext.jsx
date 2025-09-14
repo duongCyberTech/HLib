@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { authService } from '../services';
+import { tokenManager } from '../utils/tokenManager';
 
 const AuthContext = createContext();
 
@@ -14,7 +15,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('token') ? true : false);
+  const [isAuthenticated, setIsAuthenticated] = useState(tokenManager.hasToken());
 
   useEffect(() => {
     checkAuthStatus();
@@ -22,16 +23,21 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = tokenManager.getToken();
       if (token) {
         // Verify token with backend
         const userData = await authService.verifyToken(token);
-        setUser(userData);
+        setUser(userData.user || userData);
         setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
       }
     } catch (error) {
       console.error('Auth check failed:', error);
-      localStorage.removeItem('token');
+      // Clear invalid token
+      tokenManager.clearAll();
+      setUser(null);
+      setIsAuthenticated(false);
     } finally {
       setLoading(false);
     }
@@ -40,15 +46,16 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await authService.login(email, password);
-      const { token } = response;
+      const { token, uid } = response;
 
-      localStorage.setItem('token', token);
+      tokenManager.setToken(token);
+      if (uid) tokenManager.setUid(uid);
       setIsAuthenticated(true);
 
       // Get user profile after successful login
       try {
         const userData = await authService.verifyToken(token);
-        setUser(userData.user);
+        setUser(userData.user || userData);
       } catch (profileError) {
         console.warn('Could not fetch user profile:', profileError);
       }
@@ -69,8 +76,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('uid');
+    tokenManager.clearAll();
     setUser(null);
     setIsAuthenticated(false);
   };
