@@ -10,14 +10,14 @@ import {
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context';
 import { FontAwesomeIcon, CourseCard } from '../../components/common';
-import { coursesService } from '../../services/coursesService';
+import { courseService } from '../../services/courseService';
 import { useApi } from '../../hooks/useApi';
 import { normalizeCourse } from '../../utils/course';
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const { loading, error, execute } = useApi();
-  const [recentCourses, setRecentCourses] = useState([]);
+  const { execute } = useApi();
+  const [setRecentCourses] = useState([]);
 
   const stats = [
     {
@@ -42,7 +42,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchRecent = async () => {
-      const { success, data } = await execute(() => coursesService.list({ page: 1, limit: 6, sort: '-createdAt' }));
+      const { success, data } = await execute(() => courseService.list({ page: 1, limit: 6, sort: '-createdAt' }));
       if (success) {
         const items = Array.isArray(data?.data) ? data.data : Array.isArray(data) ? data : [];
         setRecentCourses(items.map(normalizeCourse));
@@ -51,12 +51,6 @@ export default function Dashboard() {
     fetchRecent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleCourseClick = (course) => {
-    console.log('Course clicked:', course);
-    // Navigate to course detail page
-  };
-
 
 
   return (
@@ -112,32 +106,6 @@ export default function Dashboard() {
           </Grid>
         ))}
       </Grid>
-
-      {/* Recent Courses */}
-      <Box>
-        <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
-          Recent Courses
-        </Typography>
-        {loading && (
-          <Typography variant="body2" color="text.secondary">Loading...</Typography>
-        )}
-        {error && (
-          <Typography variant="body2" color="error">{error}</Typography>
-        )}
-        {!loading && !error && (
-          <Grid container spacing={3}>
-            {recentCourses.map((course) => (
-              <Grid size={{ xs: 12, md: 6, lg: 4 }} key={course.id}>
-                <CourseCard
-                  course={course}
-                  onClick={handleCourseClick}
-                  variant="default"
-                />
-              </Grid>
-            ))}
-          </Grid>
-        )}
-      </Box>
     </Container>
   );
 }
