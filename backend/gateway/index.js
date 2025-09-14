@@ -19,8 +19,21 @@ swaggerCombine(swaggerFile, { continueOnError: true })
 
 // Forward API calls đến các microservice (auth, user, v.v.)
 const { createProxyMiddleware } = require('http-proxy-middleware');
-app.use('/api/auth', createProxyMiddleware({ target: 'http://localhost:3001', changeOrigin: true }));
-app.use('/api/user', createProxyMiddleware({ target: 'http://localhost:3002', changeOrigin: true }));
+app.use('/api/auth', createProxyMiddleware({
+  target: 'http://localhost:3001',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/api/auth': '', // Strip the /api/auth prefix
+  },
+}));
+
+app.use('/api/course', createProxyMiddleware({
+  target: 'http://localhost:3002',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/api/course': '', // Strip the /api/course prefix
+  },
+}));
 
 const PORT = process.env.GATEWAY_PORT;
 app.listen(PORT, () => {

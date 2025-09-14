@@ -15,7 +15,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewListIcon from '@mui/icons-material/ViewList';
-import { categories, levels, sortOptions, viewModes, courseTabs } from '../constants/courseConstants';
+import { categories, levels, sortOptions, viewModes } from '../constants/courseConstants';
 
 export default function CourseFilters({
   searchTerm,

@@ -8,7 +8,7 @@ require('dotenv').config({ path: './config/.env' });
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use('/api/course', courseRoutes);
+app.use('/', courseRoutes); // The gateway handles the /api/course prefix
 
 require('./wsServer');
 

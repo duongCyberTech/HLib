@@ -6,7 +6,7 @@ import {
   CourseHeader, 
   CourseStats 
 } from './components';
-import { mockCourses } from './data/mockCourses';
+import { courseService } from '../../services/courseService';
 import { viewModes, courseTabs } from './constants/courseConstants';
 import { getFilteredAndSortedCourses } from './utils/courseUtils';
 
@@ -23,12 +23,28 @@ export default function Courses() {
   const [activeTab, setActiveTab] = useState(courseTabs.ALL);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setCourses(mockCourses);
-      setLoading(false);
-    }, 1000);
+    const fetchCourse = async () => {
+      try {
+        setLoading(true);
+        const result = await courseService.getAllCourses();
 
-    return () => clearTimeout(timer);
+        if (result.error) {
+          // Xử lý lỗi từ API (vd: token sai, không có quyền)
+          console.error('API Error:', result.message);
+          setCourses([]); // Xóa danh sách khóa học cũ nếu có lỗi
+        } else if (result.data) {
+          setCourses(result.data);
+        }
+
+      } catch (error){
+        // Xử lý lỗi mạng hoặc lỗi javascript
+        console.error('Error fetching courses: ', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourse();
   }, []);
 
   useEffect(() => {
