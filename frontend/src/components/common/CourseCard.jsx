@@ -7,7 +7,6 @@ import {
   Button
 } from '@mui/material';
 import { SimpleIcon } from './';
-import { formatCurrency } from '../../utils/helpers';
 
 // Placeholder component for course images
 const ImagePlaceholder = ({ height = 200, title = 'Course Image' }) => (
@@ -54,7 +53,7 @@ export default function CourseCard({
     course_id = '',
     title = '',
     description = '',
-    price = 0,
+    price = '',
     is_active = true
   } = course;
 
@@ -85,22 +84,19 @@ export default function CourseCard({
         }}
         onClick={handleCardClick}
       >
-        <Box sx={{ display: 'flex', height: 140, position: 'relative' }}>
-          {/* Status Badge - chỉ hiển thị trạng thái active */}
-          {is_active && (
-            <Box sx={{ position: 'absolute', top: 8, left: 8, zIndex: 2 }}>
-              <Chip
-                label="HOẠT ĐỘNG"
-                size="small"
-                sx={{
-                  bgcolor: '#4CAF50',
-                  color: 'white',
-                  fontSize: '0.6875rem',
-                  height: 20
-                }}
-              />
-            </Box>
-          )}
+      <Box sx={{ display: 'flex', height: 140, position: 'relative' }}>
+          <Box sx={{ position: 'absolute', top: 8, left: 8, zIndex: 2 }}>
+            <Chip
+              label= {is_active ? "HOẠT ĐỘNG" : "KHÔNG HOẠT ĐỘNG"}
+              size="small"
+              sx={{
+                bgcolor: is_active ? '#4CAF50' : '#ff0000ff',
+                color: 'white',
+                fontSize: '0.6875rem',
+                height: 20
+              }}
+            />
+          </Box>
 
           {/* Course Image Placeholder */}
           <Box sx={{ width: 140, flexShrink: 0 }}>
@@ -147,9 +143,9 @@ export default function CourseCard({
                 ID: {course_id.slice(0, 8)}...
               </Typography>
 
-              {price > 0 && (
+              {parseFloat(price) > 0 && (
                 <Typography variant="body2" sx={{ fontWeight: 600, color: '#1976d2' }}>
-                  {formatCurrency ? formatCurrency(price) : `${price.toLocaleString()}đ`}
+                  {`${price}đ`}
                 </Typography>
               )}
             </Box>
@@ -176,20 +172,18 @@ export default function CourseCard({
       onClick={handleCardClick}
     >
       {/* Status Badge - chỉ hiển thị trạng thái active */}
-      {is_active && (
-        <Box sx={{ position: 'absolute', top: 12, left: 12, zIndex: 2 }}>
-          <Chip
-            label="HOẠT ĐỘNG"
-            size="small"
-            sx={{
-              bgcolor: '#4CAF50',
-              color: 'white',
-              fontSize: '0.75rem',
-              fontWeight: 600
-            }}
-          />
-        </Box>
-      )}
+      <Box sx={{ position: 'absolute', top: 12, left: 12, zIndex: 2 }}>
+        <Chip
+          label={is_active ? "HOẠT ĐỘNG" : "KHÔNG HOẠT ĐỘNG"}
+          size="small"
+          sx={{
+            bgcolor: is_active ? '#4CAF50' : '#ff0000ff',
+            color: 'white',
+            fontSize: '0.75rem',
+            fontWeight: 600
+          }}
+        />
+      </Box>
 
       {/* Course Image Placeholder */}
       <ImagePlaceholder height={200} title="Course Image" />
@@ -243,9 +237,9 @@ export default function CourseCard({
 
         {/* Price Section */}
         <Box sx={{ mb: 2, minHeight: '40px' }}>
-          {price > 0 ? (
+          {parseFloat(price) > 0 ? (
             <Typography variant="h6" sx={{ fontWeight: 700, color: '#1976d2' }}>
-              {formatCurrency ? formatCurrency(price) : `${price.toLocaleString()}đ`}
+              {`${price}đ`}
             </Typography>
           ) : (
             <Typography variant="h6" sx={{ fontWeight: 700, color: '#4CAF50' }}>
@@ -279,7 +273,7 @@ export default function CourseCard({
           )}
 
           <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
-            {is_active ? 'Đang hoạt động' : 'Tạm dừng'}
+            {is_active ? 'Đang hoạt động' : 'Không hoạt động'}
           </Typography>
         </Box>
       </CardContent>
