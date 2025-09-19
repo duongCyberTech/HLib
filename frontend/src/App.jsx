@@ -15,6 +15,7 @@ import {
 import { ProtectedRoute } from './components/common';
 import MaterialUIIconsTest from './components/common/FontAwesomeTest';
 import CoursesDemo from './pages/courses/CoursesDemo';
+import CourseDetail from './pages/course-detail/course-detail';
 
 function App() {
   return (
@@ -85,6 +86,16 @@ function App() {
                 <ProtectedRoute>
                   <MainLayout>
                     <Courses />
+                  </MainLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route 
+              path='/course/:course_id'
+              element={
+                <ProtectedRoute>
+                  <MainLayout>
+                    <CourseDetail/>
                   </MainLayout>
                 </ProtectedRoute>
               }
