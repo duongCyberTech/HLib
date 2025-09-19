@@ -1,0 +1,1 @@
+import {default as CourseDetail} from './course-detail.jsx'

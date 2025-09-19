@@ -9,18 +9,19 @@ import {
 import { courseService } from '../../services/courseService';
 import { viewModes, courseTabs } from './constants/courseConstants';
 import { getFilteredAndSortedCourses } from './utils/courseUtils';
+import { useNavigate } from 'react-router-dom';
 
 export default function Courses() {
   const [courses, setCourses] = useState([]);
   const [filteredCourses, setFilteredCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-  
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Tất cả');
   const [selectedLevel, setSelectedLevel] = useState('Tất cả');
   const [sortBy, setSortBy] = useState('newest');
   const [viewMode, setViewMode] = useState(viewModes.GRID);
   const [activeTab, setActiveTab] = useState(courseTabs.ALL);
+  const nevigate = useNavigate();
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -60,7 +61,7 @@ export default function Courses() {
   }, [courses, searchTerm, selectedCategory, selectedLevel, sortBy, activeTab]);
 
   const handleCourseClick = (course) => {
-    console.log('Course clicked:', course);
+    nevigate(`/course/${course.course_id}`);
   };
 
   const handleClearFilters = () => {

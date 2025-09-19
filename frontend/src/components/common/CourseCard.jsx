@@ -6,6 +6,7 @@ import {
   Box,
   Button
 } from '@mui/material';
+import { Link } from 'react-router-dom'
 import { SimpleIcon } from './';
 
 // Placeholder component for course images
@@ -268,8 +269,10 @@ export default function CourseCard({
                 minWidth: 'auto'
               }}
             >
-              Xem chi tiết
-            </Button>
+              <Link to={`/course/${course_id}`}>
+                Xem chi tiết
+              </Link>
+            </Button>   
           )}
 
           <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.875rem' }}>
