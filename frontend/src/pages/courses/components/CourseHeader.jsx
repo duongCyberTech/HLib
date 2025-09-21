@@ -13,9 +13,6 @@ export default function CourseHeader() {
       }}>
         Khóa học trực tuyến
       </Typography>
-      <Typography variant="h6" color="text.secondary" sx={{ mb: 3 }}>
-        Khám phá hàng nghìn khóa học chất lượng cao từ các chuyên gia hàng đầu
-      </Typography>
     </Box>
   );
 }
